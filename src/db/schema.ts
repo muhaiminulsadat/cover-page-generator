@@ -7,6 +7,14 @@ export const user = pgTable("user", {
   name: text("name").notNull(),
   emailVerified: boolean("email_verified").notNull().default(false),
   image: text("image"),
+  studentId: text("student_id"),
+  department: text("department"),
+  section: text("section"),
+  subsection: text("subsection"),
+  groupNo: text("group_no"),
+  level: text("level"),
+  term: text("term"),
+  hscBatch: text("hsc_batch"),
   createdAt: timestamp("created_at").notNull(),
   updatedAt: timestamp("updated_at").notNull(),
 });
@@ -55,4 +63,25 @@ export const verification = pgTable("verification", {
   updatedAt: t
     .timestamp("updated_at", {precision: 6, withTimezone: true})
     .notNull(),
+});
+
+export const templates = pgTable("templates", {
+  id: text("id").primaryKey(),
+  courseNumber: text("course_number").notNull(),
+  courseTitle: text("course_title").notNull(),
+  sessionTerm: text("session_term").notNull(),
+  departmentTarget: text("department_target"),
+  levelTarget: text("level_target"),
+  termTarget: text("term_target"),
+  sectionTarget: text("section_target"),
+  subsectionTarget: text("subsection_target"),
+  createdBy: text("created_by")
+    .notNull()
+    .references(() => user.id, {onDelete: "cascade"}),
+  teacher1Name: text("teacher_1_name").notNull(),
+  teacher1Designation: text("teacher_1_designation").notNull(),
+  teacher2Name: text("teacher_2_name"),
+  teacher2Designation: text("teacher_2_designation"),
+  createdAt: timestamp("created_at").notNull().defaultNow(),
+  updatedAt: timestamp("updated_at").notNull().defaultNow(),
 });
