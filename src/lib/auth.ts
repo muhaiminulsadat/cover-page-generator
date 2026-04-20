@@ -6,7 +6,22 @@ export const auth = betterAuth({
   database: drizzleAdapter(db, {
     provider: "pg",
   }),
-
+  user: {
+    additionalFields: {
+      studentId: {
+        type: "string",
+      },
+      department: {
+        type: "string",
+      },
+      level: {
+        type: "string",
+      },
+      term: {
+        type: "string",
+      },
+    },
+  },
   emailAndPassword: {
     enabled: true,
     minPasswordLength: 6,
