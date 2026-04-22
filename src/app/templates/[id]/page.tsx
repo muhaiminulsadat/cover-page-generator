@@ -64,7 +64,12 @@ async function TemplatePreview({params}: {params: Promise<{id: string}>}) {
             </p>
           </div>
           {template.createdBy === session.user.id && (
-            <Button variant="outline" size="sm" asChild className="w-full sm:w-auto">
+            <Button
+              variant="outline"
+              size="sm"
+              asChild
+              className="w-full sm:w-auto"
+            >
               <Link href={`/templates/${id}/edit`}>
                 <Edit className="w-4 h-4 mr-2" />
                 Edit Template

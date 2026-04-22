@@ -30,7 +30,8 @@ export function CoverPageWebPreview({template, user}: Props) {
     <div className="flex flex-col gap-4">
       <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
         <p className="text-sm text-muted-foreground md:hidden w-full text-center">
-          PDF Preview might not render perfectly on some mobile browsers. You can always download it!
+          PDF Preview might not render perfectly on some mobile browsers. You
+          can always download it!
         </p>
 
         <PDFDownloadLink
