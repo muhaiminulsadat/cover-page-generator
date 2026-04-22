@@ -82,7 +82,7 @@ export default function Navbar() {
             </svg>
           </div>
           <span className="text-foreground font-semibold text-base tracking-tight font-mono">
-            starter
+            CoverIt
           </span>
         </Link>
 
