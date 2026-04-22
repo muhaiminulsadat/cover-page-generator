@@ -1,8 +1,11 @@
 "use server";
 
 import {authActionClient} from "@/lib/safe-action";
-import {createTemplateSchema} from "@/lib/validations/template";
-import {insertTemplate} from "@/app/queries/template";
+import {
+  createTemplateSchema,
+  editTemplateSchema,
+} from "@/lib/validations/template";
+import {insertTemplate, updateTemplate} from "@/app/queries/template";
 import {revalidatePath} from "next/cache";
 
 export const createTemplateAction = authActionClient
@@ -21,5 +24,23 @@ export const createTemplateAction = authActionClient
       return {success: true, data: template};
     } catch (error) {
       throw new Error("Failed to create template");
+    }
+  });
+
+export const editTemplateAction = authActionClient
+  .schema(editTemplateSchema)
+  .action(async ({parsedInput, ctx}) => {
+    try {
+      const {id, ...data} = parsedInput;
+      const template = await updateTemplate(id, ctx.user.id, data);
+      if (!template) throw new Error("Not authorized or not found");
+
+      revalidatePath("/");
+      revalidatePath(`/templates/${id}`);
+      revalidatePath("/templates");
+
+      return {success: true, data: template};
+    } catch (error) {
+      throw new Error("Failed to edit template");
     }
   });

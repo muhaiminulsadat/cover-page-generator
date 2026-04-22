@@ -22,15 +22,7 @@ import {
 export function OnboardingForm() {
   const router = useRouter();
 
-  const {execute, isPending} = useAction(updateProfile, {
-    onSuccess: () => {
-      toast.success("Profile completed successfully");
-      router.push("/");
-    },
-    onError: (e) => {
-      toast.error(e.error.serverError || "Something went wrong");
-    },
-  });
+  const {executeAsync, isPending} = useAction(updateProfile);
 
   const form = useForm<UserProfileInput>({
     resolver: zodResolver(userProfileSchema),
@@ -47,7 +39,17 @@ export function OnboardingForm() {
   });
 
   async function onSubmit(data: UserProfileInput) {
-    execute(data);
+    const result = await executeAsync(data);
+    if (result?.data?.success) {
+      toast.success("Profile completed successfully");
+      router.push("/");
+    } else if (result?.serverError) {
+      toast.error(result.serverError);
+    } else if (result?.validationErrors) {
+      toast.error("Please check the form for errors.");
+    } else {
+      toast.error("Something went wrong");
+    }
   }
 
   return (

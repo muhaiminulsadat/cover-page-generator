@@ -6,7 +6,7 @@ import {user as userSchema} from "@/db/schema";
 import {eq} from "drizzle-orm";
 import {notFound, redirect} from "next/navigation";
 import {CoverPageWebPreview} from "@/components/pdf/CoverPageWebPreview";
-import {ArrowLeft} from "lucide-react";
+import {ArrowLeft, Edit} from "lucide-react";
 import Link from "next/link";
 import {Button} from "@/components/ui/button";
 import {Suspense} from "react";
@@ -54,13 +54,23 @@ async function TemplatePreview({params}: {params: Promise<{id: string}>}) {
             Back to Dashboard
           </Link>
         </Button>
-        <div className="text-right">
-          <h1 className="text-xl font-bold tracking-tight">
-            {template.courseNumber}
-          </h1>
-          <p className="text-sm text-muted-foreground">
-            {template.courseTitle}
-          </p>
+        <div className="flex items-center gap-4 text-right">
+          <div>
+            <h1 className="text-xl font-bold tracking-tight">
+              {template.courseNumber}
+            </h1>
+            <p className="text-sm text-muted-foreground">
+              {template.courseTitle}
+            </p>
+          </div>
+          {template.createdBy === session.user.id && (
+            <Button variant="outline" size="sm" asChild>
+              <Link href={`/templates/${id}/edit`}>
+                <Edit className="w-4 h-4 mr-2" />
+                Edit Template
+              </Link>
+            </Button>
+          )}
         </div>
       </div>
       <CoverPageWebPreview template={template} user={currentUser} />

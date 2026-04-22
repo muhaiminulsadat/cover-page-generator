@@ -3,10 +3,10 @@
 import {useForm} from "react-hook-form";
 import {zodResolver} from "@hookform/resolvers/zod";
 import {
-  createTemplateSchema,
-  CreateTemplateInput,
+  editTemplateSchema,
+  EditTemplateInput,
 } from "@/lib/validations/template";
-import {createTemplateAction} from "@/app/actions/template";
+import {editTemplateAction} from "@/app/actions/template";
 import {useRouter} from "next/navigation";
 import {toast} from "sonner";
 import {useAction} from "next-safe-action/hooks";
@@ -20,36 +20,36 @@ import {
   CardHeader,
   CardTitle,
 } from "@/components/ui/card";
+import {Loader2} from "lucide-react";
 
-export function CreateTemplateForm() {
+export function EditTemplateForm({template}: {template: EditTemplateInput}) {
   const router = useRouter();
 
-  const {execute, executeAsync, isPending} = useAction(createTemplateAction);
+  const {executeAsync, isPending} = useAction(editTemplateAction);
 
-  const form = useForm<CreateTemplateInput>({
-    resolver: zodResolver(createTemplateSchema),
+  const form = useForm<EditTemplateInput>({
+    resolver: zodResolver(editTemplateSchema),
     defaultValues: {
-      courseNumber: "",
-      courseTitle: "",
-      sessionTerm: "",
-      departmentTarget: "",
-      levelTarget: "",
-      termTarget: "",
-      sectionTarget: "",
-      subsectionTarget: "",
-      teacher1Name: "",
-      teacher1Designation: "",
-      teacher2Name: "",
-      teacher2Designation: "",
+      id: template.id,
+      courseNumber: template.courseNumber || "",
+      courseTitle: template.courseTitle || "",
+      sessionTerm: template.sessionTerm || "",
+      departmentTarget: template.departmentTarget || "",
+      levelTarget: template.levelTarget || "",
+      termTarget: template.termTarget || "",
+      sectionTarget: template.sectionTarget || "",
+      subsectionTarget: template.subsectionTarget || "",
+      teacher1Name: template.teacher1Name || "",
+      teacher1Designation: template.teacher1Designation || "",
+      teacher2Name: template.teacher2Name || "",
+      teacher2Designation: template.teacher2Designation || "",
     },
   });
 
-  async function onSubmit(data: CreateTemplateInput) {
-    console.log("Submitting data to server action:", data);
+  async function onSubmit(data: EditTemplateInput) {
     const result = await executeAsync(data);
-    console.log("Server action result:", result);
     if (result?.data?.success) {
-      toast.success("Template created successfully");
+      toast.success("Template updated successfully");
       router.push(`/templates/${result.data.data.id}`);
     } else if (result?.serverError) {
       toast.error(result.serverError);
@@ -60,16 +60,11 @@ export function CreateTemplateForm() {
     }
   }
 
-  // To debug validation errors
-  console.log("Current Form Errors:", form.formState.errors);
-
   return (
     <Card className="w-full max-w-2xl mx-auto">
       <CardHeader>
-        <CardTitle>Create Cover Page Template</CardTitle>
-        <CardDescription>
-          Design a new lab cover page template for your course.
-        </CardDescription>
+        <CardTitle>Edit Cover Page Template</CardTitle>
+        <CardDescription>Update your template settings.</CardDescription>
       </CardHeader>
       <CardContent>
         <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-6">
@@ -183,7 +178,14 @@ export function CreateTemplateForm() {
           </div>
 
           <Button type="submit" className="w-full" disabled={isPending}>
-            {isPending ? "Creating..." : "Create Template"}
+            {isPending ? (
+              <>
+                <Loader2 className="mr-2 h-4 w-4 animate-spin" />
+                Saving Changes...
+              </>
+            ) : (
+              "Save Template"
+            )}
           </Button>
         </form>
       </CardContent>

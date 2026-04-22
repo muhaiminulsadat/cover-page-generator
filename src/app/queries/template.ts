@@ -15,6 +15,19 @@ export async function getTemplateById(id: string) {
   return template;
 }
 
+export async function updateTemplate(
+  id: string,
+  userId: string,
+  data: Partial<typeof templates.$inferInsert>,
+) {
+  const [updatedTemplate] = await db
+    .update(templates)
+    .set({...data, updatedAt: new Date()})
+    .where(and(eq(templates.id, id), eq(templates.createdBy, userId)))
+    .returning();
+  return updatedTemplate;
+}
+
 export async function getTemplatesByMetadata(userMeta: {
   department?: string | null;
   level?: string | null;

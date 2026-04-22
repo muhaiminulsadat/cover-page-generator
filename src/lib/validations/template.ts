@@ -22,3 +22,9 @@ export const createTemplateSchema = z.object({
 });
 
 export type CreateTemplateInput = z.infer<typeof createTemplateSchema>;
+
+export const editTemplateSchema = createTemplateSchema.extend({
+  id: z.string().min(1, "Template ID is required"),
+});
+
+export type EditTemplateInput = z.infer<typeof editTemplateSchema>;
