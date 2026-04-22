@@ -46,7 +46,18 @@ async function EditTemplate({params}: {params: Promise<{id: string}>}) {
 
   return (
     <div className="flex h-full min-h-screen w-full items-center justify-center p-4 bg-muted/20 py-10">
-      <EditTemplateForm template={template} />
+      <EditTemplateForm
+        template={{
+          ...template,
+          departmentTarget: template.departmentTarget ?? undefined,
+          levelTarget: template.levelTarget ?? undefined,
+          termTarget: template.termTarget ?? undefined,
+          sectionTarget: template.sectionTarget ?? undefined,
+          subsectionTarget: template.subsectionTarget ?? undefined,
+          teacher2Name: template.teacher2Name ?? undefined,
+          teacher2Designation: template.teacher2Designation ?? undefined,
+        }}
+      />
     </div>
   );
 }
