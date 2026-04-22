@@ -1,70 +1,112 @@
-import {Document, Page, Text, View, StyleSheet} from "@react-pdf/renderer";
+import {
+  Document,
+  Page,
+  Text,
+  View,
+  StyleSheet,
+  Image,
+} from "@react-pdf/renderer";
 
 const styles = StyleSheet.create({
   page: {
     flexDirection: "column",
     backgroundColor: "#FFFFFF",
-    padding: 50,
-    fontFamily: "Helvetica",
-  },
-  headerContainer: {
+    paddingTop: 60,
+    paddingBottom: 60,
+    paddingLeft: 60,
+    paddingRight: 60,
+    fontFamily: "Times-Roman",
     alignItems: "center",
-    marginBottom: 40,
+    justifyContent: "space-between",
   },
-  universityTitle: {
-    fontSize: 22,
-    fontWeight: "bold",
-    marginBottom: 10,
-    textTransform: "uppercase",
+  headerSection: {
+    alignItems: "center",
+    width: "100%",
   },
-  labReportTitle: {
-    fontSize: 18,
-    fontWeight: "bold",
-    marginBottom: 30,
-    textDecoration: "underline",
+  logoContainer: {
+    marginBottom: 20,
+    alignItems: "center",
   },
-  courseContainer: {
-    marginBottom: 40,
+  logo: {
+    width: 120,
+    height: 120,
   },
-  row: {
+  universityName: {
+    fontSize: 20,
+    fontFamily: "Times-Bold",
+    marginBottom: 8,
+    textAlign: "center",
+  },
+  departmentName: {
+    fontSize: 16,
+    fontFamily: "Times-Bold",
+    marginBottom: 0,
+    textAlign: "center",
+  },
+  courseDetailsContainer: {
+    alignItems: "center",
+    width: "100%",
+  },
+  courseLine: {
     flexDirection: "row",
     marginBottom: 8,
+    justifyContent: "center",
   },
-  label: {
-    width: 120,
-    fontSize: 12,
-    fontWeight: "bold",
+  sectionHeaderContainer: {
+    alignItems: "center",
+    width: "100%",
+    marginBottom: 20,
   },
-  value: {
-    flex: 1,
-    fontSize: 12,
-  },
-  peopleContainer: {
-    flexDirection: "row",
-    justifyContent: "space-between",
-    marginTop: 40,
-  },
-  personColumn: {
-    width: "45%",
-  },
-  sectionTitle: {
-    fontSize: 14,
-    fontWeight: "bold",
-    marginBottom: 15,
+  sectionHeader: {
+    fontSize: 16,
+    fontFamily: "Times-Bold",
     textDecoration: "underline",
   },
-  personDetail: {
-    fontSize: 12,
-    marginBottom: 5,
+  halfContainer: {
+    width: "100%",
   },
-  footer: {
-    position: "absolute",
-    bottom: 50,
-    left: 50,
-    right: 50,
-    textAlign: "center",
-    fontSize: 10,
-    color: "gray",
+  teachersContainer: {
+    width: "100%",
+    paddingLeft: 40,
+  },
+  teacherBlock: {
+    flexDirection: "row",
+    marginBottom: 20,
+  },
+  teacherNumber: {
+    width: 25,
+    fontSize: 14,
+    fontFamily: "Times-Bold",
+  },
+  teacherDetails: {
+    flex: 1,
+  },
+  teacherName: {
+    fontSize: 14,
+    fontFamily: "Times-Bold",
+    marginBottom: 6,
+  },
+  teacherDesignation: {
+    fontSize: 14,
+    fontFamily: "Times-Roman",
+  },
+  studentContainer: {
+    alignItems: "center",
+    width: "100%",
+  },
+  studentLine: {
+    flexDirection: "row",
+    marginBottom: 10,
+    justifyContent: "center",
+  },
+  label: {
+    fontSize: 15,
+    fontFamily: "Times-Bold",
+  },
+  value: {
+    fontSize: 15,
+    fontFamily: "Times-Roman",
+    marginLeft: 4,
   },
 });
 
@@ -78,63 +120,101 @@ export default function CoverPageDocument({
   return (
     <Document>
       <Page size="A4" style={styles.page}>
-        <View style={styles.headerContainer}>
-          <Text style={styles.universityTitle}>University Name Here</Text>
-          <Text style={styles.labReportTitle}>LABORATORY REPORT</Text>
+        <View style={styles.headerSection}>
+          <View style={styles.logoContainer}>
+            <Image src="/buet-logo.jpg" style={styles.logo} />
+          </View>
+
+          <Text style={styles.universityName}>
+            Bangladesh University of Engineering and Technology
+          </Text>
+          <Text style={styles.departmentName}>
+            Department of Civil Engineering
+          </Text>
         </View>
 
-        <View style={styles.courseContainer}>
-          <View style={styles.row}>
-            <Text style={styles.label}>Course Number:</Text>
+        <View style={styles.courseDetailsContainer}>
+          <View style={styles.courseLine}>
+            <Text style={styles.label}>Course Number: </Text>
             <Text style={styles.value}>{template.courseNumber}</Text>
           </View>
-          <View style={styles.row}>
-            <Text style={styles.label}>Course Title:</Text>
+          <View style={styles.courseLine}>
+            <Text style={styles.label}>Course Title: </Text>
             <Text style={styles.value}>{template.courseTitle}</Text>
           </View>
-          <View style={styles.row}>
-            <Text style={styles.label}>Session/Term:</Text>
+          <View style={styles.courseLine}>
+            <Text style={styles.label}>Term: </Text>
             <Text style={styles.value}>{template.sessionTerm}</Text>
           </View>
         </View>
 
-        <View style={styles.peopleContainer}>
-          <View style={styles.personColumn}>
-            <Text style={styles.sectionTitle}>Submitted By:</Text>
-            <Text style={styles.personDetail}>Name: {user.name}</Text>
-            <Text style={styles.personDetail}>
-              Student ID: {user.studentId}
-            </Text>
-            <Text style={styles.personDetail}>
-              Department: {user.department}
-            </Text>
-            <Text style={styles.personDetail}>
-              Level: {user.level} | Term: {user.term}
-            </Text>
-            <Text style={styles.personDetail}>Section: {user.section}</Text>
+        <View style={styles.halfContainer}>
+          <View style={styles.sectionHeaderContainer}>
+            <Text style={styles.sectionHeader}>Course Teachers:</Text>
           </View>
 
-          <View style={styles.personColumn}>
-            <Text style={styles.sectionTitle}>Submitted To:</Text>
-            <Text style={styles.personDetail}>{template.teacher1Name}</Text>
-            <Text style={styles.personDetail}>
-              {template.teacher1Designation}
-            </Text>
+          <View style={styles.teachersContainer}>
+            <View style={styles.teacherBlock}>
+              <Text style={styles.teacherNumber}>1.</Text>
+              <View style={styles.teacherDetails}>
+                <Text style={styles.teacherName}>{template.teacher1Name}</Text>
+                <Text style={styles.teacherDesignation}>
+                  {template.teacher1Designation}
+                </Text>
+              </View>
+            </View>
 
             {template.teacher2Name && (
-              <View style={{marginTop: 10}}>
-                <Text style={styles.personDetail}>{template.teacher2Name}</Text>
-                <Text style={styles.personDetail}>
-                  {template.teacher2Designation}
-                </Text>
+              <View style={styles.teacherBlock}>
+                <Text style={styles.teacherNumber}>2.</Text>
+                <View style={styles.teacherDetails}>
+                  <Text style={styles.teacherName}>
+                    {template.teacher2Name}
+                  </Text>
+                  <Text style={styles.teacherDesignation}>
+                    {template.teacher2Designation}
+                  </Text>
+                </View>
               </View>
             )}
           </View>
         </View>
 
-        <Text style={styles.footer}>
-          Generated by CoverIt Cover Page Generator
-        </Text>
+        <View style={styles.halfContainer}>
+          <View style={styles.studentContainer}>
+            <View style={styles.sectionHeaderContainer}>
+              <Text style={styles.sectionHeader}>Submitted by:</Text>
+            </View>
+
+            <View style={styles.studentLine}>
+              <Text style={styles.label}>Name: </Text>
+              <Text style={styles.value}>{user.name}</Text>
+            </View>
+
+            <View style={styles.studentLine}>
+              <Text style={styles.label}>Student ID: </Text>
+              <Text style={styles.value}>{user.studentId}</Text>
+            </View>
+
+            <View style={styles.studentLine}>
+              <Text style={styles.label}>Section: </Text>
+              <Text style={styles.value}>{user.section}</Text>
+            </View>
+
+            {user.groupNo && (
+              <View style={styles.studentLine}>
+                <Text style={styles.label}>Group No: </Text>
+                <Text style={styles.value}>{user.groupNo}</Text>
+              </View>
+            )}
+
+            <View style={styles.studentLine}>
+              <Text style={styles.label}>
+                Level-{user.level}, Term-{user.term}
+              </Text>
+            </View>
+          </View>
+        </View>
       </Page>
     </Document>
   );
