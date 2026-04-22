@@ -5,6 +5,8 @@ const nextConfig: NextConfig = {
   experimental: {
     viewTransition: true,
   },
+
+  allowedDevOrigins: ["**", "*"],
 };
 
 export default nextConfig;

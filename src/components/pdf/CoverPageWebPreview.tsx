@@ -28,21 +28,26 @@ export function CoverPageWebPreview({template, user}: Props) {
 
   return (
     <div className="flex flex-col gap-4">
-      <div className="flex items-center justify-end">
+      <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
+        <p className="text-sm text-muted-foreground md:hidden w-full text-center">
+          PDF Preview might not render perfectly on some mobile browsers. You can always download it!
+        </p>
+
         <PDFDownloadLink
           document={<CoverPageDocument template={template} user={user} />}
           fileName={`${template.courseNumber}_Cover_Page.pdf`}
-          className="no-underline"
+          className="no-underline w-full sm:w-auto"
         >
           {({loading}) => (
-            <Button disabled={loading}>
+            <Button disabled={loading} className="w-full sm:w-auto">
               <Download className="mr-2 h-4 w-4" />
               {loading ? "Preparing PDF..." : "Download Cover Page"}
             </Button>
           )}
         </PDFDownloadLink>
       </div>
-      <div className="h-[800px] w-full rounded-xl overflow-hidden shadow-lg border border-border">
+
+      <div className="h-[500px] md:h-[800px] w-full rounded-xl overflow-hidden shadow-lg border border-border">
         <PDFViewer className="h-full w-full border-none">
           <CoverPageDocument template={template} user={user} />
         </PDFViewer>

@@ -47,15 +47,15 @@ async function TemplatePreview({params}: {params: Promise<{id: string}>}) {
 
   return (
     <main className="w-full max-w-5xl mx-auto px-4 py-8">
-      <div className="mb-6 flex items-center justify-between">
-        <Button variant="ghost" asChild>
+      <div className="mb-6 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
+        <Button variant="ghost" asChild className="-ml-4 sm:ml-0">
           <Link href="/">
             <ArrowLeft className="w-4 h-4 mr-2" />
             Back to Dashboard
           </Link>
         </Button>
-        <div className="flex items-center gap-4 text-right">
-          <div>
+        <div className="flex flex-col sm:flex-row items-start sm:items-center gap-4 sm:text-right w-full sm:w-auto">
+          <div className="text-left sm:text-right">
             <h1 className="text-xl font-bold tracking-tight">
               {template.courseNumber}
             </h1>
@@ -64,7 +64,7 @@ async function TemplatePreview({params}: {params: Promise<{id: string}>}) {
             </p>
           </div>
           {template.createdBy === session.user.id && (
-            <Button variant="outline" size="sm" asChild>
+            <Button variant="outline" size="sm" asChild className="w-full sm:w-auto">
               <Link href={`/templates/${id}/edit`}>
                 <Edit className="w-4 h-4 mr-2" />
                 Edit Template
