@@ -1,0 +1,52 @@
+"use client";
+
+import {PDFViewer, PDFDownloadLink} from "@react-pdf/renderer";
+import CoverPageDocument from "./CoverPageDocument";
+import {Button} from "@/components/ui/button";
+import {Download} from "lucide-react";
+import {useEffect, useState} from "react";
+
+interface Props {
+  template: any;
+  user: any;
+}
+
+export function CoverPageWebPreview({template, user}: Props) {
+  // @react-pdf/renderer can sometimes complain with SSR, so we mount it safely
+  const [mounted, setMounted] = useState(false);
+
+  useEffect(() => {
+    setMounted(true);
+  }, []);
+
+  if (!mounted)
+    return (
+      <div className="h-[600px] w-full bg-muted animate-pulse rounded-lg flex items-center justify-center">
+        Loading PDF Engine...
+      </div>
+    );
+
+  return (
+    <div className="flex flex-col gap-4">
+      <div className="flex items-center justify-end">
+        <PDFDownloadLink
+          document={<CoverPageDocument template={template} user={user} />}
+          fileName={`${template.courseNumber}_Cover_Page.pdf`}
+          className="no-underline"
+        >
+          {({loading}) => (
+            <Button disabled={loading}>
+              <Download className="mr-2 h-4 w-4" />
+              {loading ? "Preparing PDF..." : "Download Cover Page"}
+            </Button>
+          )}
+        </PDFDownloadLink>
+      </div>
+      <div className="h-[800px] w-full rounded-xl overflow-hidden shadow-lg border border-border">
+        <PDFViewer className="h-full w-full border-none">
+          <CoverPageDocument template={template} user={user} />
+        </PDFViewer>
+      </div>
+    </div>
+  );
+}
