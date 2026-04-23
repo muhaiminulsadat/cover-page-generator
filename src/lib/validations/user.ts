@@ -21,3 +21,9 @@ export const userProfileSchema = z.object({
 });
 
 export type UserProfileInput = z.infer<typeof userProfileSchema>;
+
+export const userSettingsSchema = userProfileSchema.extend({
+  name: z.string().min(2, "Name must be at least 2 characters"),
+});
+
+export type UserSettingsInput = z.infer<typeof userSettingsSchema>;

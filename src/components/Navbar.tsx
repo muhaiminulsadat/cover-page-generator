@@ -91,7 +91,7 @@ export default function Navbar() {
         <div className="flex items-center gap-2">
           {session && (
             <Link
-              href="/dashboard"
+              href="/"
               className="px-3 py-1.5 text-sm text-muted-foreground hover:text-foreground rounded-md hover:bg-accent transition-all duration-150"
             >
               Dashboard
@@ -125,7 +125,7 @@ export default function Navbar() {
                 </div>
                 <DropdownMenuSeparator />
                 <DropdownMenuItem asChild className="cursor-pointer">
-                  <Link href="/dashboard">Dashboard</Link>
+                  <Link href="/">Dashboard</Link>
                 </DropdownMenuItem>
                 <DropdownMenuItem asChild className="cursor-pointer">
                   <Link href="/settings">Settings</Link>
@@ -195,11 +195,20 @@ export default function Navbar() {
           </Link>
           {session && (
             <Link
-              href="/dashboard"
+              href="/"
               onClick={() => setMenuOpen(false)}
               className="px-3 py-2 text-sm text-muted-foreground hover:text-foreground rounded-md hover:bg-accent transition-colors"
             >
               Dashboard
+            </Link>
+          )}
+          {session && (
+            <Link
+              href="/settings"
+              onClick={() => setMenuOpen(false)}
+              className="px-3 py-2 text-sm text-muted-foreground hover:text-foreground rounded-md hover:bg-accent transition-colors"
+            >
+              Settings
             </Link>
           )}
           {!session && (
