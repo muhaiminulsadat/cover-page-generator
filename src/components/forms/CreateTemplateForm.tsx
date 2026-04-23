@@ -8,7 +8,7 @@ import {
 } from "@/lib/validations/template";
 import {createTemplateAction} from "@/app/actions/template";
 import {useRouter} from "next/navigation";
-import {toast} from "sonner";
+import toast from "react-hot-toast";
 import {useAction} from "next-safe-action/hooks";
 import {Button} from "@/components/ui/button";
 import {Input} from "@/components/ui/input";
@@ -24,7 +24,7 @@ import {
 export function CreateTemplateForm() {
   const router = useRouter();
 
-  const {execute, executeAsync, isPending} = useAction(createTemplateAction);
+  const {executeAsync, isPending} = useAction(createTemplateAction);
 
   const form = useForm<CreateTemplateInput>({
     resolver: zodResolver(createTemplateSchema),
@@ -82,7 +82,7 @@ export function CreateTemplateForm() {
                 </Label>
                 <Input id="courseNumber" {...form.register("courseNumber")} />
                 {form.formState.errors.courseNumber && (
-                  <p className="text-sm text-red-500">
+                  <p className="text-sm text-destructive">
                     {form.formState.errors.courseNumber.message}
                   </p>
                 )}
@@ -91,7 +91,7 @@ export function CreateTemplateForm() {
                 <Label htmlFor="courseTitle">Course Title</Label>
                 <Input id="courseTitle" {...form.register("courseTitle")} />
                 {form.formState.errors.courseTitle && (
-                  <p className="text-sm text-red-500">
+                  <p className="text-sm text-destructive">
                     {form.formState.errors.courseTitle.message}
                   </p>
                 )}
@@ -103,7 +103,7 @@ export function CreateTemplateForm() {
               </Label>
               <Input id="sessionTerm" {...form.register("sessionTerm")} />
               {form.formState.errors.sessionTerm && (
-                <p className="text-sm text-red-500">
+                <p className="text-sm text-destructive">
                   {form.formState.errors.sessionTerm.message}
                 </p>
               )}
@@ -144,7 +144,7 @@ export function CreateTemplateForm() {
                 <Label htmlFor="teacher1Name">Teacher 1 Name</Label>
                 <Input id="teacher1Name" {...form.register("teacher1Name")} />
                 {form.formState.errors.teacher1Name && (
-                  <p className="text-sm text-red-500">
+                  <p className="text-sm text-destructive">
                     {form.formState.errors.teacher1Name.message}
                   </p>
                 )}
@@ -158,7 +158,7 @@ export function CreateTemplateForm() {
                   {...form.register("teacher1Designation")}
                 />
                 {form.formState.errors.teacher1Designation && (
-                  <p className="text-sm text-red-500">
+                  <p className="text-sm text-destructive">
                     {form.formState.errors.teacher1Designation.message}
                   </p>
                 )}

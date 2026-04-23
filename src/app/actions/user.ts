@@ -14,6 +14,7 @@ export const updateProfile = authActionClient
         .update(user)
         .set({
           studentId: parsedInput.studentId,
+          university: parsedInput.university,
           department: parsedInput.department,
           section: parsedInput.section,
           subsection: parsedInput.subsection,
@@ -25,7 +26,7 @@ export const updateProfile = authActionClient
         .where(eq(user.id, ctx.user.id));
 
       return {success: true, data: parsedInput};
-    } catch (error) {
+    } catch {
       throw new Error("Failed to update profile");
     }
   });

@@ -4,8 +4,29 @@ import {
   Text,
   View,
   StyleSheet,
-  Image,
+  Image as PDFImage,
 } from "@react-pdf/renderer";
+import {UNIVERSITY_LABELS} from "@/lib/constants/universities";
+
+interface TemplateData {
+  courseNumber: string;
+  courseTitle: string;
+  sessionTerm: string;
+  teacher1Name: string;
+  teacher1Designation: string;
+  teacher2Name?: string | null;
+  teacher2Designation?: string | null;
+}
+
+interface UserData {
+  name: string;
+  studentId: string;
+  section: string;
+  groupNo?: string | null;
+  level: string;
+  term: string;
+  university?: string | null;
+}
 
 const styles = StyleSheet.create({
   page: {
@@ -114,20 +135,25 @@ export default function CoverPageDocument({
   template,
   user,
 }: {
-  template: any;
-  user: any;
+  template: TemplateData;
+  user: UserData;
 }) {
+  const universityLabel =
+    user.university && user.university in UNIVERSITY_LABELS
+      ? UNIVERSITY_LABELS[
+          user.university as keyof typeof UNIVERSITY_LABELS
+        ]
+      : "University";
+
   return (
     <Document>
       <Page size="A4" style={styles.page}>
         <View style={styles.headerSection}>
           <View style={styles.logoContainer}>
-            <Image src="/buet-logo.jpg" style={styles.logo} />
+            <PDFImage src="/buet-logo.jpg" style={styles.logo} />
           </View>
 
-          <Text style={styles.universityName}>
-            Bangladesh University of Engineering and Technology
-          </Text>
+          <Text style={styles.universityName}>{universityLabel}</Text>
           <Text style={styles.departmentName}>
             Department of Civil Engineering
           </Text>

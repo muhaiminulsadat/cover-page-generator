@@ -34,8 +34,7 @@ export async function getTemplatesByMetadata(userMeta: {
   section?: string | null;
   term?: string | null;
 }) {
-  // A simple matching query. In a real app, this might be more complex
-  // (e.g., ignoring null target columns so a template without a target is visible to all).
+ 
   return await db
     .select()
     .from(templates)

@@ -1,9 +1,9 @@
 import type {Metadata} from "next";
-import {Geist, Geist_Mono, Inter} from "next/font/google";
+import {Geist, Geist_Mono, Inter, Outfit} from "next/font/google";
 import "./globals.css";
 import Navbar from "@/components/Navbar";
 import {cn} from "@/lib/utils";
-import {Toaster} from "@/components/ui/sonner";
+import {Toaster} from "react-hot-toast";
 
 const inter = Inter({subsets: ["latin"], variable: "--font-sans"});
 
@@ -17,9 +17,15 @@ const geistMono = Geist_Mono({
   subsets: ["latin"],
 });
 
+const outfit = Outfit({
+  variable: "--font-outfit",
+  subsets: ["latin"],
+});
+
 export const metadata: Metadata = {
-  title: "My App",
-  description: "My App Description",
+  title: "CoverIt - Cover Page Generator for University Courses",
+  description:
+    "Generate professional cover pages for your university assignments.",
 };
 
 export default function RootLayout({
@@ -37,12 +43,13 @@ export default function RootLayout({
         geistMono.variable,
         "font-sans",
         inter.variable,
+        outfit.variable,
       )}
     >
-      <body className="min-h-full flex flex-col bg-zinc-950 text-white dark">
+      <body className="min-h-full flex flex-col text-foreground dark">
         <Navbar />
         <main className="flex-1 pt-16">{children}</main>
-        <Toaster position="top-center" richColors />
+        <Toaster position="top-center" />
       </body>
     </html>
   );

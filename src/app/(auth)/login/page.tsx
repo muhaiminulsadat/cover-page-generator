@@ -24,7 +24,7 @@ import {
   CardHeader,
   CardTitle,
 } from "@/components/ui/card";
-import {toast} from "sonner";
+import toast from "react-hot-toast";
 
 export default function LoginPage() {
   const router = useRouter();
@@ -56,7 +56,7 @@ export default function LoginPage() {
       {
         onSuccess: () => {
           toast.success("Signed in successfully.");
-          router.push("/dashboard");
+          router.push("/");
           router.refresh();
         },
       },
@@ -89,7 +89,7 @@ export default function LoginPage() {
           <CardContent className="space-y-4">
             {error && (
               <div className="flex items-start gap-2 rounded-md bg-destructive/10 border border-destructive/20 px-3 py-2.5 text-sm text-destructive">
-                <AlertCircle className="h-4 w-4 flex-shrink-0 mt-0.5" />
+                <AlertCircle className="h-4 w-4 shrink-0 mt-0.5" />
                 <span>{error}</span>
               </div>
             )}

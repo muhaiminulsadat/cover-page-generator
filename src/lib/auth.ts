@@ -14,6 +14,9 @@ export const auth = betterAuth({
       studentId: {
         type: "string",
       },
+      university: {
+        type: "string",
+      },
       department: {
         type: "string",
       },

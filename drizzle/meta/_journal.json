@@ -22,6 +22,13 @@
       "when": 1776708274165,
       "tag": "0002_nappy_richard_fisk",
       "breakpoints": true
+    },
+    {
+      "idx": 3,
+      "version": "7",
+      "when": 1776977469827,
+      "tag": "0003_add_university_to_user",
+      "breakpoints": true
     }
   ]
 }
