@@ -77,11 +77,17 @@ export function OnboardingForm() {
             <select
               id="university"
               {...form.register("university")}
-              className="flex h-9 w-full rounded-md border border-input bg-transparent px-3 py-1 text-sm shadow-xs transition-[color,box-shadow] outline-none focus-visible:border-ring focus-visible:ring-ring/50 focus-visible:ring-[3px]"
+              className="flex h-9 w-full rounded-md border border-input bg-transparent px-3 py-1 text-sm text-foreground shadow-xs transition-[color,box-shadow] outline-none focus-visible:border-ring focus-visible:ring-ring/50 focus-visible:ring-[3px] dark:scheme-dark dark:[&>option]:bg-card dark:[&>option]:text-foreground"
             >
-              <option value="">Select your university</option>
+              <option className="bg-background text-foreground" value="">
+                Select your university
+              </option>
               {UNIVERSITY_OPTIONS.map((option) => (
-                <option key={option.value} value={option.value}>
+                <option
+                  className="bg-background text-foreground"
+                  key={option.value}
+                  value={option.value}
+                >
                   {option.label}
                 </option>
               ))}

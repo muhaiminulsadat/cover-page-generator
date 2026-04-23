@@ -91,11 +91,17 @@ export function ProfileSettingsForm({initialValues}: ProfileSettingsFormProps) {
                 <select
                   id="university"
                   {...form.register("university")}
-                  className="h-10 w-full appearance-none rounded-md border border-input bg-muted/20 pl-9 pr-10 text-sm shadow-xs transition-[color,box-shadow,background-color] outline-none focus-visible:border-ring focus-visible:ring-3 focus-visible:ring-ring/50 dark:bg-input/30"
+                  className="h-10 w-full appearance-none rounded-md border border-input bg-muted/20 pl-9 pr-10 text-sm text-foreground shadow-xs transition-[color,box-shadow,background-color] outline-none focus-visible:border-ring focus-visible:ring-3 focus-visible:ring-ring/50 dark:bg-input/30 dark:scheme-dark dark:[&>option]:bg-card dark:[&>option]:text-foreground"
                 >
-                  <option value="">Select your university</option>
+                  <option className="bg-background text-foreground" value="">
+                    Select your university
+                  </option>
                   {UNIVERSITY_OPTIONS.map((option) => (
-                    <option key={option.value} value={option.value}>
+                    <option
+                      className="bg-background text-foreground"
+                      key={option.value}
+                      value={option.value}
+                    >
                       {option.label}
                     </option>
                   ))}
