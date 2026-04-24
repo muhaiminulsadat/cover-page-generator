@@ -23,7 +23,7 @@ import {
   SheetClose,
 } from "@/components/ui/sheet";
 import toast from "react-hot-toast";
-import {Menu} from "lucide-react";
+import {House, LogIn, LogOut, Menu, Settings, UserPlus} from "lucide-react";
 
 export default function Navbar() {
   const router = useRouter();
@@ -98,20 +98,16 @@ export default function Navbar() {
         <div className="hidden md:flex items-center gap-1"></div>
 
         <div className="flex items-center gap-2">
-          {session && (
-            <Link
-              href="/"
-              className="px-3 py-1.5 text-sm text-muted-foreground hover:text-foreground rounded-md hover:bg-accent transition-all duration-150"
-            >
-              Dashboard
-            </Link>
-          )}
           {isPending ? (
             <div className="w-8 h-8 rounded-full bg-muted animate-pulse" />
           ) : session ? (
             <DropdownMenu>
               <DropdownMenuTrigger asChild>
-                <button className="flex items-center gap-2 rounded-full outline-none ring-2 ring-transparent hover:ring-border transition-all duration-150">
+                <Button
+                  variant="ghost"
+                  size="icon"
+                  className="rounded-full ring-2 ring-transparent hover:ring-border"
+                >
                   <Avatar className="w-8 h-8">
                     <AvatarImage
                       src={session.user.image ?? ""}
@@ -121,7 +117,7 @@ export default function Navbar() {
                       {session.user.name ? getInitials(session.user.name) : "U"}
                     </AvatarFallback>
                   </Avatar>
-                </button>
+                </Button>
               </DropdownMenuTrigger>
               <DropdownMenuContent align="end" className="w-52 mt-1">
                 <div className="px-3 py-2">
@@ -133,9 +129,6 @@ export default function Navbar() {
                   </p>
                 </div>
                 <DropdownMenuSeparator />
-                <DropdownMenuItem asChild className="cursor-pointer">
-                  <Link href="/">Dashboard</Link>
-                </DropdownMenuItem>
                 <DropdownMenuItem asChild className="cursor-pointer">
                   <Link href="/settings">Settings</Link>
                 </DropdownMenuItem>
@@ -166,91 +159,119 @@ export default function Navbar() {
 
           <Sheet>
             <SheetTrigger asChild>
-              <button className="md:hidden ml-1 inline-flex h-9 w-9 items-center justify-center rounded-md text-muted-foreground transition-colors hover:bg-accent hover:text-foreground">
+              <Button
+                variant="ghost"
+                size="icon"
+                className="md:hidden ml-1 text-muted-foreground hover:text-foreground"
+              >
                 <Menu className="h-5 w-5" />
                 <span className="sr-only">Open menu</span>
-              </button>
+              </Button>
             </SheetTrigger>
-            <SheetContent side="right" className="w-75 sm:w-90 p-0">
-              <div className="flex h-full flex-col">
-                <SheetHeader className="border-b border-border px-6 py-5">
-                  <SheetTitle>Menu</SheetTitle>
+            <SheetContent side="right" className="w-[85vw] max-w-sm p-0">
+              <div className="flex h-full flex-col bg-background">
+                <SheetHeader className="border-b border-border bg-muted/30 px-6 py-5 text-left">
+                  <SheetTitle className="text-base">Navigation</SheetTitle>
                   <SheetDescription>
-                    Quick access to the main pages.
+                    Quick access to your account and pages.
                   </SheetDescription>
                 </SheetHeader>
 
-                <div className="flex h-full flex-col px-3 py-4">
-                  <div className="space-y-1">
+                <div className="flex h-full flex-col p-4">
+                  {session ? (
+                    <div className="mb-4 rounded-xl border border-border bg-card p-3">
+                      <div className="flex items-center gap-3">
+                        <Avatar className="h-10 w-10">
+                          <AvatarImage
+                            src={session.user.image ?? ""}
+                            alt={session.user.name ?? ""}
+                          />
+                          <AvatarFallback className="bg-muted text-foreground text-xs font-medium">
+                            {session.user.name
+                              ? getInitials(session.user.name)
+                              : "U"}
+                          </AvatarFallback>
+                        </Avatar>
+                        <div className="min-w-0">
+                          <p className="truncate text-sm font-medium text-foreground">
+                            {session.user.name || "User"}
+                          </p>
+                          <p className="truncate text-xs text-muted-foreground">
+                            {session.user.email}
+                          </p>
+                        </div>
+                      </div>
+                    </div>
+                  ) : null}
+
+                  <div className="space-y-2">
                     <SheetClose asChild>
-                      <Link
-                        href="/"
-                        className="flex items-center rounded-md px-3 py-2 text-sm text-foreground transition-colors hover:bg-accent"
+                      <Button
+                        variant="ghost"
+                        className="h-10 w-full justify-start gap-2 rounded-lg"
+                        asChild
                       >
-                        Home
-                      </Link>
+                        <Link href="/">
+                          <House className="h-4 w-4" />
+                          Home
+                        </Link>
+                      </Button>
                     </SheetClose>
 
                     {session && (
                       <SheetClose asChild>
-                        <Link
-                          href="/"
-                          className="flex items-center rounded-md px-3 py-2 text-sm text-foreground transition-colors hover:bg-accent"
+                        <Button
+                          variant="ghost"
+                          className="h-10 w-full justify-start gap-2 rounded-lg"
+                          asChild
                         >
-                          Dashboard
-                        </Link>
-                      </SheetClose>
-                    )}
-
-                    {session && (
-                      <SheetClose asChild>
-                        <Link
-                          href="/settings"
-                          className="flex items-center rounded-md px-3 py-2 text-sm text-foreground transition-colors hover:bg-accent"
-                        >
-                          Settings
-                        </Link>
+                          <Link href="/settings">
+                            <Settings className="h-4 w-4" />
+                            Settings
+                          </Link>
+                        </Button>
                       </SheetClose>
                     )}
                   </div>
 
                   <div className="mt-auto border-t border-border pt-4">
                     {session ? (
-                      <div className="space-y-3 px-3">
-                        <div className="rounded-lg border border-border bg-muted/40 p-3">
-                          <p className="text-sm font-medium text-foreground truncate">
-                            {session.user.name || "User"}
-                          </p>
-                          <p className="mt-0.5 text-xs text-muted-foreground truncate">
-                            {session.user.email}
-                          </p>
-                        </div>
+                      <div className="px-1">
                         <SheetClose asChild>
-                          <button
+                          <Button
+                            variant="ghost"
                             onClick={handleSignOut}
-                            className="flex w-full items-center rounded-md px-3 py-2 text-left text-sm text-destructive transition-colors hover:bg-destructive/10"
+                            className="h-10 w-full justify-start gap-2 rounded-lg text-destructive hover:bg-destructive/10 hover:text-destructive"
                           >
+                            <LogOut className="h-4 w-4" />
                             Sign out
-                          </button>
+                          </Button>
                         </SheetClose>
                       </div>
                     ) : (
-                      <div className="space-y-2 px-3">
+                      <div className="space-y-2 px-1">
                         <SheetClose asChild>
-                          <Link
-                            href="/login"
-                            className="flex items-center rounded-md px-3 py-2 text-sm text-foreground transition-colors hover:bg-accent"
+                          <Button
+                            variant="outline"
+                            className="h-10 w-full justify-start gap-2 rounded-lg"
+                            asChild
                           >
-                            Log in
-                          </Link>
+                            <Link href="/login">
+                              <LogIn className="h-4 w-4" />
+                              Log in
+                            </Link>
+                          </Button>
                         </SheetClose>
                         <SheetClose asChild>
-                          <Link
-                            href="/register"
-                            className="flex items-center rounded-md px-3 py-2 text-sm text-foreground transition-colors hover:bg-accent"
+                          <Button
+                            className="h-10 w-full justify-start gap-2 rounded-lg"
+                            asChild
                           >
-                            Sign up
-                          </Link>
+                            <Link href="/register">
+                              <UserPlus className="h-4 w-4" />
+                              Sign up
+                            </Link>
+                          </Button>
                         </SheetClose>
                       </div>
                     )}
