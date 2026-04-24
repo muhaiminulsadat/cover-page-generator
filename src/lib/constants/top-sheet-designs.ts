@@ -1,13 +1,21 @@
-export const TOP_SHEET_DESIGNS = [
+interface TopSheetDesign {
+  value: string;
+  label: string;
+  previewImage: string;
+}
+
+export const TOP_SHEET_DESIGNS: readonly TopSheetDesign[] = [
   {
     value: "classic-v1",
     label: "Classic Top Sheet",
+    previewImage: "/top-sheet-previews/classic-v1.svg",
   },
   {
     value: "buet-submitted-v1",
     label: "BUET Submitted Style",
+    previewImage: "/top-sheet-previews/buet-submitted-v1.svg",
   },
-] as const;
+];
 
 export const TOP_SHEET_DESIGN_VALUES = TOP_SHEET_DESIGNS.map(
   (design) => design.value,

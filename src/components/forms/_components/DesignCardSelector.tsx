@@ -2,6 +2,7 @@ import {Card, CardContent} from "@/components/ui/card";
 import {TOP_SHEET_DESIGNS} from "@/lib/constants/top-sheet-designs";
 import {Check} from "lucide-react";
 import {cn} from "@/lib/utils";
+import Image from "next/image";
 
 interface DesignCardSelectorProps {
   value: string;
@@ -59,8 +60,16 @@ export function DesignCardSelector({
                     <h3 className="font-medium text-sm leading-snug">
                       {design.label}
                     </h3>
-                    <div className="mt-3 aspect-video w-full rounded bg-muted flex items-center justify-center text-xs text-muted-foreground">
-                      Preview
+                    <div className="mt-3 aspect-video w-full overflow-hidden rounded border border-border bg-muted">
+                      <div className="relative h-full w-full">
+                        <Image
+                          src={design.previewImage}
+                          alt={`${design.label} preview`}
+                          fill
+                          sizes="(max-width: 640px) 100vw, 50vw"
+                          className="object-cover"
+                        />
+                      </div>
                     </div>
                   </div>
                   <div

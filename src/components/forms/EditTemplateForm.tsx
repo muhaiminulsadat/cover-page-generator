@@ -30,7 +30,7 @@ import {
 } from "@/components/ui/card";
 import {Building2, ChevronDown, Loader2} from "lucide-react";
 import {DEFAULT_TOP_SHEET_DESIGN} from "@/lib/constants/top-sheet-designs";
-import {DesignCardSelector} from "./_components/DesignCardSelector";
+import {DesignPickerDialog} from "./_components/DesignPickerDialog";
 
 export function EditTemplateForm({template}: {template: EditTemplateInput}) {
   const router = useRouter();
@@ -92,7 +92,7 @@ export function EditTemplateForm({template}: {template: EditTemplateInput}) {
         <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-6">
           <div className="space-y-2">
             <Label htmlFor="designId">Top Sheet Design</Label>
-            <DesignCardSelector
+            <DesignPickerDialog
               value={designId}
               onValueChange={(value) => form.setValue("designId", value)}
               error={form.formState.errors.designId?.message}

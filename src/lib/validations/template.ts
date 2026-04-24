@@ -14,10 +14,7 @@ export const createTemplateSchema = z.object({
     .string()
     .min(1, "Top sheet design is required")
     .refine(
-      (value) =>
-        TOP_SHEET_DESIGN_VALUES.includes(
-          value as (typeof TOP_SHEET_DESIGN_VALUES)[number],
-        ),
+      (value) => TOP_SHEET_DESIGN_VALUES.includes(value),
       "Please select a valid top sheet design",
     ),
   courseNumber: z.string().min(1, "Course Number is required (e.g. CE 332)"),
