@@ -1,0 +1,1 @@
+ALTER TABLE "templates" ADD COLUMN "design_id" text DEFAULT 'classic-v1' NOT NULL;

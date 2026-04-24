@@ -1,23 +1,21 @@
 "use client";
 
 import {PDFViewer, PDFDownloadLink} from "@react-pdf/renderer";
-import CoverPageDocument from "./CoverPageDocument";
+import CoverPageDocument, {
+  TemplateData,
+  UserData,
+} from "@/components/pdf/CoverPageDocument";
 import {Button} from "@/components/ui/button";
 import {Download} from "lucide-react";
-import {useEffect, useState} from "react";
 
 interface Props {
-  template: any;
-  user: any;
+  template: TemplateData;
+  user: UserData;
 }
 
 export function CoverPageWebPreview({template, user}: Props) {
-  // @react-pdf/renderer can sometimes complain with SSR, so we mount it safely
-  const [mounted, setMounted] = useState(false);
-
-  useEffect(() => {
-    setMounted(true);
-  }, []);
+  const studentIdForFile = user.studentId || "unknown-id";
+  const mounted = typeof window !== "undefined";
 
   if (!mounted)
     return (
@@ -36,7 +34,7 @@ export function CoverPageWebPreview({template, user}: Props) {
 
         <PDFDownloadLink
           document={<CoverPageDocument template={template} user={user} />}
-          fileName={`${template.courseNumber}_${user.studentId}_Top_Sheet.pdf`}
+          fileName={`${template.courseNumber}_${studentIdForFile}_Top_Sheet.pdf`}
           className="no-underline w-full sm:w-auto"
         >
           {({loading}) => (

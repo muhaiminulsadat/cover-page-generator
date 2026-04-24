@@ -29,6 +29,8 @@ import {
   CardHeader,
   CardTitle,
 } from "@/components/ui/card";
+import {DEFAULT_TOP_SHEET_DESIGN} from "@/lib/constants/top-sheet-designs";
+import {DesignCardSelector} from "./_components/DesignCardSelector";
 
 export function CreateTemplateForm() {
   const router = useRouter();
@@ -38,6 +40,7 @@ export function CreateTemplateForm() {
   const form = useForm<CreateTemplateInput>({
     resolver: zodResolver(createTemplateSchema),
     defaultValues: {
+      designId: DEFAULT_TOP_SHEET_DESIGN,
       courseNumber: "",
       courseTitle: "",
       sessionTerm: "",
@@ -57,6 +60,10 @@ export function CreateTemplateForm() {
   const selectedSectionTarget = useWatch({
     control: form.control,
     name: "sectionTarget",
+  });
+  const designId = useWatch({
+    control: form.control,
+    name: "designId",
   });
   const subsectionTargetOptions = getSubsectionOptions(selectedSectionTarget);
 
@@ -89,6 +96,16 @@ export function CreateTemplateForm() {
       </CardHeader>
       <CardContent>
         <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-6">
+          <div className="space-y-2">
+            <Label htmlFor="designId">Top Sheet Design</Label>
+            <DesignCardSelector
+              value={designId}
+              onValueChange={(value) => form.setValue("designId", value)}
+              error={form.formState.errors.designId?.message}
+              disabled={isPending}
+            />
+          </div>
+
           <div className="space-y-4">
             <h3 className="font-medium text-lg">Course Details</h3>
             <div className="grid grid-cols-2 gap-4">

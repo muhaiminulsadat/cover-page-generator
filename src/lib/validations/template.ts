@@ -7,8 +7,19 @@ import {
   SUBSECTION_VALUES,
   TERM_VALUES,
 } from "@/lib/constants/levels";
+import {TOP_SHEET_DESIGN_VALUES} from "@/lib/constants/top-sheet-designs";
 
 export const createTemplateSchema = z.object({
+  designId: z
+    .string()
+    .min(1, "Top sheet design is required")
+    .refine(
+      (value) =>
+        TOP_SHEET_DESIGN_VALUES.includes(
+          value as (typeof TOP_SHEET_DESIGN_VALUES)[number],
+        ),
+      "Please select a valid top sheet design",
+    ),
   courseNumber: z.string().min(1, "Course Number is required (e.g. CE 332)"),
   courseTitle: z.string().min(1, "Course Title is required"),
   sessionTerm: z

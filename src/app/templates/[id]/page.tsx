@@ -11,6 +11,11 @@ import Link from "next/link";
 import {Button} from "@/components/ui/button";
 import {Suspense} from "react";
 import {Skeleton} from "@/components/ui/skeleton";
+import {Badge} from "@/components/ui/badge";
+import {
+  DEFAULT_TOP_SHEET_DESIGN,
+  TOP_SHEET_DESIGN_LABELS,
+} from "@/lib/constants/top-sheet-designs";
 
 interface PageProps {
   params: Promise<{id: string}>;
@@ -62,6 +67,13 @@ async function TemplatePreview({params}: {params: Promise<{id: string}>}) {
             <p className="text-sm text-muted-foreground">
               {template.courseTitle}
             </p>
+            <div className="mt-2">
+              <Badge variant="secondary">
+                {TOP_SHEET_DESIGN_LABELS[
+                  template.designId || DEFAULT_TOP_SHEET_DESIGN
+                ] || TOP_SHEET_DESIGN_LABELS[DEFAULT_TOP_SHEET_DESIGN]}
+              </Badge>
+            </div>
           </div>
           {template.createdBy === session.user.id && (
             <Button
