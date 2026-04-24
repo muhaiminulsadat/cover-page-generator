@@ -9,6 +9,8 @@ import {updateProfileSettings} from "@/app/actions/user";
 import {userSettingsSchema, UserSettingsInput} from "@/lib/validations/user";
 import {UNIVERSITY_OPTIONS} from "@/lib/constants/universities";
 import {DEPARTMENT_OPTIONS} from "@/lib/constants/departments";
+import {HSC_BATCH_OPTIONS} from "@/lib/constants/hsc-batches";
+import {LEVEL_OPTIONS, TERM_OPTIONS} from "@/lib/constants/levels";
 import {Button} from "@/components/ui/button";
 import {Input} from "@/components/ui/input";
 import {Label} from "@/components/ui/label";
@@ -163,7 +165,27 @@ export function ProfileSettingsForm({initialValues}: ProfileSettingsFormProps) {
           <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
             <div className="space-y-2">
               <Label htmlFor="level">Level</Label>
-              <Input id="level" {...form.register("level")} />
+              <div className="relative">
+                <select
+                  id="level"
+                  {...form.register("level")}
+                  className="h-10 w-full appearance-none rounded-md border border-input bg-muted/20 pl-3 pr-10 text-sm text-foreground shadow-xs transition-[color,box-shadow,background-color] outline-none focus-visible:border-ring focus-visible:ring-3 focus-visible:ring-ring/50 dark:bg-input/30 dark:scheme-dark dark:[&>option]:bg-card dark:[&>option]:text-foreground"
+                >
+                  <option className="bg-background text-foreground" value="">
+                    Select level
+                  </option>
+                  {LEVEL_OPTIONS.map((option) => (
+                    <option
+                      className="bg-background text-foreground"
+                      key={option.value}
+                      value={option.value}
+                    >
+                      {option.label}
+                    </option>
+                  ))}
+                </select>
+                <ChevronDown className="pointer-events-none absolute right-3 top-1/2 -translate-y-1/2 size-4 text-muted-foreground" />
+              </div>
               {form.formState.errors.level && (
                 <p className="text-sm text-destructive">
                   {form.formState.errors.level.message}
@@ -173,7 +195,27 @@ export function ProfileSettingsForm({initialValues}: ProfileSettingsFormProps) {
 
             <div className="space-y-2">
               <Label htmlFor="term">Term</Label>
-              <Input id="term" {...form.register("term")} />
+              <div className="relative">
+                <select
+                  id="term"
+                  {...form.register("term")}
+                  className="h-10 w-full appearance-none rounded-md border border-input bg-muted/20 pl-3 pr-10 text-sm text-foreground shadow-xs transition-[color,box-shadow,background-color] outline-none focus-visible:border-ring focus-visible:ring-3 focus-visible:ring-ring/50 dark:bg-input/30 dark:scheme-dark dark:[&>option]:bg-card dark:[&>option]:text-foreground"
+                >
+                  <option className="bg-background text-foreground" value="">
+                    Select term
+                  </option>
+                  {TERM_OPTIONS.map((option) => (
+                    <option
+                      className="bg-background text-foreground"
+                      key={option.value}
+                      value={option.value}
+                    >
+                      {option.label}
+                    </option>
+                  ))}
+                </select>
+                <ChevronDown className="pointer-events-none absolute right-3 top-1/2 -translate-y-1/2 size-4 text-muted-foreground" />
+              </div>
               {form.formState.errors.term && (
                 <p className="text-sm text-destructive">
                   {form.formState.errors.term.message}
@@ -195,7 +237,32 @@ export function ProfileSettingsForm({initialValues}: ProfileSettingsFormProps) {
 
             <div className="space-y-2">
               <Label htmlFor="hscBatch">HSC Batch</Label>
-              <Input id="hscBatch" {...form.register("hscBatch")} />
+              <div className="relative">
+                <select
+                  id="hscBatch"
+                  {...form.register("hscBatch")}
+                  className="h-10 w-full appearance-none rounded-md border border-input bg-muted/20 pl-3 pr-10 text-sm text-foreground shadow-xs transition-[color,box-shadow,background-color] outline-none focus-visible:border-ring focus-visible:ring-3 focus-visible:ring-ring/50 dark:bg-input/30 dark:scheme-dark dark:[&>option]:bg-card dark:[&>option]:text-foreground"
+                >
+                  <option className="bg-background text-foreground" value="">
+                    Select HSC batch
+                  </option>
+                  {HSC_BATCH_OPTIONS.map((option) => (
+                    <option
+                      className="bg-background text-foreground"
+                      key={option.value}
+                      value={option.value}
+                    >
+                      {option.label}
+                    </option>
+                  ))}
+                </select>
+                <ChevronDown className="pointer-events-none absolute right-3 top-1/2 -translate-y-1/2 size-4 text-muted-foreground" />
+              </div>
+              {form.formState.errors.hscBatch && (
+                <p className="text-sm text-destructive">
+                  {form.formState.errors.hscBatch.message}
+                </p>
+              )}
             </div>
           </div>
 

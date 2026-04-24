@@ -5,13 +5,15 @@ import {zodResolver} from "@hookform/resolvers/zod";
 import {userProfileSchema, UserProfileInput} from "@/lib/validations/user";
 import {updateProfile} from "@/app/actions/user";
 import {useRouter} from "next/navigation";
-import {Building2} from "lucide-react";
+import {Building2, ChevronDown} from "lucide-react";
 import {useAction} from "next-safe-action/hooks";
 import {Button} from "@/components/ui/button";
 import {Input} from "@/components/ui/input";
 import {Label} from "@/components/ui/label";
 import {UNIVERSITY_OPTIONS} from "@/lib/constants/universities";
 import {DEPARTMENT_OPTIONS} from "@/lib/constants/departments";
+import {HSC_BATCH_OPTIONS} from "@/lib/constants/hsc-batches";
+import {LEVEL_OPTIONS, TERM_OPTIONS} from "@/lib/constants/levels";
 import {
   Card,
   CardContent,
@@ -146,7 +148,27 @@ export function OnboardingForm() {
           <div className="grid grid-cols-2 gap-4">
             <div className="space-y-2">
               <Label htmlFor="level">Level</Label>
-              <Input id="level" {...form.register("level")} />
+              <div className="relative">
+                <select
+                  id="level"
+                  {...form.register("level")}
+                  className="h-9 w-full appearance-none rounded-md border border-input bg-transparent pl-3 pr-8 text-sm text-foreground shadow-xs transition-[color,box-shadow] outline-none focus-visible:border-ring focus-visible:ring-ring/50 focus-visible:ring-[3px] dark:scheme-dark dark:[&>option]:bg-card dark:[&>option]:text-foreground"
+                >
+                  <option className="bg-background text-foreground" value="">
+                    Select level
+                  </option>
+                  {LEVEL_OPTIONS.map((option) => (
+                    <option
+                      className="bg-background text-foreground"
+                      key={option.value}
+                      value={option.value}
+                    >
+                      {option.label}
+                    </option>
+                  ))}
+                </select>
+                <ChevronDown className="pointer-events-none absolute right-3 top-1/2 -translate-y-1/2 size-4 text-muted-foreground" />
+              </div>
               {form.formState.errors.level && (
                 <p className="text-sm text-destructive">
                   {form.formState.errors.level.message}
@@ -156,7 +178,27 @@ export function OnboardingForm() {
 
             <div className="space-y-2">
               <Label htmlFor="term">Term</Label>
-              <Input id="term" {...form.register("term")} />
+              <div className="relative">
+                <select
+                  id="term"
+                  {...form.register("term")}
+                  className="h-9 w-full appearance-none rounded-md border border-input bg-transparent pl-3 pr-8 text-sm text-foreground shadow-xs transition-[color,box-shadow] outline-none focus-visible:border-ring focus-visible:ring-ring/50 focus-visible:ring-[3px] dark:scheme-dark dark:[&>option]:bg-card dark:[&>option]:text-foreground"
+                >
+                  <option className="bg-background text-foreground" value="">
+                    Select term
+                  </option>
+                  {TERM_OPTIONS.map((option) => (
+                    <option
+                      className="bg-background text-foreground"
+                      key={option.value}
+                      value={option.value}
+                    >
+                      {option.label}
+                    </option>
+                  ))}
+                </select>
+                <ChevronDown className="pointer-events-none absolute right-3 top-1/2 -translate-y-1/2 size-4 text-muted-foreground" />
+              </div>
               {form.formState.errors.term && (
                 <p className="text-sm text-destructive">
                   {form.formState.errors.term.message}
@@ -179,7 +221,32 @@ export function OnboardingForm() {
 
           <div className="space-y-2">
             <Label htmlFor="hscBatch">HSC Batch (Optional)</Label>
-            <Input id="hscBatch" {...form.register("hscBatch")} />
+            <div className="relative">
+              <select
+                id="hscBatch"
+                {...form.register("hscBatch")}
+                className="h-9 w-full appearance-none rounded-md border border-input bg-transparent pl-3 pr-8 text-sm text-foreground shadow-xs transition-[color,box-shadow] outline-none focus-visible:border-ring focus-visible:ring-ring/50 focus-visible:ring-[3px] dark:scheme-dark dark:[&>option]:bg-card dark:[&>option]:text-foreground"
+              >
+                <option className="bg-background text-foreground" value="">
+                  Select HSC batch
+                </option>
+                {HSC_BATCH_OPTIONS.map((option) => (
+                  <option
+                    className="bg-background text-foreground"
+                    key={option.value}
+                    value={option.value}
+                  >
+                    {option.label}
+                  </option>
+                ))}
+              </select>
+              <ChevronDown className="pointer-events-none absolute right-3 top-1/2 -translate-y-1/2 size-4 text-muted-foreground" />
+            </div>
+            {form.formState.errors.hscBatch && (
+              <p className="text-sm text-destructive">
+                {form.formState.errors.hscBatch.message}
+              </p>
+            )}
           </div>
 
           <Button type="submit" className="w-full" disabled={isPending}>
