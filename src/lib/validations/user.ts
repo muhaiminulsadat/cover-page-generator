@@ -2,7 +2,12 @@ import {z} from "zod";
 import {UNIVERSITY_VALUES} from "@/lib/constants/universities";
 import {DEPARTMENT_VALUES} from "@/lib/constants/departments";
 import {HSC_BATCH_VALUES} from "@/lib/constants/hsc-batches";
-import {LEVEL_VALUES, TERM_VALUES} from "@/lib/constants/levels";
+import {
+  LEVEL_VALUES,
+  SECTION_VALUES,
+  SUBSECTION_VALUES,
+  TERM_VALUES,
+} from "@/lib/constants/levels";
 
 export const userProfileSchema = z.object({
   studentId: z.string().min(1, "Student ID is required"),
@@ -22,8 +27,22 @@ export const userProfileSchema = z.object({
         DEPARTMENT_VALUES.includes(value as (typeof DEPARTMENT_VALUES)[number]),
       "Please select a valid department",
     ),
-  section: z.string().min(1, "Section is required"),
-  subsection: z.string().optional(),
+  section: z
+    .string()
+    .min(1, "Section is required")
+    .refine(
+      (value) =>
+        SECTION_VALUES.includes(value as (typeof SECTION_VALUES)[number]),
+      "Please select a valid section",
+    ),
+  subsection: z
+    .string()
+    .min(1, "Subsection is required")
+    .refine(
+      (value) =>
+        SUBSECTION_VALUES.includes(value as (typeof SUBSECTION_VALUES)[number]),
+      "Please select a valid subsection",
+    ),
   groupNo: z.string().optional(),
   level: z
     .string()
@@ -41,10 +60,9 @@ export const userProfileSchema = z.object({
     ),
   hscBatch: z
     .string()
-    .optional()
+    .min(1, "HSC batch is required")
     .refine(
       (value) =>
-        !value ||
         HSC_BATCH_VALUES.includes(value as (typeof HSC_BATCH_VALUES)[number]),
       "Please select a valid HSC batch",
     ),

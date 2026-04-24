@@ -12,6 +12,10 @@ import {Badge} from "@/components/ui/badge";
 import {Avatar, AvatarFallback, AvatarImage} from "@/components/ui/avatar";
 import {UNIVERSITY_LABELS} from "@/lib/constants/universities";
 import {normalizeDepartmentCode} from "@/lib/constants/departments";
+import {
+  normalizeSectionCode,
+  normalizeSubsectionCode,
+} from "@/lib/constants/levels";
 import {Skeleton} from "@/components/ui/skeleton";
 
 function getInitials(name: string) {
@@ -122,8 +126,8 @@ async function SettingsPageContent() {
               studentId: currentUser.studentId || "",
               university: currentUser.university || "",
               department: normalizeDepartmentCode(currentUser.department),
-              section: currentUser.section || "",
-              subsection: currentUser.subsection || "",
+              section: normalizeSectionCode(currentUser.section),
+              subsection: normalizeSubsectionCode(currentUser.subsection),
               groupNo: currentUser.groupNo || "",
               level: currentUser.level || "",
               term: currentUser.term || "",

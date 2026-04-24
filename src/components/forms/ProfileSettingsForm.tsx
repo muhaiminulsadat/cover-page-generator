@@ -1,6 +1,6 @@
 "use client";
 
-import {useForm} from "react-hook-form";
+import {useForm, useWatch} from "react-hook-form";
 import {zodResolver} from "@hookform/resolvers/zod";
 import {useAction} from "next-safe-action/hooks";
 import toast from "react-hot-toast";
@@ -10,7 +10,12 @@ import {userSettingsSchema, UserSettingsInput} from "@/lib/validations/user";
 import {UNIVERSITY_OPTIONS} from "@/lib/constants/universities";
 import {DEPARTMENT_OPTIONS} from "@/lib/constants/departments";
 import {HSC_BATCH_OPTIONS} from "@/lib/constants/hsc-batches";
-import {LEVEL_OPTIONS, TERM_OPTIONS} from "@/lib/constants/levels";
+import {
+  getSubsectionOptions,
+  LEVEL_OPTIONS,
+  SECTION_OPTIONS,
+  TERM_OPTIONS,
+} from "@/lib/constants/levels";
 import {Button} from "@/components/ui/button";
 import {Input} from "@/components/ui/input";
 import {Label} from "@/components/ui/label";
@@ -33,6 +38,12 @@ export function ProfileSettingsForm({initialValues}: ProfileSettingsFormProps) {
     resolver: zodResolver(userSettingsSchema),
     defaultValues: initialValues,
   });
+
+  const selectedSection = useWatch({
+    control: form.control,
+    name: "section",
+  });
+  const subsectionOptions = getSubsectionOptions(selectedSection);
 
   async function onSubmit(data: UserSettingsInput) {
     const result = await executeAsync(data);
@@ -153,7 +164,27 @@ export function ProfileSettingsForm({initialValues}: ProfileSettingsFormProps) {
 
             <div className="space-y-2">
               <Label htmlFor="section">Section</Label>
-              <Input id="section" {...form.register("section")} />
+              <div className="relative">
+                <select
+                  id="section"
+                  {...form.register("section")}
+                  className="h-10 w-full appearance-none rounded-md border border-input bg-muted/20 pl-3 pr-10 text-sm text-foreground shadow-xs transition-[color,box-shadow,background-color] outline-none focus-visible:border-ring focus-visible:ring-3 focus-visible:ring-ring/50 dark:bg-input/30 dark:scheme-dark dark:[&>option]:bg-card dark:[&>option]:text-foreground"
+                >
+                  <option className="bg-background text-foreground" value="">
+                    Select section
+                  </option>
+                  {SECTION_OPTIONS.map((option) => (
+                    <option
+                      className="bg-background text-foreground"
+                      key={option.value}
+                      value={option.value}
+                    >
+                      {option.label}
+                    </option>
+                  ))}
+                </select>
+                <ChevronDown className="pointer-events-none absolute right-3 top-1/2 -translate-y-1/2 size-4 text-muted-foreground" />
+              </div>
               {form.formState.errors.section && (
                 <p className="text-sm text-destructive">
                   {form.formState.errors.section.message}
@@ -227,11 +258,39 @@ export function ProfileSettingsForm({initialValues}: ProfileSettingsFormProps) {
           <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
             <div className="space-y-2">
               <Label htmlFor="subsection">Subsection</Label>
-              <Input id="subsection" {...form.register("subsection")} />
+              <div className="relative">
+                <select
+                  id="subsection"
+                  {...form.register("subsection")}
+                  disabled={!selectedSection}
+                  className="h-10 w-full appearance-none rounded-md border border-input bg-muted/20 pl-3 pr-10 text-sm text-foreground shadow-xs transition-[color,box-shadow,background-color] outline-none focus-visible:border-ring focus-visible:ring-3 focus-visible:ring-ring/50 disabled:cursor-not-allowed disabled:opacity-60 dark:bg-input/30 dark:scheme-dark dark:[&>option]:bg-card dark:[&>option]:text-foreground"
+                >
+                  <option className="bg-background text-foreground" value="">
+                    {selectedSection
+                      ? "Select subsection"
+                      : "Select section first"}
+                  </option>
+                  {subsectionOptions.map((option) => (
+                    <option
+                      className="bg-background text-foreground"
+                      key={option.value}
+                      value={option.value}
+                    >
+                      {option.label}
+                    </option>
+                  ))}
+                </select>
+                <ChevronDown className="pointer-events-none absolute right-3 top-1/2 -translate-y-1/2 size-4 text-muted-foreground" />
+              </div>
+              {form.formState.errors.subsection && (
+                <p className="text-sm text-destructive">
+                  {form.formState.errors.subsection.message}
+                </p>
+              )}
             </div>
 
             <div className="space-y-2">
-              <Label htmlFor="groupNo">Group No</Label>
+              <Label htmlFor="groupNo">Group No (Optional)</Label>
               <Input id="groupNo" {...form.register("groupNo")} />
             </div>
 

@@ -1,6 +1,6 @@
 "use client";
 
-import {useForm} from "react-hook-form";
+import {useForm, useWatch} from "react-hook-form";
 import {zodResolver} from "@hookform/resolvers/zod";
 import {userProfileSchema, UserProfileInput} from "@/lib/validations/user";
 import {updateProfile} from "@/app/actions/user";
@@ -13,7 +13,12 @@ import {Label} from "@/components/ui/label";
 import {UNIVERSITY_OPTIONS} from "@/lib/constants/universities";
 import {DEPARTMENT_OPTIONS} from "@/lib/constants/departments";
 import {HSC_BATCH_OPTIONS} from "@/lib/constants/hsc-batches";
-import {LEVEL_OPTIONS, TERM_OPTIONS} from "@/lib/constants/levels";
+import {
+  getSubsectionOptions,
+  LEVEL_OPTIONS,
+  SECTION_OPTIONS,
+  TERM_OPTIONS,
+} from "@/lib/constants/levels";
 import {
   Card,
   CardContent,
@@ -41,6 +46,12 @@ export function OnboardingForm() {
       hscBatch: "",
     },
   });
+
+  const selectedSection = useWatch({
+    control: form.control,
+    name: "section",
+  });
+  const subsectionOptions = getSubsectionOptions(selectedSection);
 
   async function onSubmit(data: UserProfileInput) {
     const result = await executeAsync(data);
@@ -136,7 +147,27 @@ export function OnboardingForm() {
 
             <div className="space-y-2">
               <Label htmlFor="section">Section</Label>
-              <Input id="section" {...form.register("section")} />
+              <div className="relative">
+                <select
+                  id="section"
+                  {...form.register("section")}
+                  className="h-9 w-full appearance-none rounded-md border border-input bg-transparent pl-3 pr-8 text-sm text-foreground shadow-xs transition-[color,box-shadow] outline-none focus-visible:border-ring focus-visible:ring-ring/50 focus-visible:ring-[3px] dark:scheme-dark dark:[&>option]:bg-card dark:[&>option]:text-foreground"
+                >
+                  <option className="bg-background text-foreground" value="">
+                    Select section
+                  </option>
+                  {SECTION_OPTIONS.map((option) => (
+                    <option
+                      className="bg-background text-foreground"
+                      key={option.value}
+                      value={option.value}
+                    >
+                      {option.label}
+                    </option>
+                  ))}
+                </select>
+                <ChevronDown className="pointer-events-none absolute right-3 top-1/2 -translate-y-1/2 size-4 text-muted-foreground" />
+              </div>
               {form.formState.errors.section && (
                 <p className="text-sm text-destructive">
                   {form.formState.errors.section.message}
@@ -209,8 +240,36 @@ export function OnboardingForm() {
 
           <div className="grid grid-cols-2 gap-4">
             <div className="space-y-2">
-              <Label htmlFor="subsection">Subsection (Optional)</Label>
-              <Input id="subsection" {...form.register("subsection")} />
+              <Label htmlFor="subsection">Subsection</Label>
+              <div className="relative">
+                <select
+                  id="subsection"
+                  {...form.register("subsection")}
+                  disabled={!selectedSection}
+                  className="h-9 w-full appearance-none rounded-md border border-input bg-transparent pl-3 pr-8 text-sm text-foreground shadow-xs transition-[color,box-shadow] outline-none focus-visible:border-ring focus-visible:ring-ring/50 focus-visible:ring-[3px] disabled:cursor-not-allowed disabled:opacity-60 dark:scheme-dark dark:[&>option]:bg-card dark:[&>option]:text-foreground"
+                >
+                  <option className="bg-background text-foreground" value="">
+                    {selectedSection
+                      ? "Select subsection"
+                      : "Select section first"}
+                  </option>
+                  {subsectionOptions.map((option) => (
+                    <option
+                      className="bg-background text-foreground"
+                      key={option.value}
+                      value={option.value}
+                    >
+                      {option.label}
+                    </option>
+                  ))}
+                </select>
+                <ChevronDown className="pointer-events-none absolute right-3 top-1/2 -translate-y-1/2 size-4 text-muted-foreground" />
+              </div>
+              {form.formState.errors.subsection && (
+                <p className="text-sm text-destructive">
+                  {form.formState.errors.subsection.message}
+                </p>
+              )}
             </div>
 
             <div className="space-y-2">
@@ -220,7 +279,7 @@ export function OnboardingForm() {
           </div>
 
           <div className="space-y-2">
-            <Label htmlFor="hscBatch">HSC Batch (Optional)</Label>
+            <Label htmlFor="hscBatch">HSC Batch</Label>
             <div className="relative">
               <select
                 id="hscBatch"
