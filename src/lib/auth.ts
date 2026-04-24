@@ -8,9 +8,12 @@ export const auth = betterAuth({
   }),
 
   trustedOrigins: ["**"],
-  
+
   user: {
     additionalFields: {
+      role: {
+        type: "string",
+      },
       studentId: {
         type: "string",
       },
