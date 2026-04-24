@@ -54,6 +54,7 @@ async function EditTemplate({params}: {params: Promise<{id: string}>}) {
           termTarget: template.termTarget ?? undefined,
           sectionTarget: template.sectionTarget ?? undefined,
           subsectionTarget: template.subsectionTarget ?? undefined,
+          hscBatchTarget: template.hscBatchTarget ?? undefined,
           teacher2Name: template.teacher2Name ?? undefined,
           teacher2Designation: template.teacher2Designation ?? undefined,
         }}

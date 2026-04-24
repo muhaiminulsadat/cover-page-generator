@@ -1,0 +1,1 @@
+ALTER TABLE "templates" ADD COLUMN "hsc_batch_target" text;

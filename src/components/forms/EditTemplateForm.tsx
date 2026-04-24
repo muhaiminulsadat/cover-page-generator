@@ -1,6 +1,6 @@
 "use client";
 
-import {useForm} from "react-hook-form";
+import {useForm, useWatch} from "react-hook-form";
 import {zodResolver} from "@hookform/resolvers/zod";
 import {
   editTemplateSchema,
@@ -14,6 +14,13 @@ import {Button} from "@/components/ui/button";
 import {Input} from "@/components/ui/input";
 import {Label} from "@/components/ui/label";
 import {DEPARTMENT_OPTIONS} from "@/lib/constants/departments";
+import {HSC_BATCH_OPTIONS} from "@/lib/constants/hsc-batches";
+import {
+  getSubsectionOptions,
+  LEVEL_OPTIONS,
+  SECTION_OPTIONS,
+  TERM_OPTIONS,
+} from "@/lib/constants/levels";
 import {
   Card,
   CardContent,
@@ -40,12 +47,19 @@ export function EditTemplateForm({template}: {template: EditTemplateInput}) {
       termTarget: template.termTarget || "",
       sectionTarget: template.sectionTarget || "",
       subsectionTarget: template.subsectionTarget || "",
+      hscBatchTarget: template.hscBatchTarget || "",
       teacher1Name: template.teacher1Name || "",
       teacher1Designation: template.teacher1Designation || "",
       teacher2Name: template.teacher2Name || "",
       teacher2Designation: template.teacher2Designation || "",
     },
   });
+
+  const selectedSectionTarget = useWatch({
+    control: form.control,
+    name: "sectionTarget",
+  });
+  const subsectionTargetOptions = getSubsectionOptions(selectedSectionTarget);
 
   async function onSubmit(data: EditTemplateInput) {
     const result = await executeAsync(data);
@@ -143,15 +157,141 @@ export function EditTemplateForm({template}: {template: EditTemplateInput}) {
               </div>
               <div className="space-y-2">
                 <Label htmlFor="levelTarget">Level</Label>
-                <Input id="levelTarget" {...form.register("levelTarget")} />
+                <div className="relative">
+                  <select
+                    id="levelTarget"
+                    {...form.register("levelTarget")}
+                    className="h-9 w-full appearance-none rounded-md border border-input bg-transparent pl-3 pr-8 text-sm text-foreground shadow-xs transition-[color,box-shadow] outline-none focus-visible:border-ring focus-visible:ring-ring/50 focus-visible:ring-[3px] dark:scheme-dark dark:[&>option]:bg-card dark:[&>option]:text-foreground"
+                  >
+                    <option className="bg-background text-foreground" value="">
+                      All levels
+                    </option>
+                    {LEVEL_OPTIONS.map((option) => (
+                      <option
+                        className="bg-background text-foreground"
+                        key={option.value}
+                        value={option.value}
+                      >
+                        {option.label}
+                      </option>
+                    ))}
+                  </select>
+                  <ChevronDown className="pointer-events-none absolute right-3 top-1/2 -translate-y-1/2 size-4 text-muted-foreground" />
+                </div>
               </div>
               <div className="space-y-2">
                 <Label htmlFor="termTarget">Term</Label>
-                <Input id="termTarget" {...form.register("termTarget")} />
+                <div className="relative">
+                  <select
+                    id="termTarget"
+                    {...form.register("termTarget")}
+                    className="h-9 w-full appearance-none rounded-md border border-input bg-transparent pl-3 pr-8 text-sm text-foreground shadow-xs transition-[color,box-shadow] outline-none focus-visible:border-ring focus-visible:ring-ring/50 focus-visible:ring-[3px] dark:scheme-dark dark:[&>option]:bg-card dark:[&>option]:text-foreground"
+                  >
+                    <option className="bg-background text-foreground" value="">
+                      All terms
+                    </option>
+                    {TERM_OPTIONS.map((option) => (
+                      <option
+                        className="bg-background text-foreground"
+                        key={option.value}
+                        value={option.value}
+                      >
+                        {option.label}
+                      </option>
+                    ))}
+                  </select>
+                  <ChevronDown className="pointer-events-none absolute right-3 top-1/2 -translate-y-1/2 size-4 text-muted-foreground" />
+                </div>
               </div>
               <div className="space-y-2">
                 <Label htmlFor="sectionTarget">Section</Label>
-                <Input id="sectionTarget" {...form.register("sectionTarget")} />
+                <div className="relative">
+                  <select
+                    id="sectionTarget"
+                    {...form.register("sectionTarget")}
+                    className="h-9 w-full appearance-none rounded-md border border-input bg-transparent pl-3 pr-8 text-sm text-foreground shadow-xs transition-[color,box-shadow] outline-none focus-visible:border-ring focus-visible:ring-ring/50 focus-visible:ring-[3px] dark:scheme-dark dark:[&>option]:bg-card dark:[&>option]:text-foreground"
+                  >
+                    <option className="bg-background text-foreground" value="">
+                      All sections
+                    </option>
+                    {SECTION_OPTIONS.map((option) => (
+                      <option
+                        className="bg-background text-foreground"
+                        key={option.value}
+                        value={option.value}
+                      >
+                        {option.label}
+                      </option>
+                    ))}
+                  </select>
+                  <ChevronDown className="pointer-events-none absolute right-3 top-1/2 -translate-y-1/2 size-4 text-muted-foreground" />
+                </div>
+                {form.formState.errors.sectionTarget && (
+                  <p className="text-sm text-destructive">
+                    {form.formState.errors.sectionTarget.message}
+                  </p>
+                )}
+              </div>
+              <div className="space-y-2">
+                <Label htmlFor="subsectionTarget">Subsection</Label>
+                <div className="relative">
+                  <select
+                    id="subsectionTarget"
+                    {...form.register("subsectionTarget")}
+                    disabled={!selectedSectionTarget}
+                    className="h-9 w-full appearance-none rounded-md border border-input bg-transparent pl-3 pr-8 text-sm text-foreground shadow-xs transition-[color,box-shadow] outline-none focus-visible:border-ring focus-visible:ring-ring/50 focus-visible:ring-[3px] disabled:cursor-not-allowed disabled:opacity-60 dark:scheme-dark dark:[&>option]:bg-card dark:[&>option]:text-foreground"
+                  >
+                    <option className="bg-background text-foreground" value="">
+                      {selectedSectionTarget
+                        ? "All subsections"
+                        : "Select section first"}
+                    </option>
+                    {subsectionTargetOptions.map((option) => (
+                      <option
+                        className="bg-background text-foreground"
+                        key={option.value}
+                        value={option.value}
+                      >
+                        {option.label}
+                      </option>
+                    ))}
+                  </select>
+                  <ChevronDown className="pointer-events-none absolute right-3 top-1/2 -translate-y-1/2 size-4 text-muted-foreground" />
+                </div>
+                {form.formState.errors.subsectionTarget && (
+                  <p className="text-sm text-destructive">
+                    {form.formState.errors.subsectionTarget.message}
+                  </p>
+                )}
+              </div>
+              <div className="space-y-2">
+                <Label htmlFor="hscBatchTarget">HSC Batch</Label>
+                <div className="relative">
+                  <select
+                    id="hscBatchTarget"
+                    {...form.register("hscBatchTarget")}
+                    className="h-9 w-full appearance-none rounded-md border border-input bg-transparent pl-3 pr-8 text-sm text-foreground shadow-xs transition-[color,box-shadow] outline-none focus-visible:border-ring focus-visible:ring-ring/50 focus-visible:ring-[3px] dark:scheme-dark dark:[&>option]:bg-card dark:[&>option]:text-foreground"
+                  >
+                    <option className="bg-background text-foreground" value="">
+                      All HSC batches
+                    </option>
+                    {HSC_BATCH_OPTIONS.map((option) => (
+                      <option
+                        className="bg-background text-foreground"
+                        key={option.value}
+                        value={option.value}
+                      >
+                        {option.label}
+                      </option>
+                    ))}
+                  </select>
+                  <ChevronDown className="pointer-events-none absolute right-3 top-1/2 -translate-y-1/2 size-4 text-muted-foreground" />
+                </div>
+                {form.formState.errors.hscBatchTarget && (
+                  <p className="text-sm text-destructive">
+                    {form.formState.errors.hscBatchTarget.message}
+                  </p>
+                )}
               </div>
             </div>
           </div>

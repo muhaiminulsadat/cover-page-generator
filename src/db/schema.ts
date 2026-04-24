@@ -74,6 +74,7 @@ export const templates = pgTable("templates", {
   departmentTarget: text("department_target"),
   levelTarget: text("level_target"),
   termTarget: text("term_target"),
+  hscBatchTarget: text("hsc_batch_target"),
   sectionTarget: text("section_target"),
   subsectionTarget: text("subsection_target"),
   createdBy: text("created_by")

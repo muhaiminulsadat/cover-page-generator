@@ -9,6 +9,10 @@ import {DashboardContent} from "@/components/home/DashboardContent";
 import {DashboardSkeleton} from "@/components/home/DashboardSkeleton";
 import {LandingPage} from "@/components/home/LandingPage";
 import {getDepartmentLabel} from "@/lib/constants/departments";
+import {
+  normalizeSectionCode,
+  normalizeSubsectionCode,
+} from "@/lib/constants/levels";
 
 async function Dashboard() {
   const session = await auth.api.getSession({
@@ -31,6 +35,9 @@ async function Dashboard() {
         department: currentUser.department,
         level: currentUser.level,
         term: currentUser.term,
+        section: normalizeSectionCode(currentUser.section),
+        subsection: normalizeSubsectionCode(currentUser.subsection),
+        hscBatch: currentUser.hscBatch,
       })
     : await getAllTemplates();
 

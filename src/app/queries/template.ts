@@ -31,10 +31,11 @@ export async function updateTemplate(
 export async function getTemplatesByMetadata(userMeta: {
   department?: string | null;
   level?: string | null;
-  section?: string | null;
   term?: string | null;
+  section?: string | null;
+  subsection?: string | null;
+  hscBatch?: string | null;
 }) {
- 
   return await db
     .select()
     .from(templates)
@@ -59,6 +60,27 @@ export async function getTemplatesByMetadata(userMeta: {
               eq(templates.termTarget, userMeta.term),
               eq(templates.termTarget, ""),
               isNull(templates.termTarget),
+            )
+          : undefined,
+        userMeta.section
+          ? or(
+              eq(templates.sectionTarget, userMeta.section),
+              eq(templates.sectionTarget, ""),
+              isNull(templates.sectionTarget),
+            )
+          : undefined,
+        userMeta.subsection
+          ? or(
+              eq(templates.subsectionTarget, userMeta.subsection),
+              eq(templates.subsectionTarget, ""),
+              isNull(templates.subsectionTarget),
+            )
+          : undefined,
+        userMeta.hscBatch
+          ? or(
+              eq(templates.hscBatchTarget, userMeta.hscBatch),
+              eq(templates.hscBatchTarget, ""),
+              isNull(templates.hscBatchTarget),
             )
           : undefined,
       ),
