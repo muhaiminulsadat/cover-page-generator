@@ -21,7 +21,7 @@ export function DashboardContent({
             Available Templates
           </h1>
           <p className="mt-2 text-muted-foreground">
-            Showing cover page templates matches for {departmentLabel}.
+            Showing top sheet templates for {departmentLabel}.
           </p>
         </div>
         <Button asChild>

@@ -29,7 +29,7 @@ export function LandingPage() {
       <section className="flex-1 flex flex-col items-center justify-center text-center px-4 py-24">
         <div className="inline-flex items-center gap-2 px-3 py-1.5 rounded-full border border-border bg-muted text-muted-foreground text-xs font-mono tracking-wider uppercase mb-6">
           <Layers className="w-3.5 h-3.5" />
-          Cover Page Generator
+          Top Sheet Generator
         </div>
 
         <h1 className="text-4xl sm:text-5xl font-bold tracking-tight text-foreground max-w-2xl leading-tight">
@@ -39,7 +39,7 @@ export function LandingPage() {
 
         <p className="mt-5 text-muted-foreground text-base sm:text-lg max-w-md leading-relaxed">
           Save your academic details once, select your course template, and
-          download a ready-to-print PDF Top Page.
+          download a ready-to-print PDF top sheet.
         </p>
 
         <div className="flex items-center gap-3 mt-8 flex-wrap justify-center">

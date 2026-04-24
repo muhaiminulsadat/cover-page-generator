@@ -78,7 +78,7 @@ export function EditTemplateForm({template}: {template: EditTemplateInput}) {
   return (
     <Card className="w-full max-w-2xl mx-auto">
       <CardHeader>
-        <CardTitle>Edit Cover Page Template</CardTitle>
+        <CardTitle>Edit Top Sheet Template</CardTitle>
         <CardDescription>Update your template settings.</CardDescription>
       </CardHeader>
       <CardContent>

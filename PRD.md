@@ -27,7 +27,7 @@ A web application where students register once, save their permanent academic de
 
 ### 3.1 Authentication & User Profiles
 *   **User Story:** As a student, I want to create an account so my personal details are saved for future use.
-*   **User Story:** As a student, I want to input my academic profile (Name, Student ID, Department, Section, Subsection, Group No, Level, Term) so I never have to type it again for a cover page.
+*   **User Story:** As a student, I want to input my academic profile (Name, Student ID, Department, Section, Subsection, Group No, Level, Term) so I never have to type it again for a top sheet.
 *   **Requirements:**
     *   Secure login/registration (email/password or OAuth via better-auth or custom implementation).
     *   A profile completion form mandatory before generating pages.
@@ -46,8 +46,8 @@ A web application where students register once, save their permanent academic de
     *   Search functionality and filtering (by course code/name).
 
 ### 3.4 Preview & Generation
-*   **User Story:** As a student, I want to preview my customized cover page before downloading to ensure accuracy.
-*   **User Story:** As a student, I want to download the final cover page as a PDF with one click.
+*   **User Story:** As a student, I want to preview my customized top sheet before downloading to ensure accuracy.
+*   **User Story:** As a student, I want to download the final top sheet as a PDF with one click.
 *   **Requirements:**
     *   A web-based A4 preview combining the selected template data + the logged-in user's profile data.
     *   The design must strictly follow the standard university format (centered logo, specific typography, aligned student blocks).
@@ -81,7 +81,7 @@ A web application where students register once, save their permanent academic de
 ---
 
 ## 6. Future Scope (V2)
-*   **Full Lab Report Generation:** Expand beyond just the Top Page. When a user clicks download for a course, the system will generate a combined, multi-page PDF containing the Top Page, Cover Page, and Index Page.
+*   **Full Lab Report Generation:** Expand beyond just the Top Sheet. When a user clicks download for a course, the system will generate a combined, multi-page PDF containing the Top Sheet, Cover Page, and Index Page.
 *   Support for multiple university template styles (e.g., dynamic layouts based on university selection).
 *   Dynamic university logo fetching based on the user's selected institution.
 *   Shareable public links for templates with QR code generation.

@@ -36,13 +36,13 @@ export function CoverPageWebPreview({template, user}: Props) {
 
         <PDFDownloadLink
           document={<CoverPageDocument template={template} user={user} />}
-          fileName={`${template.courseNumber}_Cover_Page.pdf`}
+          fileName={`${template.courseNumber}_Top_Sheet.pdf`}
           className="no-underline w-full sm:w-auto"
         >
           {({loading}) => (
             <Button disabled={loading} className="w-full sm:w-auto">
               <Download className="mr-2 h-4 w-4" />
-              {loading ? "Preparing PDF..." : "Download Cover Page"}
+              {loading ? "Preparing PDF..." : "Download Top Sheet"}
             </Button>
           )}
         </PDFDownloadLink>

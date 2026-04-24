@@ -82,9 +82,9 @@ export function CreateTemplateForm() {
   return (
     <Card className="w-full max-w-2xl mx-auto">
       <CardHeader>
-        <CardTitle>Create Cover Page Template</CardTitle>
+        <CardTitle>Create Top Sheet Template</CardTitle>
         <CardDescription>
-          Design a new lab cover page template for your course.
+          Design a new lab top sheet template for your course.
         </CardDescription>
       </CardHeader>
       <CardContent>

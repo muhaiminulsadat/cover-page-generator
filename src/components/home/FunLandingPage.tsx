@@ -24,7 +24,7 @@ const steps = [
   {
     n: "02",
     title: "Preview it",
-    desc: "Looks exactly like a proper BUET cover page. Shocking, we know.",
+    desc: "Looks exactly like a proper BUET top sheet. Shocking, we know.",
     icon: (
       <svg
         width="18"
@@ -103,7 +103,7 @@ export default function FunLandingPage() {
           </div>
 
           <h1 className="text-[38px] font-extrabold leading-[1.08] tracking-tight text-zinc-900 mb-4">
-            Your lab cover.
+            Your lab top sheet.
             <br />
             <span className="text-[#8B1A1A] italic font-black">
               Done in 30s.
@@ -112,7 +112,7 @@ export default function FunLandingPage() {
           </h1>
 
           <p className="text-[13.5px] text-zinc-500 leading-relaxed mb-7 max-w-[310px]">
-            Stop opening MS Word at 2am just to type your name on a cover page.
+            Stop opening MS Word at 2am just to type your name on a top sheet.
             We built this so you don&apos;t have to.
           </p>
 
@@ -120,7 +120,7 @@ export default function FunLandingPage() {
             href="/create"
             className="group flex items-center justify-between w-full bg-[#8B1A1A] text-white px-5 py-3.5 rounded-xl font-semibold text-[14px] mb-3 transition-all duration-150 active:scale-[0.98] hover:bg-[#7a1717]"
           >
-            Make My Cover Page
+            Make My Top Sheet
             <span className="w-7 h-7 rounded-lg bg-white/15 flex items-center justify-center transition-transform duration-150 group-hover:translate-x-0.5">
               →
             </span>
@@ -145,7 +145,7 @@ export default function FunLandingPage() {
             Preview
           </p>
 
-          {/* Simulated cover page */}
+          {/* Simulated top sheet */}
           <div className="bg-zinc-50 border border-zinc-100 rounded-xl p-5 text-center">
             {/* BUET crest placeholder */}
             <div className="w-10 h-10 rounded-full border-2 border-[#8B1A1A]/25 mx-auto mb-3 flex items-center justify-center bg-white">

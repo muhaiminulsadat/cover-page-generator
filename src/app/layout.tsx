@@ -23,9 +23,9 @@ const outfit = Outfit({
 });
 
 export const metadata: Metadata = {
-  title: "CoverIt - Cover Page Generator for University Courses",
+  title: "CoverIt - Top Sheet Generator for University Courses",
   description:
-    "Generate professional cover pages for your university assignments.",
+    "Generate professional top sheets for your university assignments.",
 };
 
 export default function RootLayout({

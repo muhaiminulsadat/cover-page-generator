@@ -72,7 +72,7 @@ export function OnboardingForm() {
       <CardHeader>
         <CardTitle>Complete Your Profile</CardTitle>
         <CardDescription>
-          We need some academic details before you can generate cover pages.
+          We need some academic details before you can generate top sheets.
         </CardDescription>
       </CardHeader>
       <CardContent>
