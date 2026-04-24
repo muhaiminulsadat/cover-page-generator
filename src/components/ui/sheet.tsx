@@ -6,9 +6,7 @@ import {XIcon} from "lucide-react";
 
 import {cn} from "@/lib/utils";
 
-function Sheet({
-  ...props
-}: React.ComponentProps<typeof DialogPrimitive.Root>) {
+function Sheet({...props}: React.ComponentProps<typeof DialogPrimitive.Root>) {
   return <DialogPrimitive.Root data-slot="sheet" {...props} />;
 }
 
@@ -55,8 +53,9 @@ const sheetVariants = {
     "inset-y-0 right-0 h-full w-3/4 border-l sm:max-w-sm data-[state=closed]:slide-out-to-right data-[state=open]:slide-in-from-right",
 } as const;
 
-interface SheetContentProps
-  extends React.ComponentProps<typeof DialogPrimitive.Content> {
+interface SheetContentProps extends React.ComponentProps<
+  typeof DialogPrimitive.Content
+> {
   side?: keyof typeof sheetVariants;
 }
 
@@ -88,10 +87,7 @@ function SheetContent({
   );
 }
 
-function SheetHeader({
-  className,
-  ...props
-}: React.ComponentProps<"div">) {
+function SheetHeader({className, ...props}: React.ComponentProps<"div">) {
   return (
     <div
       data-slot="sheet-header"
@@ -101,10 +97,7 @@ function SheetHeader({
   );
 }
 
-function SheetFooter({
-  className,
-  ...props
-}: React.ComponentProps<"div">) {
+function SheetFooter({className, ...props}: React.ComponentProps<"div">) {
   return (
     <div
       data-slot="sheet-footer"
