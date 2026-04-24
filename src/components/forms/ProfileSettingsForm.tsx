@@ -4,10 +4,11 @@ import {useForm} from "react-hook-form";
 import {zodResolver} from "@hookform/resolvers/zod";
 import {useAction} from "next-safe-action/hooks";
 import toast from "react-hot-toast";
-import {ChevronDown, GraduationCap} from "lucide-react";
+import {Building2, ChevronDown, GraduationCap} from "lucide-react";
 import {updateProfileSettings} from "@/app/actions/user";
 import {userSettingsSchema, UserSettingsInput} from "@/lib/validations/user";
 import {UNIVERSITY_OPTIONS} from "@/lib/constants/universities";
+import {DEPARTMENT_OPTIONS} from "@/lib/constants/departments";
 import {Button} from "@/components/ui/button";
 import {Input} from "@/components/ui/input";
 import {Label} from "@/components/ui/label";
@@ -119,7 +120,28 @@ export function ProfileSettingsForm({initialValues}: ProfileSettingsFormProps) {
           <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
             <div className="space-y-2">
               <Label htmlFor="department">Department</Label>
-              <Input id="department" {...form.register("department")} />
+              <div className="relative">
+                <Building2 className="pointer-events-none absolute left-3 top-1/2 -translate-y-1/2 size-4 text-muted-foreground" />
+                <select
+                  id="department"
+                  {...form.register("department")}
+                  className="h-10 w-full appearance-none rounded-md border border-input bg-muted/20 pl-9 pr-10 text-sm text-foreground shadow-xs transition-[color,box-shadow,background-color] outline-none focus-visible:border-ring focus-visible:ring-3 focus-visible:ring-ring/50 dark:bg-input/30 dark:scheme-dark dark:[&>option]:bg-card dark:[&>option]:text-foreground"
+                >
+                  <option className="bg-background text-foreground" value="">
+                    Select your department
+                  </option>
+                  {DEPARTMENT_OPTIONS.map((option) => (
+                    <option
+                      className="bg-background text-foreground"
+                      key={option.value}
+                      value={option.value}
+                    >
+                      {option.label}
+                    </option>
+                  ))}
+                </select>
+                <ChevronDown className="pointer-events-none absolute right-3 top-1/2 -translate-y-1/2 size-4 text-muted-foreground" />
+              </div>
               {form.formState.errors.department && (
                 <p className="text-sm text-destructive">
                   {form.formState.errors.department.message}

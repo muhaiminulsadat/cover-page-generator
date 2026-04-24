@@ -10,9 +10,11 @@ import {createTemplateAction} from "@/app/actions/template";
 import {useRouter} from "next/navigation";
 import toast from "react-hot-toast";
 import {useAction} from "next-safe-action/hooks";
+import {Building2, ChevronDown} from "lucide-react";
 import {Button} from "@/components/ui/button";
 import {Input} from "@/components/ui/input";
 import {Label} from "@/components/ui/label";
+import {DEPARTMENT_OPTIONS} from "@/lib/constants/departments";
 import {
   Card,
   CardContent,
@@ -117,10 +119,33 @@ export function CreateTemplateForm() {
             <div className="grid grid-cols-2 gap-4">
               <div className="space-y-2">
                 <Label htmlFor="departmentTarget">Department</Label>
-                <Input
-                  id="departmentTarget"
-                  {...form.register("departmentTarget")}
-                />
+                <div className="relative">
+                  <Building2 className="pointer-events-none absolute left-3 top-1/2 -translate-y-1/2 size-4 text-muted-foreground" />
+                  <select
+                    id="departmentTarget"
+                    {...form.register("departmentTarget")}
+                    className="h-9 w-full appearance-none rounded-md border border-input bg-transparent pl-9 pr-8 text-sm text-foreground shadow-xs transition-[color,box-shadow] outline-none focus-visible:border-ring focus-visible:ring-ring/50 focus-visible:ring-[3px] dark:scheme-dark dark:[&>option]:bg-card dark:[&>option]:text-foreground"
+                  >
+                    <option className="bg-background text-foreground" value="">
+                      All departments
+                    </option>
+                    {DEPARTMENT_OPTIONS.map((option) => (
+                      <option
+                        className="bg-background text-foreground"
+                        key={option.value}
+                        value={option.value}
+                      >
+                        {option.label}
+                      </option>
+                    ))}
+                  </select>
+                  <ChevronDown className="pointer-events-none absolute right-3 top-1/2 -translate-y-1/2 size-4 text-muted-foreground" />
+                </div>
+                {form.formState.errors.departmentTarget && (
+                  <p className="text-sm text-destructive">
+                    {form.formState.errors.departmentTarget.message}
+                  </p>
+                )}
               </div>
               <div className="space-y-2">
                 <Label htmlFor="levelTarget">Level</Label>

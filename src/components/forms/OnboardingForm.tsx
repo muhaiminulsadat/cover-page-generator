@@ -5,11 +5,13 @@ import {zodResolver} from "@hookform/resolvers/zod";
 import {userProfileSchema, UserProfileInput} from "@/lib/validations/user";
 import {updateProfile} from "@/app/actions/user";
 import {useRouter} from "next/navigation";
+import {Building2} from "lucide-react";
 import {useAction} from "next-safe-action/hooks";
 import {Button} from "@/components/ui/button";
 import {Input} from "@/components/ui/input";
 import {Label} from "@/components/ui/label";
 import {UNIVERSITY_OPTIONS} from "@/lib/constants/universities";
+import {DEPARTMENT_OPTIONS} from "@/lib/constants/departments";
 import {
   Card,
   CardContent,
@@ -102,7 +104,27 @@ export function OnboardingForm() {
           <div className="grid grid-cols-2 gap-4">
             <div className="space-y-2">
               <Label htmlFor="department">Department</Label>
-              <Input id="department" {...form.register("department")} />
+              <div className="relative">
+                <Building2 className="pointer-events-none absolute left-3 top-1/2 -translate-y-1/2 size-4 text-muted-foreground" />
+                <select
+                  id="department"
+                  {...form.register("department")}
+                  className="h-9 w-full appearance-none rounded-md border border-input bg-transparent pl-9 pr-8 text-sm text-foreground shadow-xs transition-[color,box-shadow] outline-none focus-visible:border-ring focus-visible:ring-ring/50 focus-visible:ring-[3px] dark:scheme-dark dark:[&>option]:bg-card dark:[&>option]:text-foreground"
+                >
+                  <option className="bg-background text-foreground" value="">
+                    Select department
+                  </option>
+                  {DEPARTMENT_OPTIONS.map((option) => (
+                    <option
+                      className="bg-background text-foreground"
+                      key={option.value}
+                      value={option.value}
+                    >
+                      {option.label}
+                    </option>
+                  ))}
+                </select>
+              </div>
               {form.formState.errors.department && (
                 <p className="text-sm text-destructive">
                   {form.formState.errors.department.message}

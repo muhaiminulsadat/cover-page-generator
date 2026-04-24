@@ -8,6 +8,7 @@ import {Suspense} from "react";
 import {DashboardContent} from "@/components/home/DashboardContent";
 import {DashboardSkeleton} from "@/components/home/DashboardSkeleton";
 import {LandingPage} from "@/components/home/LandingPage";
+import {getDepartmentLabel} from "@/lib/constants/departments";
 
 async function Dashboard() {
   const session = await auth.api.getSession({
@@ -36,7 +37,11 @@ async function Dashboard() {
   return (
     <DashboardContent
       templatesList={templatesList}
-      departmentLabel={currentUser?.department || "your department"}
+      departmentLabel={
+        currentUser?.department
+          ? getDepartmentLabel(currentUser.department)
+          : "your department"
+      }
     />
   );
 }

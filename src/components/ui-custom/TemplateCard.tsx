@@ -10,6 +10,7 @@ import {Badge} from "@/components/ui/badge";
 import {Button} from "@/components/ui/button";
 import {ArrowRight, BookOpen, Layers} from "lucide-react";
 import {templates} from "@/db/schema";
+import {getDepartmentLabel} from "@/lib/constants/departments";
 
 interface TemplateCardProps {
   template: typeof templates.$inferSelect;
@@ -45,7 +46,7 @@ export function TemplateCard({template}: TemplateCardProps) {
               variant="outline"
               className="text-[10px] uppercase tracking-wider"
             >
-              {template.departmentTarget}
+              {getDepartmentLabel(template.departmentTarget)}
             </Badge>
           )}
           {template.levelTarget && (

@@ -1,5 +1,6 @@
 import {z} from "zod";
 import {UNIVERSITY_VALUES} from "@/lib/constants/universities";
+import {DEPARTMENT_VALUES} from "@/lib/constants/departments";
 
 export const userProfileSchema = z.object({
   studentId: z.string().min(1, "Student ID is required"),
@@ -11,7 +12,14 @@ export const userProfileSchema = z.object({
         UNIVERSITY_VALUES.includes(value as (typeof UNIVERSITY_VALUES)[number]),
       "Please select a valid university",
     ),
-  department: z.string().min(1, "Department is required"),
+  department: z
+    .string()
+    .min(1, "Department is required")
+    .refine(
+      (value) =>
+        DEPARTMENT_VALUES.includes(value as (typeof DEPARTMENT_VALUES)[number]),
+      "Please select a valid department",
+    ),
   section: z.string().min(1, "Section is required"),
   subsection: z.string().optional(),
   groupNo: z.string().optional(),

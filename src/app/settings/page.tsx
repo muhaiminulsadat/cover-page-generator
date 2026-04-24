@@ -11,6 +11,7 @@ import {Card, CardContent} from "@/components/ui/card";
 import {Badge} from "@/components/ui/badge";
 import {Avatar, AvatarFallback, AvatarImage} from "@/components/ui/avatar";
 import {UNIVERSITY_LABELS} from "@/lib/constants/universities";
+import {normalizeDepartmentCode} from "@/lib/constants/departments";
 import {Skeleton} from "@/components/ui/skeleton";
 
 function getInitials(name: string) {
@@ -120,7 +121,7 @@ async function SettingsPageContent() {
               name: currentUser.name,
               studentId: currentUser.studentId || "",
               university: currentUser.university || "",
-              department: currentUser.department || "",
+              department: normalizeDepartmentCode(currentUser.department),
               section: currentUser.section || "",
               subsection: currentUser.subsection || "",
               groupNo: currentUser.groupNo || "",

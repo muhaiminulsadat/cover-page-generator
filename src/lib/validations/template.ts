@@ -1,4 +1,5 @@
 import {z} from "zod";
+import {DEPARTMENT_VALUES} from "@/lib/constants/departments";
 
 export const createTemplateSchema = z.object({
   courseNumber: z.string().min(1, "Course Number is required (e.g. CE 332)"),
@@ -8,7 +9,15 @@ export const createTemplateSchema = z.object({
     .min(1, "Session/Term is required (e.g. January 2026)"),
 
   // Metadata for targeting
-  departmentTarget: z.string().optional(),
+  departmentTarget: z
+    .string()
+    .optional()
+    .refine(
+      (value) =>
+        !value ||
+        DEPARTMENT_VALUES.includes(value as (typeof DEPARTMENT_VALUES)[number]),
+      "Please select a valid department",
+    ),
   levelTarget: z.string().optional(),
   termTarget: z.string().optional(),
   sectionTarget: z.string().optional(),
