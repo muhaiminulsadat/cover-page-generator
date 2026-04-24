@@ -113,7 +113,7 @@ const styles = StyleSheet.create({
 export function renderClassicV1TopSheet(ctx: TopSheetRenderContext) {
   const {template, user, universityLabel} = ctx;
   const studentId = user.studentId || "-";
-  const section = user.section || "-";
+  const section = user.section?.toUpperCase() || "-";
   const level = user.level || "-";
   const term = user.term || "-";
 
