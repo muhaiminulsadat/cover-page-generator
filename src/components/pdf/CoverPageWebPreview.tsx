@@ -36,7 +36,7 @@ export function CoverPageWebPreview({template, user}: Props) {
 
         <PDFDownloadLink
           document={<CoverPageDocument template={template} user={user} />}
-          fileName={`${template.courseNumber}_Top_Sheet.pdf`}
+          fileName={`${template.courseNumber}_${user.studentId}_Top_Sheet.pdf`}
           className="no-underline w-full sm:w-auto"
         >
           {({loading}) => (
