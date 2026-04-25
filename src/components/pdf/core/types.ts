@@ -43,5 +43,6 @@ export interface CoverPageRenderContext {
 
 export interface IndexPageRenderContext {
   template: TopSheetTemplateData;
+  user: TopSheetUserData;
   universityLabel: string;
 }

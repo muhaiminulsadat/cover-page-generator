@@ -41,11 +41,13 @@ export function createCoverPageRenderContext(
 
 export function createIndexPageRenderContext(
   template: TopSheetTemplateData,
+  user: TopSheetUserData,
 ): IndexPageRenderContext {
   const universityLabel = UNIVERSITY_LABELS.buet || "University";
 
   return {
     template,
+    user,
     universityLabel,
   };
 }

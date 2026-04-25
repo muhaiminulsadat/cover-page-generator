@@ -28,7 +28,7 @@ export default function CoverPageDocument({
 }: CoverPageDocumentProps) {
   const topSheetContext = createTopSheetRenderContext(template, user);
   const coverPageContext = createCoverPageRenderContext(template, user);
-  const indexPageContext = createIndexPageRenderContext(template);
+  const indexPageContext = createIndexPageRenderContext(template, user);
 
   return (
     <Document>
