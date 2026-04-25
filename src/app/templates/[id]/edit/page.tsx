@@ -51,7 +51,6 @@ async function EditTemplate({params}: {params: Promise<{id: string}>}) {
         template={{
           ...template,
           coverDesignId: template.coverDesignId ?? DEFAULT_COVER_PAGE_DESIGN,
-          experimentName: template.experimentName ?? undefined,
           departmentTarget: template.departmentTarget ?? undefined,
           levelTarget: template.levelTarget ?? undefined,
           termTarget: template.termTarget ?? undefined,
