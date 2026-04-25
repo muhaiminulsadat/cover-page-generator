@@ -24,6 +24,7 @@ import {
   CardHeader,
   CardTitle,
 } from "@/components/ui/card";
+import {Separator} from "@/components/ui/separator";
 import toast from "react-hot-toast";
 
 export default function LoginPage() {
@@ -31,6 +32,7 @@ export default function LoginPage() {
   const [form, setForm] = useState({email: "", password: ""});
   const [error, setError] = useState("");
   const [loading, setLoading] = useState(false);
+  const [googleLoading, setGoogleLoading] = useState(false);
   const [showPassword, setShowPassword] = useState(false);
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -46,47 +48,100 @@ export default function LoginPage() {
       return;
     }
 
-    setLoading(true);
+    try {
+      setLoading(true);
 
-    const {error} = await authClient.signIn.email(
-      {
-        email: form.email,
-        password: form.password,
-      },
-      {
-        onSuccess: () => {
-          toast.success("Signed in successfully.");
-          router.push("/");
-          router.refresh();
+      const {error} = await authClient.signIn.email(
+        {
+          email: form.email,
+          password: form.password,
         },
-      },
-    );
+        {
+          onSuccess: () => {
+            toast.success("Signed in successfully.");
+            router.push("/");
+            router.refresh();
+          },
+        },
+      );
 
-    setLoading(false);
+      if (error) {
+        setError(error.message ?? "Invalid email or password.");
+        return;
+      }
 
-    if (error) {
-      setError(error.message ?? "Invalid email or password.");
-      return;
+      router.push("/dashboard");
+      router.refresh();
+    } catch {
+      setError("Unable to sign in right now. Please try again.");
+    } finally {
+      setLoading(false);
     }
+  };
 
-    router.push("/dashboard");
-    router.refresh();
+  const handleGoogleLogin = async () => {
+    try {
+      setError("");
+      setGoogleLoading(true);
+
+      const {error} = await authClient.signIn.social({
+        provider: "google",
+        callbackURL: "/",
+      });
+
+      if (error) {
+        setError(error.message ?? "Google sign in is currently unavailable.");
+      }
+    } catch {
+      setError("Google sign in is currently unavailable.");
+    } finally {
+      setGoogleLoading(false);
+    }
   };
 
   return (
-    <div className="min-h-[calc(100vh-4rem)] flex items-center justify-center px-4">
-      <div className="w-full max-w-sm">
-        <Card>
-          <CardHeader className="space-y-1 pb-4">
-            <CardTitle className="text-xl font-semibold tracking-tight">
+    <div className="relative min-h-[calc(100vh-4rem)] overflow-hidden bg-background px-4 py-10 sm:py-14">
+      <div className="relative mx-auto flex min-h-[calc(100vh-8rem)] w-full max-w-md items-center justify-center">
+        <Card className="w-full border-border/60 bg-card/95 backdrop-blur-sm shadow-xl">
+          <CardHeader className="space-y-1 pb-3">
+            <CardTitle className="text-3xl font-bold tracking-tight">
               Welcome back
             </CardTitle>
-            <CardDescription>
-              Enter your credentials to sign in to your account
+            <CardDescription className="text-sm">
+              Please sign in using your registered credentials.
             </CardDescription>
           </CardHeader>
 
-          <CardContent className="space-y-4">
+          <CardContent className="space-y-5">
+            <Button
+              type="button"
+              variant="outline"
+              className="w-full"
+              onClick={handleGoogleLogin}
+              disabled={loading || googleLoading}
+            >
+              {googleLoading ? (
+                <>
+                  <Loader2 className="mr-2 h-4 w-4 animate-spin" />
+                  Continuing with Google...
+                </>
+              ) : (
+                <>
+                  <span className="mr-2 inline-flex h-5 w-5 items-center justify-center rounded-full border border-border text-[11px] font-semibold leading-none">
+                    G
+                  </span>
+                  Continue with Google
+                </>
+              )}
+            </Button>
+
+            <div className="relative py-1">
+              <Separator />
+              <span className="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 bg-card px-2 text-xs text-muted-foreground">
+                or
+              </span>
+            </div>
+
             {error && (
               <div className="flex items-start gap-2 rounded-md bg-destructive/10 border border-destructive/20 px-3 py-2.5 text-sm text-destructive">
                 <AlertCircle className="h-4 w-4 shrink-0 mt-0.5" />
@@ -94,49 +149,50 @@ export default function LoginPage() {
               </div>
             )}
 
-            <div className="space-y-1.5">
-              <Label htmlFor="email">Email</Label>
+            <div className="space-y-2">
+              <Label htmlFor="email" className="text-xs text-muted-foreground">
+                Email
+              </Label>
               <div className="relative">
                 <Mail className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-muted-foreground pointer-events-none" />
                 <Input
                   id="email"
                   name="email"
                   type="email"
-                  placeholder="you@example.com"
+                  placeholder="Enter Email"
                   value={form.email}
                   onChange={handleChange}
-                  disabled={loading}
+                  disabled={loading || googleLoading}
                   className="pl-9"
                 />
               </div>
             </div>
 
-            <div className="space-y-1.5">
-              <div className="flex items-center justify-between">
-                <Label htmlFor="password">Password</Label>
-                <Link
-                  href="/forgot-password"
-                  className="text-xs text-muted-foreground hover:text-foreground underline-offset-4 hover:underline transition-colors"
-                >
-                  Forgot password?
-                </Link>
-              </div>
+            <div className="space-y-2">
+              <Label
+                htmlFor="password"
+                className="text-xs text-muted-foreground"
+              >
+                Password
+              </Label>
               <div className="relative">
                 <Lock className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-muted-foreground pointer-events-none" />
                 <Input
                   id="password"
                   name="password"
                   type={showPassword ? "text" : "password"}
-                  placeholder="••••••••"
+                  placeholder="Password"
                   value={form.password}
                   onChange={handleChange}
-                  disabled={loading}
+                  disabled={loading || googleLoading}
                   className="pl-9 pr-10"
                 />
-                <button
+                <Button
                   type="button"
+                  variant="ghost"
+                  size="icon-sm"
                   onClick={() => setShowPassword((p) => !p)}
-                  className="absolute right-3 top-1/2 -translate-y-1/2 text-muted-foreground hover:text-foreground transition-colors"
+                  className="absolute right-2 top-1/2 h-7 w-7 -translate-y-1/2"
                   tabIndex={-1}
                 >
                   {showPassword ? (
@@ -144,13 +200,13 @@ export default function LoginPage() {
                   ) : (
                     <Eye className="h-4 w-4" />
                   )}
-                </button>
+                </Button>
               </div>
             </div>
 
             <Button
               onClick={handleSubmit}
-              disabled={loading}
+              disabled={loading || googleLoading}
               className="w-full"
             >
               {loading ? (
@@ -161,20 +217,30 @@ export default function LoginPage() {
               ) : (
                 <>
                   <LogIn className="mr-2 h-4 w-4" />
-                  Sign in
+                  Login
                 </>
               )}
             </Button>
+
+            <p className="text-sm text-center text-muted-foreground">
+              Forgot your password?{" "}
+              <Link
+                href="/forgot-password"
+                className="font-medium text-foreground underline-offset-4 hover:underline"
+              >
+                Reset password
+              </Link>
+            </p>
           </CardContent>
 
-          <CardFooter>
+          <CardFooter className="pt-0 pb-6">
             <p className="text-sm text-muted-foreground text-center w-full">
               Don&apos;t have an account?{" "}
               <Link
                 href="/register"
                 className="text-foreground font-medium underline-offset-4 hover:underline"
               >
-                Create one
+                Sign up
               </Link>
             </p>
           </CardFooter>
