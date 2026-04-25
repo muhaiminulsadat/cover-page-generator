@@ -1,0 +1,40 @@
+- generic [active] [ref=e1]:
+  - banner [ref=e2]:
+    - navigation [ref=e3]:
+      - link "CoverIt" [ref=e4] [cursor=pointer]:
+        - /url: /
+        - img [ref=e6]
+        - generic [ref=e10]: CoverIt
+  - main [ref=e13]:
+    - generic [ref=e16]:
+      - generic [ref=e17]:
+        - generic [ref=e18]: Welcome back
+        - generic [ref=e19]: Enter your credentials to sign in to your account
+      - generic [ref=e20]:
+        - generic [ref=e21]:
+          - generic [ref=e22]: Email
+          - generic [ref=e23]:
+            - img
+            - textbox "Email" [ref=e24]:
+              - /placeholder: you@example.com
+        - generic [ref=e25]:
+          - generic [ref=e26]:
+            - generic [ref=e27]: Password
+            - link "Forgot password?" [ref=e28] [cursor=pointer]:
+              - /url: /forgot-password
+          - generic [ref=e29]:
+            - img
+            - textbox "Password" [ref=e30]:
+              - /placeholder: ••••••••
+            - button [ref=e31]:
+              - img [ref=e32]
+        - button "Sign in" [ref=e35]:
+          - img
+          - text: Sign in
+      - paragraph [ref=e37]:
+        - text: Don't have an account?
+        - link "Create one" [ref=e38] [cursor=pointer]:
+          - /url: /register
+  - button "Open Next.js Dev Tools" [ref=e44] [cursor=pointer]:
+    - img [ref=e45]
+  - alert [ref=e48]

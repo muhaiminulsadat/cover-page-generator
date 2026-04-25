@@ -1,0 +1,264 @@
+import {db} from "@/db";
+import {templates} from "@/db/schema";
+import {and, eq, isNull, or, sql} from "drizzle-orm";
+import {DEFAULT_COVER_PAGE_DESIGN} from "@/lib/constants/cover-designs";
+
+interface TemplateQueryRow {
+  id: string;
+  designId: string;
+  coverDesignId: string;
+  courseNumber: string;
+  courseTitle: string;
+  sessionTerm: string;
+  departmentTarget: string | null;
+  levelTarget: string | null;
+  termTarget: string | null;
+  hscBatchTarget: string | null;
+  sectionTarget: string | null;
+  subsectionTarget: string | null;
+  createdBy: string;
+  teacher1Name: string;
+  teacher1Designation: string;
+  teacher2Name: string | null;
+  teacher2Designation: string | null;
+  createdAt: Date;
+  updatedAt: Date;
+}
+
+interface TemplateSelectRow {
+  id: string;
+  designId: string;
+  coverDesignId?: string;
+  courseNumber: string;
+  courseTitle: string;
+  sessionTerm: string;
+  departmentTarget: string | null;
+  levelTarget: string | null;
+  termTarget: string | null;
+  hscBatchTarget: string | null;
+  sectionTarget: string | null;
+  subsectionTarget: string | null;
+  createdBy: string;
+  teacher1Name: string;
+  teacher1Designation: string;
+  teacher2Name: string | null;
+  teacher2Designation: string | null;
+  createdAt: Date;
+  updatedAt: Date;
+}
+
+const templateColumnsWithoutCover = {
+  id: templates.id,
+  designId: templates.designId,
+  courseNumber: templates.courseNumber,
+  courseTitle: templates.courseTitle,
+  sessionTerm: templates.sessionTerm,
+  departmentTarget: templates.departmentTarget,
+  levelTarget: templates.levelTarget,
+  termTarget: templates.termTarget,
+  hscBatchTarget: templates.hscBatchTarget,
+  sectionTarget: templates.sectionTarget,
+  subsectionTarget: templates.subsectionTarget,
+  createdBy: templates.createdBy,
+  teacher1Name: templates.teacher1Name,
+  teacher1Designation: templates.teacher1Designation,
+  teacher2Name: templates.teacher2Name,
+  teacher2Designation: templates.teacher2Designation,
+  createdAt: templates.createdAt,
+  updatedAt: templates.updatedAt,
+} as const;
+
+const templateColumnsWithCover = {
+  ...templateColumnsWithoutCover,
+  coverDesignId: templates.coverDesignId,
+} as const;
+
+let hasCoverDesignColumnPromise: Promise<boolean> | null = null;
+
+async function hasCoverDesignColumn(): Promise<boolean> {
+  if (!hasCoverDesignColumnPromise) {
+    hasCoverDesignColumnPromise = db
+      .execute(
+        sql`
+        select 1
+        from information_schema.columns
+        where table_name = 'templates'
+          and column_name = 'cover_design_id'
+        limit 1
+      `,
+      )
+      .then((result) => result.rows.length > 0)
+      .catch(() => false);
+  }
+
+  return hasCoverDesignColumnPromise;
+}
+
+function hydrateTemplateRow(row: TemplateSelectRow): TemplateQueryRow {
+  return {
+    ...row,
+    coverDesignId: row.coverDesignId || DEFAULT_COVER_PAGE_DESIGN,
+  };
+}
+
+async function selectTemplateColumns() {
+  const supportsCoverDesign = await hasCoverDesignColumn();
+  return supportsCoverDesign
+    ? templateColumnsWithCover
+    : templateColumnsWithoutCover;
+}
+
+export async function insertTemplate(data: typeof templates.$inferInsert) {
+  const supportsCoverDesign = await hasCoverDesignColumn();
+  const payload: typeof templates.$inferInsert = {
+    ...data,
+    updatedAt: data.updatedAt ?? new Date(),
+    ...(supportsCoverDesign
+      ? {coverDesignId: data.coverDesignId || DEFAULT_COVER_PAGE_DESIGN}
+      : {}),
+  };
+
+  try {
+    const [newTemplate] = await db
+      .insert(templates)
+      .values(payload)
+      .returning();
+    return hydrateTemplateRow(newTemplate as TemplateSelectRow);
+  } catch (error) {
+    if (supportsCoverDesign || !("coverDesignId" in payload)) {
+      throw error;
+    }
+
+    const fallbackPayload = {...payload};
+    delete fallbackPayload.coverDesignId;
+
+    const [newTemplate] = await db
+      .insert(templates)
+      .values(fallbackPayload)
+      .returning();
+
+    return hydrateTemplateRow(newTemplate as TemplateSelectRow);
+  }
+}
+
+export async function getTemplateById(id: string) {
+  const columns = (await selectTemplateColumns()) as Record<string, unknown>;
+  const [template] = await db
+    .select(columns)
+    .from(templates)
+    .where(eq(templates.id, id));
+  return hydrateTemplateRow(template as TemplateSelectRow);
+}
+
+export async function updateTemplate(
+  id: string,
+  userId: string,
+  data: Partial<typeof templates.$inferInsert>,
+) {
+  const supportsCoverDesign = await hasCoverDesignColumn();
+  const payload: Partial<typeof templates.$inferInsert> = {
+    ...data,
+    updatedAt: new Date(),
+  };
+
+  if (supportsCoverDesign && "coverDesignId" in data) {
+    payload.coverDesignId = data.coverDesignId || DEFAULT_COVER_PAGE_DESIGN;
+  }
+
+  try {
+    const [updatedTemplate] = await db
+      .update(templates)
+      .set(payload)
+      .where(and(eq(templates.id, id), eq(templates.createdBy, userId)))
+      .returning();
+    return updatedTemplate
+      ? hydrateTemplateRow(updatedTemplate as TemplateSelectRow)
+      : undefined;
+  } catch (error) {
+    if (supportsCoverDesign || !("coverDesignId" in payload)) {
+      throw error;
+    }
+
+    const fallbackPayload = {...payload};
+    delete fallbackPayload.coverDesignId;
+
+    const [updatedTemplate] = await db
+      .update(templates)
+      .set(fallbackPayload)
+      .where(and(eq(templates.id, id), eq(templates.createdBy, userId)))
+      .returning();
+
+    return updatedTemplate
+      ? hydrateTemplateRow(updatedTemplate as TemplateSelectRow)
+      : undefined;
+  }
+}
+
+export async function getTemplatesByMetadata(userMeta: {
+  department?: string | null;
+  level?: string | null;
+  term?: string | null;
+  section?: string | null;
+  subsection?: string | null;
+  hscBatch?: string | null;
+}) {
+  const columns = (await selectTemplateColumns()) as Record<string, unknown>;
+  const rows = await db
+    .select(columns)
+    .from(templates)
+    .where(
+      and(
+        userMeta.department
+          ? or(
+              eq(templates.departmentTarget, userMeta.department),
+              eq(templates.departmentTarget, ""),
+              isNull(templates.departmentTarget),
+            )
+          : undefined,
+        userMeta.level
+          ? or(
+              eq(templates.levelTarget, userMeta.level),
+              eq(templates.levelTarget, ""),
+              isNull(templates.levelTarget),
+            )
+          : undefined,
+        userMeta.term
+          ? or(
+              eq(templates.termTarget, userMeta.term),
+              eq(templates.termTarget, ""),
+              isNull(templates.termTarget),
+            )
+          : undefined,
+        userMeta.section
+          ? or(
+              eq(templates.sectionTarget, userMeta.section),
+              eq(templates.sectionTarget, ""),
+              isNull(templates.sectionTarget),
+            )
+          : undefined,
+        userMeta.subsection
+          ? or(
+              eq(templates.subsectionTarget, userMeta.subsection),
+              eq(templates.subsectionTarget, ""),
+              isNull(templates.subsectionTarget),
+            )
+          : undefined,
+        userMeta.hscBatch
+          ? or(
+              eq(templates.hscBatchTarget, userMeta.hscBatch),
+              eq(templates.hscBatchTarget, ""),
+              isNull(templates.hscBatchTarget),
+            )
+          : undefined,
+      ),
+    );
+
+  return rows.map((row) => hydrateTemplateRow(row as TemplateSelectRow));
+}
+
+export async function getAllTemplates() {
+  const columns = (await selectTemplateColumns()) as Record<string, unknown>;
+  const rows = await db.select(columns).from(templates);
+
+  return rows.map((row) => hydrateTemplateRow(row as TemplateSelectRow));
+}

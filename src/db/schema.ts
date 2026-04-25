@@ -70,6 +70,7 @@ export const verification = pgTable("verification", {
 export const templates = pgTable("templates", {
   id: text("id").primaryKey(),
   designId: text("design_id").notNull().default("classic-v1"),
+  coverDesignId: text("cover_design_id").notNull().default("cover-classic-v1"),
   courseNumber: text("course_number").notNull(),
   courseTitle: text("course_title").notNull(),
   sessionTerm: text("session_term").notNull(),

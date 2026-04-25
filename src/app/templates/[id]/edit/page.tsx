@@ -1,10 +1,11 @@
-import {getTemplateById} from "@/app/queries/template";
+import {getTemplateById} from "@/lib/queries/template";
 import {auth} from "@/lib/auth";
 import {headers} from "next/headers";
 import {notFound, redirect} from "next/navigation";
 import {EditTemplateForm} from "@/components/forms/EditTemplateForm";
 import {Suspense} from "react";
 import {Loader2} from "lucide-react";
+import {DEFAULT_COVER_PAGE_DESIGN} from "@/lib/constants/cover-designs";
 
 export default function EditTemplatePage({
   params,
@@ -41,7 +42,7 @@ async function EditTemplate({params}: {params: Promise<{id: string}>}) {
   }
 
   if (template.createdBy !== session.user.id) {
-    return redirect(`/templates/${id}`); // Deny access
+    return redirect(`/templates/${id}`);
   }
 
   return (
@@ -49,6 +50,7 @@ async function EditTemplate({params}: {params: Promise<{id: string}>}) {
       <EditTemplateForm
         template={{
           ...template,
+          coverDesignId: template.coverDesignId ?? DEFAULT_COVER_PAGE_DESIGN,
           departmentTarget: template.departmentTarget ?? undefined,
           levelTarget: template.levelTarget ?? undefined,
           termTarget: template.termTarget ?? undefined,

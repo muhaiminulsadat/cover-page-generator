@@ -3,7 +3,7 @@ import {headers} from "next/headers";
 import {db} from "@/db";
 import {user as userSchema} from "@/db/schema";
 import {eq} from "drizzle-orm";
-import {getTemplatesByMetadata, getAllTemplates} from "@/app/queries/template";
+import {getTemplatesByMetadata, getAllTemplates} from "@/lib/queries/template";
 import {Suspense} from "react";
 import {DashboardContent} from "@/components/home/DashboardContent";
 import {DashboardSkeleton} from "@/components/home/DashboardSkeleton";

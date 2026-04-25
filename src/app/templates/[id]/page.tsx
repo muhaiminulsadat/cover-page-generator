@@ -1,4 +1,4 @@
-import {getTemplateById} from "@/app/queries/template";
+import {getTemplateById} from "@/lib/queries/template";
 import {auth} from "@/lib/auth";
 import {headers} from "next/headers";
 import {db} from "@/db";
@@ -12,6 +12,10 @@ import {Button} from "@/components/ui/button";
 import {Suspense} from "react";
 import {Skeleton} from "@/components/ui/skeleton";
 import {Badge} from "@/components/ui/badge";
+import {
+  COVER_PAGE_DESIGN_LABELS,
+  DEFAULT_COVER_PAGE_DESIGN,
+} from "@/lib/constants/cover-designs";
 import {
   DEFAULT_TOP_SHEET_DESIGN,
   TOP_SHEET_DESIGN_LABELS,
@@ -67,11 +71,16 @@ async function TemplatePreview({params}: {params: Promise<{id: string}>}) {
             <p className="text-sm text-muted-foreground">
               {template.courseTitle}
             </p>
-            <div className="mt-2">
+            <div className="mt-2 flex flex-wrap gap-2 sm:justify-end">
               <Badge variant="secondary">
                 {TOP_SHEET_DESIGN_LABELS[
                   template.designId || DEFAULT_TOP_SHEET_DESIGN
                 ] || TOP_SHEET_DESIGN_LABELS[DEFAULT_TOP_SHEET_DESIGN]}
+              </Badge>
+              <Badge variant="outline">
+                {COVER_PAGE_DESIGN_LABELS[
+                  template.coverDesignId || DEFAULT_COVER_PAGE_DESIGN
+                ] || COVER_PAGE_DESIGN_LABELS[DEFAULT_COVER_PAGE_DESIGN]}
               </Badge>
             </div>
           </div>
@@ -105,7 +114,7 @@ function PreviewSkeleton() {
           <Skeleton className="h-4 w-32" />
         </div>
       </div>
-      <Skeleton className="h-[800px] w-full rounded-xl" />
+      <Skeleton className="h-200 w-full rounded-xl" />
     </div>
   );
 }

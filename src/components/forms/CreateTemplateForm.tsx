@@ -29,7 +29,14 @@ import {
   CardHeader,
   CardTitle,
 } from "@/components/ui/card";
-import {DEFAULT_TOP_SHEET_DESIGN} from "@/lib/constants/top-sheet-designs";
+import {
+  COVER_PAGE_DESIGNS,
+  DEFAULT_COVER_PAGE_DESIGN,
+} from "@/lib/constants/cover-designs";
+import {
+  DEFAULT_TOP_SHEET_DESIGN,
+  TOP_SHEET_DESIGNS,
+} from "@/lib/constants/top-sheet-designs";
 import {DesignPickerDialog} from "./_components/DesignPickerDialog";
 
 export function CreateTemplateForm() {
@@ -41,6 +48,7 @@ export function CreateTemplateForm() {
     resolver: zodResolver(createTemplateSchema),
     defaultValues: {
       designId: DEFAULT_TOP_SHEET_DESIGN,
+      coverDesignId: DEFAULT_COVER_PAGE_DESIGN,
       courseNumber: "",
       courseTitle: "",
       sessionTerm: "",
@@ -65,12 +73,14 @@ export function CreateTemplateForm() {
     control: form.control,
     name: "designId",
   });
+  const coverDesignId = useWatch({
+    control: form.control,
+    name: "coverDesignId",
+  });
   const subsectionTargetOptions = getSubsectionOptions(selectedSectionTarget);
 
   async function onSubmit(data: CreateTemplateInput) {
-    console.log("Submitting data to server action:", data);
     const result = await executeAsync(data);
-    console.log("Server action result:", result);
     if (result?.data?.success) {
       toast.success("Template created successfully");
       router.push(`/templates/${result.data.data.id}`);
@@ -82,9 +92,6 @@ export function CreateTemplateForm() {
       toast.error("Something went wrong");
     }
   }
-
-  // To debug validation errors
-  console.log("Current Form Errors:", form.formState.errors);
 
   return (
     <Card className="w-full max-w-2xl mx-auto">
@@ -100,8 +107,26 @@ export function CreateTemplateForm() {
             <Label htmlFor="designId">Top Sheet Design</Label>
             <DesignPickerDialog
               value={designId}
+              designs={TOP_SHEET_DESIGNS}
+              defaultDesign={DEFAULT_TOP_SHEET_DESIGN}
+              pickerTitle="Choose Top Sheet Design"
+              pickerDescription="Pick one top sheet style for this template."
               onValueChange={(value) => form.setValue("designId", value)}
               error={form.formState.errors.designId?.message}
+              disabled={isPending}
+            />
+          </div>
+
+          <div className="space-y-2">
+            <Label htmlFor="coverDesignId">Cover Page Design</Label>
+            <DesignPickerDialog
+              value={coverDesignId}
+              designs={COVER_PAGE_DESIGNS}
+              defaultDesign={DEFAULT_COVER_PAGE_DESIGN}
+              pickerTitle="Choose Cover Page Design"
+              pickerDescription="Pick one cover page style for this template."
+              onValueChange={(value) => form.setValue("coverDesignId", value)}
+              error={form.formState.errors.coverDesignId?.message}
               disabled={isPending}
             />
           </div>

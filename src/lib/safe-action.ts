@@ -4,7 +4,7 @@ import {headers} from "next/headers";
 
 export const actionClient = createSafeActionClient({
   handleServerError(e) {
-    return "Something went wrong";
+    return e instanceof Error ? e.message : "Something went wrong";
   },
 });
 

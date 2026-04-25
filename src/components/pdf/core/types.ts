@@ -1,5 +1,6 @@
 export interface TopSheetTemplateData {
   designId?: string | null;
+  coverDesignId?: string | null;
   courseNumber: string;
   courseTitle: string;
   sessionTerm: string;
@@ -21,6 +22,12 @@ export interface TopSheetUserData {
 }
 
 export interface TopSheetRenderContext {
+  template: TopSheetTemplateData;
+  user: TopSheetUserData;
+  universityLabel: string;
+}
+
+export interface CoverPageRenderContext {
   template: TopSheetTemplateData;
   user: TopSheetUserData;
   universityLabel: string;

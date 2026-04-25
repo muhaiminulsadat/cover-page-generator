@@ -1,11 +1,17 @@
 import {Card, CardContent} from "@/components/ui/card";
-import {TOP_SHEET_DESIGNS} from "@/lib/constants/top-sheet-designs";
 import {Check} from "lucide-react";
 import {cn} from "@/lib/utils";
 import Image from "next/image";
 
+interface DesignOption {
+  value: string;
+  label: string;
+  previewImage: string;
+}
+
 interface DesignCardSelectorProps {
   value: string;
+  designs: readonly DesignOption[];
   onValueChange: (value: string) => void;
   error?: string;
   disabled?: boolean;
@@ -13,6 +19,7 @@ interface DesignCardSelectorProps {
 
 export function DesignCardSelector({
   value,
+  designs,
   onValueChange,
   error,
   disabled = false,
@@ -23,21 +30,20 @@ export function DesignCardSelector({
   ) => {
     if (e.key === "Enter" || e.key === " ") {
       e.preventDefault();
-      onValueChange(TOP_SHEET_DESIGNS[index].value);
+      onValueChange(designs[index].value);
     }
   };
 
   return (
     <div className="space-y-3">
       <div className="grid grid-cols-1 gap-3 sm:grid-cols-2">
-        {TOP_SHEET_DESIGNS.map((design, index) => (
+        {designs.map((design, index) => (
           <button
             key={design.value}
             type="button"
             onClick={() => onValueChange(design.value)}
             onKeyDown={(e) => handleKeyDown(e, index)}
             disabled={disabled}
-            aria-pressed={value === design.value}
             className={cn(
               "relative text-left",
               "focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2",

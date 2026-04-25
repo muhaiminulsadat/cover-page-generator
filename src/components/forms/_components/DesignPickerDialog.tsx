@@ -12,14 +12,21 @@ import {
   DialogTitle,
   DialogTrigger,
 } from "@/components/ui/dialog";
-import {
-  DEFAULT_TOP_SHEET_DESIGN,
-  TOP_SHEET_DESIGNS,
-} from "@/lib/constants/top-sheet-designs";
 import {DesignCardSelector} from "./DesignCardSelector";
+
+interface DesignOption {
+  value: string;
+  label: string;
+  previewImage: string;
+}
 
 interface DesignPickerDialogProps {
   value: string;
+  designs: readonly DesignOption[];
+  defaultDesign: string;
+  pickerTitle: string;
+  pickerDescription: string;
+  buttonText?: string;
   onValueChange: (value: string) => void;
   error?: string;
   disabled?: boolean;
@@ -27,6 +34,11 @@ interface DesignPickerDialogProps {
 
 export function DesignPickerDialog({
   value,
+  designs,
+  defaultDesign,
+  pickerTitle,
+  pickerDescription,
+  buttonText = "Change Design",
   onValueChange,
   error,
   disabled = false,
@@ -34,11 +46,9 @@ export function DesignPickerDialog({
   const [open, setOpen] = useState(false);
 
   const selectedDesign =
-    TOP_SHEET_DESIGNS.find((design) => design.value === value) ||
-    TOP_SHEET_DESIGNS.find(
-      (design) => design.value === DEFAULT_TOP_SHEET_DESIGN,
-    ) ||
-    TOP_SHEET_DESIGNS[0];
+    designs.find((design) => design.value === value) ||
+    designs.find((design) => design.value === defaultDesign) ||
+    designs[0];
 
   function handleSelect(nextValue: string) {
     onValueChange(nextValue);
@@ -70,18 +80,17 @@ export function DesignPickerDialog({
             <Dialog open={open} onOpenChange={setOpen}>
               <DialogTrigger asChild>
                 <Button type="button" variant="outline" disabled={disabled}>
-                  Change Design
+                  {buttonText}
                 </Button>
               </DialogTrigger>
               <DialogContent className="max-h-[90vh] overflow-y-auto">
                 <DialogHeader>
-                  <DialogTitle>Choose Top Sheet Design</DialogTitle>
-                  <DialogDescription>
-                    Pick one design style for this template.
-                  </DialogDescription>
+                  <DialogTitle>{pickerTitle}</DialogTitle>
+                  <DialogDescription>{pickerDescription}</DialogDescription>
                 </DialogHeader>
                 <DesignCardSelector
                   value={value}
+                  designs={designs}
                   onValueChange={handleSelect}
                   disabled={disabled}
                 />

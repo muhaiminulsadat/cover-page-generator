@@ -19,7 +19,7 @@ export function CoverPageWebPreview({template, user}: Props) {
 
   if (!mounted)
     return (
-      <div className="h-[600px] w-full bg-muted animate-pulse rounded-lg flex items-center justify-center">
+      <div className="h-150 w-full bg-muted animate-pulse rounded-lg flex items-center justify-center">
         Loading PDF Engine...
       </div>
     );
@@ -46,7 +46,7 @@ export function CoverPageWebPreview({template, user}: Props) {
         </PDFDownloadLink>
       </div>
 
-      <div className="h-[500px] md:h-[800px] w-full rounded-xl overflow-hidden shadow-lg border border-border">
+      <div className="h-125 md:h-200 w-full rounded-xl overflow-hidden shadow-lg border border-border">
         <PDFViewer className="h-full w-full border-none">
           <CoverPageDocument template={template} user={user} />
         </PDFViewer>

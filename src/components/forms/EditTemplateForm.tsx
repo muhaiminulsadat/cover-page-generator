@@ -29,7 +29,14 @@ import {
   CardTitle,
 } from "@/components/ui/card";
 import {Building2, ChevronDown, Loader2} from "lucide-react";
-import {DEFAULT_TOP_SHEET_DESIGN} from "@/lib/constants/top-sheet-designs";
+import {
+  COVER_PAGE_DESIGNS,
+  DEFAULT_COVER_PAGE_DESIGN,
+} from "@/lib/constants/cover-designs";
+import {
+  DEFAULT_TOP_SHEET_DESIGN,
+  TOP_SHEET_DESIGNS,
+} from "@/lib/constants/top-sheet-designs";
 import {DesignPickerDialog} from "./_components/DesignPickerDialog";
 
 export function EditTemplateForm({template}: {template: EditTemplateInput}) {
@@ -42,6 +49,7 @@ export function EditTemplateForm({template}: {template: EditTemplateInput}) {
     defaultValues: {
       id: template.id,
       designId: template.designId || DEFAULT_TOP_SHEET_DESIGN,
+      coverDesignId: template.coverDesignId || DEFAULT_COVER_PAGE_DESIGN,
       courseNumber: template.courseNumber || "",
       courseTitle: template.courseTitle || "",
       sessionTerm: template.sessionTerm || "",
@@ -65,6 +73,10 @@ export function EditTemplateForm({template}: {template: EditTemplateInput}) {
   const designId = useWatch({
     control: form.control,
     name: "designId",
+  });
+  const coverDesignId = useWatch({
+    control: form.control,
+    name: "coverDesignId",
   });
   const subsectionTargetOptions = getSubsectionOptions(selectedSectionTarget);
 
@@ -94,8 +106,26 @@ export function EditTemplateForm({template}: {template: EditTemplateInput}) {
             <Label htmlFor="designId">Top Sheet Design</Label>
             <DesignPickerDialog
               value={designId}
+              designs={TOP_SHEET_DESIGNS}
+              defaultDesign={DEFAULT_TOP_SHEET_DESIGN}
+              pickerTitle="Choose Top Sheet Design"
+              pickerDescription="Pick one top sheet style for this template."
               onValueChange={(value) => form.setValue("designId", value)}
               error={form.formState.errors.designId?.message}
+              disabled={isPending}
+            />
+          </div>
+
+          <div className="space-y-2">
+            <Label htmlFor="coverDesignId">Cover Page Design</Label>
+            <DesignPickerDialog
+              value={coverDesignId}
+              designs={COVER_PAGE_DESIGNS}
+              defaultDesign={DEFAULT_COVER_PAGE_DESIGN}
+              pickerTitle="Choose Cover Page Design"
+              pickerDescription="Pick one cover page style for this template."
+              onValueChange={(value) => form.setValue("coverDesignId", value)}
+              error={form.formState.errors.coverDesignId?.message}
               disabled={isPending}
             />
           </div>

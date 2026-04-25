@@ -1,6 +1,7 @@
 import {z} from "zod";
 import {DEPARTMENT_VALUES} from "@/lib/constants/departments";
 import {HSC_BATCH_VALUES} from "@/lib/constants/hsc-batches";
+import {COVER_PAGE_DESIGN_VALUES} from "@/lib/constants/cover-designs";
 import {
   LEVEL_VALUES,
   SECTION_VALUES,
@@ -16,6 +17,13 @@ export const createTemplateSchema = z.object({
     .refine(
       (value) => TOP_SHEET_DESIGN_VALUES.includes(value),
       "Please select a valid top sheet design",
+    ),
+  coverDesignId: z
+    .string()
+    .min(1, "Cover page design is required")
+    .refine(
+      (value) => COVER_PAGE_DESIGN_VALUES.includes(value),
+      "Please select a valid cover page design",
     ),
   courseNumber: z.string().min(1, "Course Number is required (e.g. CE 332)"),
   courseTitle: z.string().min(1, "Course Title is required"),
