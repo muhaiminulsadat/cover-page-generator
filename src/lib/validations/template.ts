@@ -10,6 +10,14 @@ import {
 } from "@/lib/constants/levels";
 import {TOP_SHEET_DESIGN_VALUES} from "@/lib/constants/top-sheet-designs";
 
+export const indexRowSchema = z.object({
+  id: z.string().min(1, "Index row ID is required"),
+  topic: z.string().min(1, "Topic is required"),
+  description: z.string().optional(),
+});
+
+export type IndexRowInput = z.infer<typeof indexRowSchema>;
+
 export const createTemplateSchema = z.object({
   designId: z
     .string()
@@ -30,6 +38,7 @@ export const createTemplateSchema = z.object({
   sessionTerm: z
     .string()
     .min(1, "Session/Term is required (e.g. January 2026)"),
+  experimentName: z.string().optional(),
 
   // Metadata for targeting
   departmentTarget: z
@@ -90,6 +99,15 @@ export const createTemplateSchema = z.object({
   teacher1Designation: z.string().min(1, "Teacher 1 Designation is required"),
   teacher2Name: z.string().optional(),
   teacher2Designation: z.string().optional(),
+
+  // Index rows - filter out empty rows
+  indexRows: z
+    .array(indexRowSchema)
+    .transform((rows) => rows.filter((row) => row.topic.trim().length > 0))
+    .refine(
+      (rows) => rows.length > 0,
+      "At least one index row with a topic is required",
+    ),
 });
 
 export type CreateTemplateInput = z.infer<typeof createTemplateSchema>;

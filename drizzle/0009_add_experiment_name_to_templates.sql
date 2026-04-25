@@ -1,0 +1,1 @@
+ALTER TABLE "templates" ADD COLUMN "experiment_name" text DEFAULT '' NOT NULL;

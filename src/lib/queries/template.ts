@@ -2,6 +2,7 @@ import {db} from "@/db";
 import {templates} from "@/db/schema";
 import {and, eq, isNull, or, sql} from "drizzle-orm";
 import {DEFAULT_COVER_PAGE_DESIGN} from "@/lib/constants/cover-designs";
+import {IndexRow} from "@/components/pdf/core/types";
 
 interface TemplateQueryRow {
   id: string;
@@ -10,6 +11,7 @@ interface TemplateQueryRow {
   courseNumber: string;
   courseTitle: string;
   sessionTerm: string;
+  experimentName: string | null;
   departmentTarget: string | null;
   levelTarget: string | null;
   termTarget: string | null;
@@ -21,6 +23,7 @@ interface TemplateQueryRow {
   teacher1Designation: string;
   teacher2Name: string | null;
   teacher2Designation: string | null;
+  indexRows: IndexRow[];
   createdAt: Date;
   updatedAt: Date;
 }
@@ -32,6 +35,7 @@ interface TemplateSelectRow {
   courseNumber: string;
   courseTitle: string;
   sessionTerm: string;
+  experimentName?: string | null;
   departmentTarget: string | null;
   levelTarget: string | null;
   termTarget: string | null;
@@ -43,6 +47,7 @@ interface TemplateSelectRow {
   teacher1Designation: string;
   teacher2Name: string | null;
   teacher2Designation: string | null;
+  indexRows?: IndexRow[];
   createdAt: Date;
   updatedAt: Date;
 }
@@ -73,7 +78,19 @@ const templateColumnsWithCover = {
   coverDesignId: templates.coverDesignId,
 } as const;
 
+const templateColumnsWithExperimentName = {
+  ...templateColumnsWithoutCover,
+  experimentName: templates.experimentName,
+} as const;
+
+const templateColumnsWithCoverAndIndexRows = {
+  ...templateColumnsWithCover,
+  indexRows: templates.indexRows,
+} as const;
+
 let hasCoverDesignColumnPromise: Promise<boolean> | null = null;
+let hasExperimentNameColumnPromise: Promise<boolean> | null = null;
+let hasIndexRowsColumnPromise: Promise<boolean> | null = null;
 
 async function hasCoverDesignColumn(): Promise<boolean> {
   if (!hasCoverDesignColumnPromise) {
@@ -94,28 +111,124 @@ async function hasCoverDesignColumn(): Promise<boolean> {
   return hasCoverDesignColumnPromise;
 }
 
+async function hasExperimentNameColumn(): Promise<boolean> {
+  if (!hasExperimentNameColumnPromise) {
+    hasExperimentNameColumnPromise = db
+      .execute(
+        sql`
+        select 1
+        from information_schema.columns
+        where table_name = 'templates'
+          and column_name = 'experiment_name'
+        limit 1
+      `,
+      )
+      .then((result) => result.rows.length > 0)
+      .catch(() => false);
+  }
+
+  return hasExperimentNameColumnPromise;
+}
+
+async function hasIndexRowsColumn(): Promise<boolean> {
+  if (!hasIndexRowsColumnPromise) {
+    hasIndexRowsColumnPromise = db
+      .execute(
+        sql`
+        select 1
+        from information_schema.columns
+        where table_name = 'templates'
+          and column_name = 'index_rows'
+        limit 1
+      `,
+      )
+      .then((result) => result.rows.length > 0)
+      .catch(() => false);
+  }
+
+  return hasIndexRowsColumnPromise;
+}
+
 function hydrateTemplateRow(row: TemplateSelectRow): TemplateQueryRow {
   return {
     ...row,
     coverDesignId: row.coverDesignId || DEFAULT_COVER_PAGE_DESIGN,
+    experimentName: row.experimentName?.trim() || null,
+    indexRows: Array.isArray(row.indexRows)
+      ? (row.indexRows as IndexRow[])
+      : [],
   };
 }
 
 async function selectTemplateColumns() {
-  const supportsCoverDesign = await hasCoverDesignColumn();
-  return supportsCoverDesign
-    ? templateColumnsWithCover
+  const [supportsCoverDesign, supportsExperimentName, supportsIndexRows] =
+    await Promise.all([
+      hasCoverDesignColumn(),
+      hasExperimentNameColumn(),
+      hasIndexRowsColumn(),
+    ]);
+
+  if (supportsCoverDesign && supportsExperimentName && supportsIndexRows) {
+    return {
+      ...templateColumnsWithCoverAndIndexRows,
+      experimentName: templates.experimentName,
+    } as const;
+  }
+
+  if (supportsCoverDesign && supportsIndexRows) {
+    return {
+      ...templateColumnsWithCoverAndIndexRows,
+      ...(supportsExperimentName
+        ? {experimentName: templates.experimentName}
+        : {}),
+    } as const;
+  }
+
+  if (supportsCoverDesign) {
+    return supportsExperimentName
+      ? ({
+          ...templateColumnsWithCover,
+          experimentName: templates.experimentName,
+        } as const)
+      : templateColumnsWithCover;
+  }
+
+  if (supportsIndexRows) {
+    return {
+      ...(supportsExperimentName
+        ? templateColumnsWithExperimentName
+        : templateColumnsWithoutCover),
+      indexRows: templates.indexRows,
+    } as const;
+  }
+
+  return supportsExperimentName
+    ? templateColumnsWithExperimentName
     : templateColumnsWithoutCover;
 }
 
 export async function insertTemplate(data: typeof templates.$inferInsert) {
-  const supportsCoverDesign = await hasCoverDesignColumn();
+  const [supportsCoverDesign, supportsExperimentName, supportsIndexRows] =
+    await Promise.all([
+      hasCoverDesignColumn(),
+      hasExperimentNameColumn(),
+      hasIndexRowsColumn(),
+    ]);
+  const {experimentName, indexRows, ...baseData} =
+    data as typeof templates.$inferInsert & {
+      experimentName?: string;
+      indexRows?: IndexRow[];
+    };
   const payload: typeof templates.$inferInsert = {
-    ...data,
+    ...baseData,
     updatedAt: data.updatedAt ?? new Date(),
+    ...(supportsExperimentName
+      ? {experimentName: experimentName?.trim() || ""}
+      : {}),
     ...(supportsCoverDesign
       ? {coverDesignId: data.coverDesignId || DEFAULT_COVER_PAGE_DESIGN}
       : {}),
+    ...(supportsIndexRows ? {indexRows} : {}),
   };
 
   try {
@@ -155,14 +268,33 @@ export async function updateTemplate(
   userId: string,
   data: Partial<typeof templates.$inferInsert>,
 ) {
-  const supportsCoverDesign = await hasCoverDesignColumn();
+  const [supportsCoverDesign, supportsExperimentName, supportsIndexRows] =
+    await Promise.all([
+      hasCoverDesignColumn(),
+      hasExperimentNameColumn(),
+      hasIndexRowsColumn(),
+    ]);
+  const {experimentName, indexRows, ...baseData} = data as Partial<
+    typeof templates.$inferInsert
+  > & {
+    experimentName?: string;
+    indexRows?: IndexRow[];
+  };
   const payload: Partial<typeof templates.$inferInsert> = {
-    ...data,
+    ...baseData,
     updatedAt: new Date(),
   };
 
+  if (supportsExperimentName && "experimentName" in data) {
+    payload.experimentName = experimentName?.trim() || "";
+  }
+
   if (supportsCoverDesign && "coverDesignId" in data) {
     payload.coverDesignId = data.coverDesignId || DEFAULT_COVER_PAGE_DESIGN;
+  }
+
+  if (supportsIndexRows && indexRows !== undefined) {
+    payload.indexRows = indexRows;
   }
 
   try {
@@ -180,6 +312,7 @@ export async function updateTemplate(
     }
 
     const fallbackPayload = {...payload};
+    delete fallbackPayload.experimentName;
     delete fallbackPayload.coverDesignId;
 
     const [updatedTemplate] = await db

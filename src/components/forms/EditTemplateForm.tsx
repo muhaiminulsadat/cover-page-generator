@@ -1,6 +1,6 @@
 "use client";
 
-import {useForm, useWatch} from "react-hook-form";
+import {useForm, useWatch, useFieldArray} from "react-hook-form";
 import {zodResolver} from "@hookform/resolvers/zod";
 import {
   editTemplateSchema,
@@ -53,6 +53,7 @@ export function EditTemplateForm({template}: {template: EditTemplateInput}) {
       courseNumber: template.courseNumber || "",
       courseTitle: template.courseTitle || "",
       sessionTerm: template.sessionTerm || "",
+      experimentName: template.experimentName || "",
       departmentTarget: template.departmentTarget || "",
       levelTarget: template.levelTarget || "",
       termTarget: template.termTarget || "",
@@ -63,7 +64,13 @@ export function EditTemplateForm({template}: {template: EditTemplateInput}) {
       teacher1Designation: template.teacher1Designation || "",
       teacher2Name: template.teacher2Name || "",
       teacher2Designation: template.teacher2Designation || "",
+      indexRows: Array.isArray(template.indexRows) ? template.indexRows : [],
     },
+  });
+
+  const {fields} = useFieldArray({
+    control: form.control,
+    name: "indexRows",
   });
 
   const selectedSectionTarget = useWatch({
@@ -164,6 +171,19 @@ export function EditTemplateForm({template}: {template: EditTemplateInput}) {
                   {form.formState.errors.sessionTerm.message}
                 </p>
               )}
+            </div>
+
+            <div className="space-y-2">
+              <Label htmlFor="experimentName">Experiment Name (optional)</Label>
+              <Input
+                id="experimentName"
+                placeholder="Leave blank for handwriting on the index page"
+                {...form.register("experimentName")}
+              />
+              <p className="text-sm text-muted-foreground">
+                If empty, the printed index page will keep a bordered blank area
+                for the experiment name.
+              </p>
             </div>
           </div>
 
@@ -385,6 +405,51 @@ export function EditTemplateForm({template}: {template: EditTemplateInput}) {
                   {...form.register("teacher2Designation")}
                 />
               </div>
+            </div>
+          </div>
+
+          <div className="space-y-4">
+            <h3 className="font-medium text-lg">Lab Report Index</h3>
+            <div className="space-y-2 border rounded-md p-4 max-h-100 overflow-y-auto">
+              {fields.length > 0 ? (
+                fields.map((field, index) => (
+                  <div
+                    key={field.id}
+                    className="flex gap-2 pb-2 border-b last:border-b-0"
+                  >
+                    <div className="flex-1 space-y-1">
+                      <Label className="text-xs text-muted-foreground">
+                        Row {index + 1}
+                      </Label>
+                      <Input
+                        placeholder="Topic/Item name"
+                        {...form.register(`indexRows.${index}.topic`)}
+                      />
+                      {form.formState.errors.indexRows?.[index]?.topic && (
+                        <p className="text-xs text-destructive">
+                          {
+                            form.formState.errors.indexRows[index]?.topic
+                              ?.message
+                          }
+                        </p>
+                      )}
+                    </div>
+                    <div className="flex-1 space-y-1">
+                      <Label className="text-xs text-muted-foreground">
+                        Description (optional)
+                      </Label>
+                      <Input
+                        placeholder="Optional description"
+                        {...form.register(`indexRows.${index}.description`)}
+                      />
+                    </div>
+                  </div>
+                ))
+              ) : (
+                <p className="text-sm text-muted-foreground">
+                  No index rows found. Add them to this template.
+                </p>
+              )}
             </div>
           </div>
 

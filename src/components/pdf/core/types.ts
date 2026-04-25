@@ -1,13 +1,21 @@
+export interface IndexRow {
+  id: string;
+  topic: string;
+  description?: string;
+}
+
 export interface TopSheetTemplateData {
   designId?: string | null;
   coverDesignId?: string | null;
   courseNumber: string;
   courseTitle: string;
   sessionTerm: string;
+  experimentName?: string | null;
   teacher1Name: string;
   teacher1Designation: string;
   teacher2Name?: string | null;
   teacher2Designation?: string | null;
+  indexRows?: IndexRow[];
 }
 
 export interface TopSheetUserData {
@@ -30,5 +38,10 @@ export interface TopSheetRenderContext {
 export interface CoverPageRenderContext {
   template: TopSheetTemplateData;
   user: TopSheetUserData;
+  universityLabel: string;
+}
+
+export interface IndexPageRenderContext {
+  template: TopSheetTemplateData;
   universityLabel: string;
 }

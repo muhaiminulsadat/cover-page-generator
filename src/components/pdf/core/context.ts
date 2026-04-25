@@ -1,6 +1,7 @@
 import {UNIVERSITY_LABELS} from "@/lib/constants/universities";
 import {
   CoverPageRenderContext,
+  IndexPageRenderContext,
   TopSheetRenderContext,
   TopSheetTemplateData,
   TopSheetUserData,
@@ -34,6 +35,17 @@ export function createCoverPageRenderContext(
   return {
     template,
     user,
+    universityLabel,
+  };
+}
+
+export function createIndexPageRenderContext(
+  template: TopSheetTemplateData,
+): IndexPageRenderContext {
+  const universityLabel = UNIVERSITY_LABELS.buet || "University";
+
+  return {
+    template,
     universityLabel,
   };
 }

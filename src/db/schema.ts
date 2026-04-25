@@ -1,4 +1,4 @@
-import {pgTable, text, boolean, timestamp} from "drizzle-orm/pg-core";
+import {pgTable, text, boolean, timestamp, jsonb} from "drizzle-orm/pg-core";
 import * as t from "drizzle-orm/pg-core";
 
 export const user = pgTable("user", {
@@ -74,6 +74,7 @@ export const templates = pgTable("templates", {
   courseNumber: text("course_number").notNull(),
   courseTitle: text("course_title").notNull(),
   sessionTerm: text("session_term").notNull(),
+  experimentName: text("experiment_name").notNull().default(""),
   departmentTarget: text("department_target"),
   levelTarget: text("level_target"),
   termTarget: text("term_target"),
@@ -87,6 +88,7 @@ export const templates = pgTable("templates", {
   teacher1Designation: text("teacher_1_designation").notNull(),
   teacher2Name: text("teacher_2_name"),
   teacher2Designation: text("teacher_2_designation"),
+  indexRows: jsonb("index_rows").notNull().default("[]"),
   createdAt: timestamp("created_at").notNull().defaultNow(),
   updatedAt: timestamp("updated_at").notNull().defaultNow(),
 });
