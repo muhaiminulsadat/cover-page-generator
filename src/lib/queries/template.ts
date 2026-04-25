@@ -142,7 +142,7 @@ export async function insertTemplate(data: typeof templates.$inferInsert) {
 }
 
 export async function getTemplateById(id: string) {
-  const columns = (await selectTemplateColumns()) as Record<string, unknown>;
+  const columns = await selectTemplateColumns();
   const [template] = await db
     .select(columns)
     .from(templates)
@@ -202,7 +202,7 @@ export async function getTemplatesByMetadata(userMeta: {
   subsection?: string | null;
   hscBatch?: string | null;
 }) {
-  const columns = (await selectTemplateColumns()) as Record<string, unknown>;
+  const columns = await selectTemplateColumns();
   const rows = await db
     .select(columns)
     .from(templates)
@@ -257,7 +257,7 @@ export async function getTemplatesByMetadata(userMeta: {
 }
 
 export async function getAllTemplates() {
-  const columns = (await selectTemplateColumns()) as Record<string, unknown>;
+  const columns = await selectTemplateColumns();
   const rows = await db.select(columns).from(templates);
 
   return rows.map((row) => hydrateTemplateRow(row as TemplateSelectRow));
