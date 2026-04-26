@@ -131,7 +131,7 @@ export function renderClassicV1IndexPage(ctx: IndexPageRenderContext) {
   const {template, user} = ctx;
   const studentId = user.studentId?.trim() || "-";
   const section = user.section?.trim() || "-";
-  const groupNo = user.groupNo?.trim() || "-";
+  const groupNo = "";
   const rows = Array.from({length: 10}, (_, index) => index + 1);
 
   return (
