@@ -128,7 +128,6 @@ async function SettingsPageContent() {
               department: normalizeDepartmentCode(currentUser.department),
               section: normalizeSectionCode(currentUser.section),
               subsection: normalizeSubsectionCode(currentUser.subsection),
-              groupNo: currentUser.groupNo || "",
               level: currentUser.level || "",
               term: currentUser.term || "",
               hscBatch: currentUser.hscBatch || "",

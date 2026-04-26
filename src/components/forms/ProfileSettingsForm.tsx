@@ -44,6 +44,8 @@ export function ProfileSettingsForm({initialValues}: ProfileSettingsFormProps) {
     name: "section",
   });
   const subsectionOptions = getSubsectionOptions(selectedSection);
+  const selectClassName =
+    "h-10 w-full appearance-none rounded-md border border-input bg-background pl-3 pr-10 text-sm text-foreground shadow-xs transition-[color,box-shadow] outline-none focus-visible:border-ring focus-visible:ring-3 focus-visible:ring-ring/50 dark:scheme-dark dark:[&>option]:bg-card dark:[&>option]:text-foreground";
 
   async function onSubmit(data: UserSettingsInput) {
     const result = await executeAsync(data);
@@ -67,16 +69,16 @@ export function ProfileSettingsForm({initialValues}: ProfileSettingsFormProps) {
   }
 
   return (
-    <Card className="w-full">
-      <CardHeader>
-        <CardTitle>Edit Profile</CardTitle>
+    <Card className="w-full border-border/60 bg-card/95 shadow-xl">
+      <CardHeader className="space-y-2 pb-4">
+        <CardTitle className="text-xl sm:text-2xl">Edit Profile</CardTitle>
         <CardDescription>
           Keep your details up to date so templates and PDFs are generated
           correctly.
         </CardDescription>
       </CardHeader>
-      <CardContent>
-        <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-5">
+      <CardContent className="pb-6">
+        <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-6">
           <div className="space-y-2">
             <Label htmlFor="name">Full Name</Label>
             <Input id="name" {...form.register("name")} />
@@ -105,7 +107,7 @@ export function ProfileSettingsForm({initialValues}: ProfileSettingsFormProps) {
                 <select
                   id="university"
                   {...form.register("university")}
-                  className="h-10 w-full appearance-none rounded-md border border-input bg-muted/20 pl-9 pr-10 text-sm text-foreground shadow-xs transition-[color,box-shadow,background-color] outline-none focus-visible:border-ring focus-visible:ring-3 focus-visible:ring-ring/50 dark:bg-input/30 dark:scheme-dark dark:[&>option]:bg-card dark:[&>option]:text-foreground"
+                  className={`${selectClassName} pl-9`}
                 >
                   <option className="bg-background text-foreground" value="">
                     Select your university
@@ -138,7 +140,7 @@ export function ProfileSettingsForm({initialValues}: ProfileSettingsFormProps) {
                 <select
                   id="department"
                   {...form.register("department")}
-                  className="h-10 w-full appearance-none rounded-md border border-input bg-muted/20 pl-9 pr-10 text-sm text-foreground shadow-xs transition-[color,box-shadow,background-color] outline-none focus-visible:border-ring focus-visible:ring-3 focus-visible:ring-ring/50 dark:bg-input/30 dark:scheme-dark dark:[&>option]:bg-card dark:[&>option]:text-foreground"
+                  className={`${selectClassName} pl-9`}
                 >
                   <option className="bg-background text-foreground" value="">
                     Select your department
@@ -168,7 +170,7 @@ export function ProfileSettingsForm({initialValues}: ProfileSettingsFormProps) {
                 <select
                   id="section"
                   {...form.register("section")}
-                  className="h-10 w-full appearance-none rounded-md border border-input bg-muted/20 pl-3 pr-10 text-sm text-foreground shadow-xs transition-[color,box-shadow,background-color] outline-none focus-visible:border-ring focus-visible:ring-3 focus-visible:ring-ring/50 dark:bg-input/30 dark:scheme-dark dark:[&>option]:bg-card dark:[&>option]:text-foreground"
+                  className={selectClassName}
                 >
                   <option className="bg-background text-foreground" value="">
                     Select section
@@ -200,7 +202,7 @@ export function ProfileSettingsForm({initialValues}: ProfileSettingsFormProps) {
                 <select
                   id="level"
                   {...form.register("level")}
-                  className="h-10 w-full appearance-none rounded-md border border-input bg-muted/20 pl-3 pr-10 text-sm text-foreground shadow-xs transition-[color,box-shadow,background-color] outline-none focus-visible:border-ring focus-visible:ring-3 focus-visible:ring-ring/50 dark:bg-input/30 dark:scheme-dark dark:[&>option]:bg-card dark:[&>option]:text-foreground"
+                  className={selectClassName}
                 >
                   <option className="bg-background text-foreground" value="">
                     Select level
@@ -230,7 +232,7 @@ export function ProfileSettingsForm({initialValues}: ProfileSettingsFormProps) {
                 <select
                   id="term"
                   {...form.register("term")}
-                  className="h-10 w-full appearance-none rounded-md border border-input bg-muted/20 pl-3 pr-10 text-sm text-foreground shadow-xs transition-[color,box-shadow,background-color] outline-none focus-visible:border-ring focus-visible:ring-3 focus-visible:ring-ring/50 dark:bg-input/30 dark:scheme-dark dark:[&>option]:bg-card dark:[&>option]:text-foreground"
+                  className={selectClassName}
                 >
                   <option className="bg-background text-foreground" value="">
                     Select term
@@ -255,7 +257,7 @@ export function ProfileSettingsForm({initialValues}: ProfileSettingsFormProps) {
             </div>
           </div>
 
-          <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
+          <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
             <div className="space-y-2">
               <Label htmlFor="subsection">Subsection</Label>
               <div className="relative">
@@ -263,7 +265,7 @@ export function ProfileSettingsForm({initialValues}: ProfileSettingsFormProps) {
                   id="subsection"
                   {...form.register("subsection")}
                   disabled={!selectedSection}
-                  className="h-10 w-full appearance-none rounded-md border border-input bg-muted/20 pl-3 pr-10 text-sm text-foreground shadow-xs transition-[color,box-shadow,background-color] outline-none focus-visible:border-ring focus-visible:ring-3 focus-visible:ring-ring/50 disabled:cursor-not-allowed disabled:opacity-60 dark:bg-input/30 dark:scheme-dark dark:[&>option]:bg-card dark:[&>option]:text-foreground"
+                  className={`${selectClassName} disabled:cursor-not-allowed disabled:opacity-60`}
                 >
                   <option className="bg-background text-foreground" value="">
                     {selectedSection
@@ -290,17 +292,12 @@ export function ProfileSettingsForm({initialValues}: ProfileSettingsFormProps) {
             </div>
 
             <div className="space-y-2">
-              <Label htmlFor="groupNo">Group No (Optional)</Label>
-              <Input id="groupNo" {...form.register("groupNo")} />
-            </div>
-
-            <div className="space-y-2">
               <Label htmlFor="hscBatch">HSC Batch</Label>
               <div className="relative">
                 <select
                   id="hscBatch"
                   {...form.register("hscBatch")}
-                  className="h-10 w-full appearance-none rounded-md border border-input bg-muted/20 pl-3 pr-10 text-sm text-foreground shadow-xs transition-[color,box-shadow,background-color] outline-none focus-visible:border-ring focus-visible:ring-3 focus-visible:ring-ring/50 dark:bg-input/30 dark:scheme-dark dark:[&>option]:bg-card dark:[&>option]:text-foreground"
+                  className={selectClassName}
                 >
                   <option className="bg-background text-foreground" value="">
                     Select HSC batch
@@ -325,13 +322,15 @@ export function ProfileSettingsForm({initialValues}: ProfileSettingsFormProps) {
             </div>
           </div>
 
-          <Button
-            type="submit"
-            className="w-full sm:w-auto"
-            disabled={isPending}
-          >
-            {isPending ? "Updating..." : "Update Profile"}
-          </Button>
+          <div className="pt-2 sm:flex sm:justify-end">
+            <Button
+              type="submit"
+              className="w-full sm:w-auto sm:min-w-40"
+              disabled={isPending}
+            >
+              {isPending ? "Updating..." : "Update Profile"}
+            </Button>
+          </div>
         </form>
       </CardContent>
     </Card>
