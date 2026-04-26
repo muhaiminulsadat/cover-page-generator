@@ -1,87 +1,227 @@
 # Product Requirements Document (PRD)
 
-**Project Name:** CoverIt  
-**Tech Stack:** Next.js 16 (App Router), TypeScript, Drizzle ORM, Tailwind CSS, shadcn/ui  
-**Version:** 1.0.0  
+Project Name: CoverIt  
+Version: 1.1.0 (Current Implementation Baseline)  
+Last Updated: 2026-04-26  
+Stack: Next.js 16 App Router, TypeScript, Drizzle ORM, better-auth, Tailwind CSS v4, shadcn/ui, @react-pdf/renderer
 
 ---
 
-## 1. Executive Summary
+## 1. Product Overview
 
-### 1.1 Problem Statement
-University students frequently need to create standardized Top Pages (top sheets) for lab reports. The current process involves finding a Microsoft Word template, manually editing recurring personal details (Name, ID, Section) and course-specific details (Course Name), which is tedious, repetitive, and error-prone.
+### 1.1 Problem
+Students repeatedly prepare lab submission pages with the same profile and course metadata, causing slow manual edits and format inconsistency.
 
-### 1.2 Solution
-A web application where students register once, save their permanent academic details, and generate a customized, correctly-formatted PDF Top Page with a single click by selecting a pre-configured course template created by other students.
+### 1.2 Current Solution
+CoverIt lets students:
+- register and log in,
+- complete academic profile once,
+- discover templates filtered to their metadata,
+- preview and download a generated multi-page PDF.
 
----
-
-## 2. Target Audience & Usage
-*   **Students:** The sole users of the application. They will both create the course templates and generate their own Top Pages quickly.
-*   **Estimated User Base:** ~5,000 total users.
-*   **Device Usage:** The application will predominantly be used on mobile devices (smartphones) for quick on-the-go generation, with secondary usage on laptops/desktops.
-
----
-
-## 3. Core Features & User Stories
-
-### 3.1 Authentication & User Profiles
-*   **User Story:** As a student, I want to create an account so my personal details are saved for future use.
-*   **User Story:** As a student, I want to input my academic profile (Name, Student ID, Department, Section, Subsection, Group No, Level, Term) so I never have to type it again for a top sheet.
-*   **Requirements:**
-    *   Secure login/registration (email/password or OAuth via better-auth or custom implementation).
-    *   A profile completion form mandatory before generating pages.
-
-### 3.2 Template Management
-*   **User Story:** As a student, I want to create a reusable template for a specific lab course so my classmates and I can use it.
-*   **Requirements:**
-    *   Form to input course details: Course Number (e.g., CE 332), Course Title, Term (e.g., January 2025).
-    *   Input fields for exactly two Course Teachers (Teacher 1 Name/Designation, Teacher 2 Name/Designation).
-    *   Metadata tagging: Department, Level, Term, Section, Subsection (to ensure templates are shown only to relevant students).
-
-### 3.3 Dashboard & Discovery
-*   **User Story:** As a student, I want to see a list of templates relevant to my specific class/section automatically.
-*   **Requirements:**
-    *   A dashboard displaying available templates filtered by the user's saved Department, Level, Section, and Subsection.
-    *   Search functionality and filtering (by course code/name).
-
-### 3.4 Preview & Generation
-*   **User Story:** As a student, I want to preview my customized top sheet before downloading to ensure accuracy.
-*   **User Story:** As a student, I want to download the final top sheet as a PDF with one click.
-*   **Requirements:**
-    *   A web-based A4 preview combining the selected template data + the logged-in user's profile data.
-    *   The design must strictly follow the standard university format (centered logo, specific typography, aligned student blocks).
-    *   A "Download PDF" button that generates a high-quality, print-ready A4 PDF.
+Current generated output is a combined document containing:
+- top sheet,
+- cover page,
+- index page.
 
 ---
 
-## 4. Technical Specifications
+## 2. Target Users
 
-### 4.1 Data Architecture (Drizzle Schema Overview)
-*   **`users`**: `id`, `name`, `email`, `student_id`, `department`, `section`, `subsection`, `group_no`, `level`, `term`.
-*   **`templates`**: `id`, `course_number`, `course_title`, `session_term`, `department_target`, `level_target`, `term_target`, `section_target`, `subsection_target`, `created_by`, `teacher_1_name`, `teacher_1_designation`, `teacher_2_name`, `teacher_2_designation`.
-
-### 4.2 UI/UX Guidelines
-*   **Design System:** shadcn/ui components with Tailwind CSS for consistent spacing, typography, and styling.
-*   **Responsiveness:** Mobile-first design for the dashboard and forms (students often use phones for quick tasks). The preview pane should scale proportionally on smaller screens while maintaining the A4 aspect ratio.
-*   **Preview UI:** HTML/Tailwind implementation of the target PDF to provide a visually accurate WYSIWYG experience.
-
-### 4.3 PDF Generation Strategy
-*   Utilize a client-side library to maintain server performance and reduce hosting costs.
-*   *Primary Option:* Use browser's native print-to-pdf via `@react-pdf/renderer` for robust, text-selectable, vector PDFs.
-*   *Fallback Option:* `html2canvas` + `jspdf` (DOM to Canvas to PDF) for exact CSS replication of the web preview.
+- Primary users: undergraduate engineering students creating lab submission pages.
+- Primary usage pattern: mobile-first quick generation, with desktop for preview and download.
+- Collaboration model: students create reusable templates for classmates.
 
 ---
 
-## 5. Non-Functional Requirements
-*   **Performance & Scale:** Fast load times utilizing Next.js Server Components. Utilize Suspense and optimized caching. The app must reliably handle periodic spikes in traffic (e.g., end of semester / lab submission days) for an estimated 5k user base. 
-*   **Security:** Users can only modify their own profile. Only authenticated users can view/create templates. Implement Row Level Security (RLS) or application-level authorization.
-*   **Reliability:** Try/catch blocks and React error boundaries for form submissions and PDF generation failures. Ensure the PDF generation library functions flawlessly across mobile browsers (Safari on iOS, Chrome on Android).
+## 3. Functional Scope (As Implemented)
+
+### 3.1 Authentication and Session
+
+Implemented:
+- Email/password registration and login via better-auth.
+- Session-based access control in protected routes.
+- Sign-out from navbar menu.
+
+Current behavior notes:
+- Login UI includes a Google sign-in action in the client.
+- Backend auth config currently enables email/password only; social provider wiring is not yet configured.
+
+### 3.2 Profile Completion and Settings
+
+Implemented:
+- Mandatory onboarding for profile completion before template workflows.
+- Editable profile settings page for academic metadata.
+- Validation with zod + react-hook-form.
+
+Profile fields currently used in app and schema:
+- name
+- studentId
+- university
+- department
+- section
+- subsection
+- groupNo
+- level
+- term
+- hscBatch
+
+### 3.3 Template Lifecycle
+
+Implemented:
+- Create template.
+- Edit template (owner-only).
+- Preview template.
+- Template metadata targeting for discoverability.
+
+Template input currently supports:
+- top sheet designId
+- cover page coverDesignId
+- courseNumber
+- courseTitle
+- sessionTerm
+- optional targeting metadata: department, level, term, section, subsection, hscBatch
+- teacher1 required (name + designation)
+- teacher2 optional (name + designation)
+
+### 3.4 Discovery and Dashboard
+
+Implemented:
+- Home route serves as authenticated dashboard.
+- Templates are filtered by user metadata with nullable/empty metadata fallback support.
+- Unauthenticated users see a landing page.
+
+Not yet implemented:
+- text search by course code/title in UI.
+- explicit filter controls in UI.
+
+### 3.5 PDF Preview and Download
+
+Implemented:
+- In-browser preview using PDFViewer.
+- Download via PDFDownloadLink.
+- Multi-page PDF composition from a single template/user context.
+
+Current design support:
+- Top sheet designs: classic-v1, buet-submitted-v1.
+- Cover page designs: cover-classic-v1.
+- Index page designs: index-classic-v1 (default single renderer).
 
 ---
 
-## 6. Future Scope (V2)
-*   **Full Lab Report Generation:** Expand beyond just the Top Sheet. When a user clicks download for a course, the system will generate a combined, multi-page PDF containing the Top Sheet, Cover Page, and Index Page.
-*   Support for multiple university template styles (e.g., dynamic layouts based on university selection).
-*   Dynamic university logo fetching based on the user's selected institution.
-*   Shareable public links for templates with QR code generation.
+## 4. Core User Flows
+
+### 4.1 New User
+1. User signs up.
+2. User is directed into onboarding.
+3. User submits profile details.
+4. User reaches dashboard and sees relevant templates.
+
+### 4.2 Returning User
+1. User logs in.
+2. Dashboard shows templates filtered by profile metadata.
+3. User opens template preview.
+4. User downloads generated PDF.
+
+### 4.3 Template Author
+1. Authenticated user opens create template page.
+2. User selects designs and fills course + teacher + targeting fields.
+3. Template is created and redirected to preview page.
+4. Author can edit template from preview page.
+
+---
+
+## 5. Data Model (Current)
+
+### 5.1 Auth and User Tables
+
+Implemented tables:
+- user
+- session
+- account
+- verification
+
+Relevant user columns:
+- id, email, name, role, emailVerified, image
+- studentId, university, department, section, subsection, groupNo, level, term, hscBatch
+- createdAt, updatedAt
+
+### 5.2 Template Table
+
+Current columns:
+- id
+- designId
+- coverDesignId
+- courseNumber
+- courseTitle
+- sessionTerm
+- departmentTarget
+- levelTarget
+- termTarget
+- hscBatchTarget
+- sectionTarget
+- subsectionTarget
+- createdBy
+- teacher1Name, teacher1Designation
+- teacher2Name, teacher2Designation
+- createdAt, updatedAt
+
+Migration history includes added fields for experiment_name and index_rows, but they are not currently represented in runtime schema usage.
+
+---
+
+## 6. Architecture and Implementation Notes
+
+- Rendering model: Next.js App Router with Server Components as default.
+- Protected mutations: next-safe-action with session-aware auth middleware.
+- Route protection:
+  - middleware/proxy guards onboarding and templates routes.
+  - server checks also enforce auth/ownership where needed.
+- Data access: Drizzle ORM query helpers for metadata filtering and template CRUD.
+- PDF engine: @react-pdf/renderer with design registries and context-based renderers.
+
+---
+
+## 7. Non-Functional Requirements (Current)
+
+### 7.1 Performance
+- Suspense boundaries on major routes.
+- Server-side data loading for dashboard and protected pages.
+- Lightweight client mutations via safe actions.
+
+### 7.2 Security and Access Control
+- Authenticated-only template create/edit/preview flows.
+- Owner-only template editing enforced server-side.
+- Authenticated profile update actions scoped to current user.
+
+### 7.3 Reliability
+- Validation at form and server-action layers.
+- Error messaging through toast/UI states in forms.
+- Basic loading/skeleton states across auth/dashboard/settings/template pages.
+
+---
+
+## 8. Gaps and Active Backlog
+
+### 8.1 High Priority
+- Configure and verify Google OAuth provider end-to-end if social login is required.
+- Add dashboard search/filter UI to match expected discovery requirements.
+- Align login post-auth redirect path with existing routes.
+
+### 8.2 Medium Priority
+- Wire experiment_name and index_rows through schema, forms, queries, and index-page renderer.
+- Add richer template moderation/admin flows (admin action file is currently empty).
+
+### 8.3 Low Priority
+- Additional cover page and index page design variants.
+- Public sharing for templates.
+- University-specific logo and style packs.
+
+---
+
+## 9. V2 Direction
+
+- Full report composition enhancements beyond current 3-page output.
+- Advanced filtering and discoverability.
+- Improved mobile PDF preview fallback for browsers with embedded viewer limitations.
+- Collaboration and sharing capabilities for templates.
