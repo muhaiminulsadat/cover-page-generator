@@ -52,7 +52,9 @@ export default function RootLayout({
       <body className="min-h-full flex flex-col text-foreground">
         <ThemeProvider>
           <Suspense
-            fallback={<div className="fixed top-0 left-0 right-0 z-50 h-16 border-b border-border bg-background" />}
+            fallback={
+              <div className="fixed top-0 left-0 right-0 z-50 h-16 border-b border-border bg-background" />
+            }
           >
             <Navbar />
           </Suspense>
