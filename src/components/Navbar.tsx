@@ -199,7 +199,7 @@ export default function Navbar() {
                 <span className="sr-only">Open menu</span>
               </Button>
             </SheetTrigger>
-            <SheetContent side="right" className="w-[92vw] max-w-sm p-0">
+            <SheetContent side="right" className="w-[80vw] max-w-xs p-0">
               <div className="flex h-full flex-col bg-background">
                 <SheetHeader className="border-b border-border/70 bg-muted/30 px-5 pb-4 pt-8 text-left">
                   <SheetTitle className="text-base tracking-tight">
