@@ -52,9 +52,7 @@ export default function RegisterPage() {
       },
       {
         onSuccess: () => {
-          toast.success(
-            "Account created successfully! Please check your email to verify your account.",
-          );
+          toast.success("Account created successfully!");
           router.push("/");
         },
       },
@@ -110,7 +108,7 @@ export default function RegisterPage() {
                 id="email"
                 name="email"
                 type="email"
-                placeholder="you@example.com"
+                placeholder="e.g. sadat@handsome.beshi"
                 value={form.email}
                 onChange={handleChange}
                 disabled={loading}

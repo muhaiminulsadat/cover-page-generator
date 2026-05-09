@@ -69,7 +69,7 @@ const styles = StyleSheet.create({
     borderBottomWidth: 0,
   },
   expNoCol: {
-    width: "8.5%",
+    width: "8%",
     borderRightStyle: "solid",
     borderRightWidth: 1,
     borderRightColor: "#000",
@@ -79,7 +79,7 @@ const styles = StyleSheet.create({
     paddingRight: 4,
   },
   experimentCol: {
-    width: "41.5%",
+    width: "45%",
     borderRightStyle: "solid",
     borderRightWidth: 1,
     borderRightColor: "#000",
@@ -89,7 +89,7 @@ const styles = StyleSheet.create({
     paddingRight: 7,
   },
   dateCol: {
-    width: "17.5%",
+    width: "17%",
     borderRightStyle: "solid",
     borderRightWidth: 1,
     borderRightColor: "#000",
@@ -99,7 +99,7 @@ const styles = StyleSheet.create({
     paddingRight: 5,
   },
   remarksCol: {
-    width: "14.5%",
+    width: "16%",
     borderRightStyle: "solid",
     borderRightWidth: 1,
     borderRightColor: "#000",
@@ -109,7 +109,7 @@ const styles = StyleSheet.create({
     paddingRight: 5,
   },
   facultyCol: {
-    width: "18%",
+    width: "16%",
     justifyContent: "center",
     alignItems: "center",
     paddingLeft: 5,
