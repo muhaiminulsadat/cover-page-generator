@@ -7,7 +7,7 @@ import {cn} from "@/lib/utils";
 import {Toaster} from "react-hot-toast";
 import {Suspense} from "react";
 
-const inter = Inter({subsets: ["latin"], variable: "--font-sans"});
+const inter = Inter({subsets:['latin'],variable:'--font-sans'});
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
