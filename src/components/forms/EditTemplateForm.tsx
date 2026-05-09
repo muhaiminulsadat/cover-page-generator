@@ -49,7 +49,7 @@ export function EditTemplateForm({template}: {template: EditTemplateInput}) {
   const isPending = isEditing || isDeleting;
 
   const form = useForm<EditTemplateInput>({
-    resolver: zodResolver(editTemplateSchema),
+    resolver: zodResolver(editTemplateSchema) as any,
     defaultValues: {
       id: template.id,
       designId: template.designId || DEFAULT_TOP_SHEET_DESIGN,
@@ -75,8 +75,8 @@ export function EditTemplateForm({template}: {template: EditTemplateInput}) {
   });
 
   const {fields, append, remove} = useFieldArray({
-    control: form.control,
-    name: "experimentNames" as any,
+    control: form.control as any,
+    name: "experimentNames",
   });
 
   const selectedSectionTarget = useWatch({
@@ -164,7 +164,7 @@ export function EditTemplateForm({template}: {template: EditTemplateInput}) {
             />
           </div>
 
-          <PageSelection control={form.control} disabled={isPending} />
+          <PageSelection control={form.control as any} disabled={isPending} />
           {form.formState.errors.includeTopPage && (
             <p className="text-sm text-destructive font-medium">
               {form.formState.errors.includeTopPage.message}

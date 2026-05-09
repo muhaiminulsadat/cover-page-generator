@@ -46,7 +46,7 @@ export function CreateTemplateForm() {
   const {executeAsync, isPending} = useAction(createTemplateAction);
 
   const form = useForm<CreateTemplateInput>({
-    resolver: zodResolver(createTemplateSchema),
+    resolver: zodResolver(createTemplateSchema) as any,
     defaultValues: {
       designId: DEFAULT_TOP_SHEET_DESIGN,
       coverDesignId: DEFAULT_COVER_PAGE_DESIGN,
@@ -71,8 +71,8 @@ export function CreateTemplateForm() {
   });
  
   const {fields, append, remove} = useFieldArray({
-    control: form.control,
-    name: "experimentNames" as any, // TypeScript might complain because it's an array of strings not objects
+    control: form.control as any,
+    name: "experimentNames",
   });
 
   const selectedSectionTarget = useWatch({
@@ -141,7 +141,7 @@ export function CreateTemplateForm() {
             />
           </div>
 
-          <PageSelection control={form.control} disabled={isPending} />
+          <PageSelection control={form.control as any} disabled={isPending} />
           {form.formState.errors.includeTopPage && (
             <p className="text-sm text-destructive font-medium">
               {form.formState.errors.includeTopPage.message}

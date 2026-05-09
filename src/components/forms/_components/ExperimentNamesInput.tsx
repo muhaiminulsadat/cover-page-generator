@@ -64,9 +64,9 @@ export function ExperimentNamesInput({
                     disabled={disabled}
                     className="bg-background"
                   />
-                  {errors.experimentNames?.[index] && (
+                  {(errors as any).experimentNames?.[index] && (
                     <p className="text-xs text-destructive">
-                      {(errors.experimentNames[index] as any).message}
+                      {(errors as any).experimentNames[index]?.message}
                     </p>
                   )}
                 </div>
