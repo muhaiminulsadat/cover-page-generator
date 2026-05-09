@@ -34,10 +34,19 @@ export const auth = betterAuth({
       department: {
         type: "string",
       },
+      section: {
+        type: "string",
+      },
+      subsection: {
+        type: "string",
+      },
       level: {
         type: "string",
       },
       term: {
+        type: "string",
+      },
+      hscBatch: {
         type: "string",
       },
     },
