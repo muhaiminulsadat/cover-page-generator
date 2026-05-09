@@ -55,14 +55,14 @@ const styles = StyleSheet.create({
     borderBottomWidth: 1,
     borderBottomStyle: "solid",
     borderBottomColor: "#000",
-    minHeight: 46,
+    minHeight: 48,
   },
   tableRow: {
     flexDirection: "row",
     borderBottomStyle: "solid",
     borderBottomWidth: 1,
     borderBottomColor: "#000",
-    minHeight: 38,
+    minHeight: 48,
     alignItems: "stretch",
   },
   lastTableRow: {
@@ -132,7 +132,13 @@ export function renderClassicV1IndexPage(ctx: IndexPageRenderContext) {
   const studentId = user.studentId?.trim() || "-";
   const section = user.section?.trim() || "-";
   const groupNo = "";
-  const rows = Array.from({length: 10}, (_, index) => index + 1);
+
+  const experimentNames = template.experimentNames || [];
+  const totalRows = Math.max(12, experimentNames.length);
+  const rows = Array.from({length: totalRows}, (_, index) => ({
+    no: index + 1,
+    name: experimentNames[index] || " ",
+  }));
 
   return (
     <Page size="A4" style={styles.page}>
@@ -165,9 +171,9 @@ export function renderClassicV1IndexPage(ctx: IndexPageRenderContext) {
           </View>
         </View>
 
-        {rows.map((rowNo, index) => (
+        {rows.map((row, index) => (
           <View
-            key={rowNo}
+            key={row.no}
             style={
               index === rows.length - 1
                 ? [styles.tableRow, styles.lastTableRow]
@@ -175,10 +181,10 @@ export function renderClassicV1IndexPage(ctx: IndexPageRenderContext) {
             }
           >
             <View style={styles.expNoCol}>
-              <Text style={styles.cellText}>{rowNo}</Text>
+              <Text style={styles.cellText}>{row.no}</Text>
             </View>
             <View style={styles.experimentCol}>
-              <Text style={styles.cellText}> </Text>
+              <Text style={styles.cellText}>{row.name}</Text>
             </View>
             <View style={styles.dateCol}>
               <Text style={styles.cellText}> </Text>

@@ -11,6 +11,7 @@ export interface TopSheetTemplateData {
   includeTopPage?: boolean;
   includeCoverPage?: boolean;
   includeIndexPage?: boolean;
+  experimentNames?: string[];
 }
 
 export interface TopSheetUserData {

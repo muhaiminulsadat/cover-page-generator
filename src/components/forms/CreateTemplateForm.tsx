@@ -1,6 +1,6 @@
 "use client";
 
-import {useForm, useWatch} from "react-hook-form";
+import {useForm, useWatch, useFieldArray} from "react-hook-form";
 import {zodResolver} from "@hookform/resolvers/zod";
 import {
   createTemplateSchema,
@@ -10,7 +10,7 @@ import {createTemplateAction} from "@/app/actions/template";
 import {useRouter} from "next/navigation";
 import toast from "react-hot-toast";
 import {useAction} from "next-safe-action/hooks";
-import {Building2, ChevronDown} from "lucide-react";
+import {Building2, ChevronDown, Plus, Trash2} from "lucide-react";
 import {Button} from "@/components/ui/button";
 import {Input} from "@/components/ui/input";
 import {Label} from "@/components/ui/label";
@@ -66,7 +66,13 @@ export function CreateTemplateForm() {
       includeTopPage: true,
       includeCoverPage: true,
       includeIndexPage: true,
+      experimentNames: [],
     },
+  });
+ 
+  const {fields, append, remove} = useFieldArray({
+    control: form.control,
+    name: "experimentNames" as any, // TypeScript might complain because it's an array of strings not objects
   });
 
   const selectedSectionTarget = useWatch({
@@ -397,6 +403,57 @@ export function CreateTemplateForm() {
                   {...form.register("teacher2Designation")}
                 />
               </div>
+            </div>
+          </div>
+ 
+          <div className="space-y-4">
+            <div className="flex items-center justify-between">
+              <h3 className="font-medium text-lg">Experiments (Index Page)</h3>
+              <Button
+                type="button"
+                variant="outline"
+                size="sm"
+                onClick={() => append("")}
+                className="gap-2"
+                disabled={isPending}
+              >
+                <Plus className="size-4" />
+                Add Experiment
+              </Button>
+            </div>
+            <p className="text-sm text-muted-foreground">
+              Add experiment names to pre-fill the index page. Leave empty for
+              manual handwriting (12 rows provided by default).
+            </p>
+ 
+            <div className="space-y-3">
+              {fields.map((field, index) => (
+                <div key={field.id} className="flex items-center gap-2">
+                  <div className="flex-none flex items-center justify-center size-8 rounded-full bg-muted text-xs font-medium">
+                    {index + 1}
+                  </div>
+                  <Input
+                    {...form.register(`experimentNames.${index}` as const)}
+                    placeholder={`Experiment ${index + 1} name...`}
+                    disabled={isPending}
+                  />
+                  <Button
+                    type="button"
+                    variant="ghost"
+                    size="icon"
+                    onClick={() => remove(index)}
+                    className="text-destructive hover:text-destructive hover:bg-destructive/10"
+                    disabled={isPending}
+                  >
+                    <Trash2 className="size-4" />
+                  </Button>
+                </div>
+              ))}
+              {fields.length === 0 && (
+                <div className="text-center p-8 border-2 border-dashed rounded-lg text-muted-foreground text-sm">
+                  No experiments added yet.
+                </div>
+              )}
             </div>
           </div>
 
