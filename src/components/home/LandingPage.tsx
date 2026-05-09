@@ -3,24 +3,24 @@ import {ArrowRight, Code2, Layers, ShieldCheck, Zap} from "lucide-react";
 import {Button} from "@/components/ui/button";
 
 const FEATURES = [
-  {
-    icon: Zap,
-    title: "Fast by default",
-    description:
-      "Built on Next.js App Router with server components and optimized rendering out of the box.",
-  },
-  {
-    icon: ShieldCheck,
-    title: "Auth ready",
-    description:
-      "Better Auth integrated with email/password and OAuth support. Sessions just work.",
-  },
-  {
-    icon: Code2,
-    title: "Great DX",
-    description:
-      "shadcn/ui components, Tailwind CSS, and TypeScript — a stack you'll actually enjoy.",
-  },
+  // {
+  //   icon: Zap,
+  //   title: "Fast by default",
+  //   description:
+  //     "Built on Next.js App Router with server components and optimized rendering out of the box.",
+  // },
+  // {
+  //   icon: ShieldCheck,
+  //   title: "Auth ready",
+  //   description:
+  //     "Better Auth integrated with email/password and OAuth support. Sessions just work.",
+  // },
+  // {
+  //   icon: Code2,
+  //   title: "Great DX",
+  //   description:
+  //     "shadcn/ui components, Tailwind CSS, and TypeScript — a stack you'll actually enjoy.",
+  // },
 ];
 
 export function LandingPage() {
