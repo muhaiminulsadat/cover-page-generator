@@ -38,6 +38,7 @@ import {
   TOP_SHEET_DESIGNS,
 } from "@/lib/constants/top-sheet-designs";
 import {DesignPickerDialog} from "./_components/DesignPickerDialog";
+import {PageSelection} from "./_components/PageSelection";
 
 export function CreateTemplateForm() {
   const router = useRouter();
@@ -62,6 +63,9 @@ export function CreateTemplateForm() {
       teacher1Designation: "",
       teacher2Name: "",
       teacher2Designation: "",
+      includeTopPage: true,
+      includeCoverPage: true,
+      includeIndexPage: true,
     },
   });
 
@@ -130,6 +134,13 @@ export function CreateTemplateForm() {
               disabled={isPending}
             />
           </div>
+
+          <PageSelection control={form.control} disabled={isPending} />
+          {form.formState.errors.includeTopPage && (
+            <p className="text-sm text-destructive font-medium">
+              {form.formState.errors.includeTopPage.message}
+            </p>
+          )}
 
           <div className="space-y-4">
             <h3 className="font-medium text-lg">Course Details</h3>

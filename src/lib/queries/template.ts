@@ -21,6 +21,9 @@ interface TemplateQueryRow {
   teacher1Designation: string;
   teacher2Name: string | null;
   teacher2Designation: string | null;
+  includeTopPage: boolean;
+  includeCoverPage: boolean;
+  includeIndexPage: boolean;
   createdAt: Date;
   updatedAt: Date;
 }
@@ -43,6 +46,9 @@ interface TemplateSelectRow {
   teacher1Designation: string;
   teacher2Name: string | null;
   teacher2Designation: string | null;
+  includeTopPage: boolean;
+  includeCoverPage: boolean;
+  includeIndexPage: boolean;
   createdAt: Date;
   updatedAt: Date;
 }
@@ -64,6 +70,9 @@ const templateColumnsWithoutCover = {
   teacher1Designation: templates.teacher1Designation,
   teacher2Name: templates.teacher2Name,
   teacher2Designation: templates.teacher2Designation,
+  includeTopPage: templates.includeTopPage,
+  includeCoverPage: templates.includeCoverPage,
+  includeIndexPage: templates.includeIndexPage,
   createdAt: templates.createdAt,
   updatedAt: templates.updatedAt,
 } as const;

@@ -87,6 +87,9 @@ export const templates = pgTable("templates", {
   teacher1Designation: text("teacher_1_designation").notNull(),
   teacher2Name: text("teacher_2_name"),
   teacher2Designation: text("teacher_2_designation"),
+  includeTopPage: boolean("include_top_page").notNull().default(true),
+  includeCoverPage: boolean("include_cover_page").notNull().default(true),
+  includeIndexPage: boolean("include_index_page").notNull().default(true),
   createdAt: timestamp("created_at").notNull().defaultNow(),
   updatedAt: timestamp("updated_at").notNull().defaultNow(),
 });

@@ -90,7 +90,18 @@ export const createTemplateSchema = z.object({
   teacher1Designation: z.string().min(1, "Teacher 1 Designation is required"),
   teacher2Name: z.string().optional(),
   teacher2Designation: z.string().optional(),
-});
+
+  // Page selection
+  includeTopPage: z.boolean().default(true),
+  includeCoverPage: z.boolean().default(true),
+  includeIndexPage: z.boolean().default(true),
+}).refine(
+  (data) => data.includeTopPage || data.includeCoverPage || data.includeIndexPage,
+  {
+    message: "At least one page must be selected",
+    path: ["includeTopPage"], // Attach error to the first checkbox
+  },
+);
 
 export type CreateTemplateInput = z.infer<typeof createTemplateSchema>;
 

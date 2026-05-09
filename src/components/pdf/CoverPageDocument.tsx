@@ -32,9 +32,11 @@ export default function CoverPageDocument({
 
   return (
     <Document>
-      {renderTopSheetByDesign(template.designId, topSheetContext)}
-      {renderCoverPageByDesign(template.coverDesignId, coverPageContext)}
-      {renderIndexPageByDesign(indexPageContext)}
+      {(template.includeTopPage ?? true) &&
+        renderTopSheetByDesign(template.designId || "", topSheetContext)}
+      {(template.includeCoverPage ?? true) &&
+        renderCoverPageByDesign(template.coverDesignId || "", coverPageContext)}
+      {(template.includeIndexPage ?? true) && renderIndexPageByDesign(indexPageContext)}
     </Document>
   );
 }

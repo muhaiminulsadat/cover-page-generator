@@ -8,6 +8,9 @@ export interface TopSheetTemplateData {
   teacher1Designation: string;
   teacher2Name?: string | null;
   teacher2Designation?: string | null;
+  includeTopPage?: boolean;
+  includeCoverPage?: boolean;
+  includeIndexPage?: boolean;
 }
 
 export interface TopSheetUserData {

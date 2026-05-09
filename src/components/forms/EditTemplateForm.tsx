@@ -38,6 +38,7 @@ import {
   TOP_SHEET_DESIGNS,
 } from "@/lib/constants/top-sheet-designs";
 import {DesignPickerDialog} from "./_components/DesignPickerDialog";
+import {PageSelection} from "./_components/PageSelection";
 
 export function EditTemplateForm({template}: {template: EditTemplateInput}) {
   const router = useRouter();
@@ -63,6 +64,9 @@ export function EditTemplateForm({template}: {template: EditTemplateInput}) {
       teacher1Designation: template.teacher1Designation || "",
       teacher2Name: template.teacher2Name || "",
       teacher2Designation: template.teacher2Designation || "",
+      includeTopPage: template.includeTopPage ?? true,
+      includeCoverPage: template.includeCoverPage ?? true,
+      includeIndexPage: template.includeIndexPage ?? true,
     },
   });
 
@@ -129,6 +133,13 @@ export function EditTemplateForm({template}: {template: EditTemplateInput}) {
               disabled={isPending}
             />
           </div>
+
+          <PageSelection control={form.control} disabled={isPending} />
+          {form.formState.errors.includeTopPage && (
+            <p className="text-sm text-destructive font-medium">
+              {form.formState.errors.includeTopPage.message}
+            </p>
+          )}
 
           <div className="space-y-4">
             <h3 className="font-medium text-lg">Course Details</h3>
