@@ -1,27 +1,35 @@
 import Link from "next/link";
-import {ArrowRight, Code2, Layers, ShieldCheck, Zap} from "lucide-react";
+import {ArrowRight, Layers} from "lucide-react";
 import {Button} from "@/components/ui/button";
 
-const FEATURES = [
-  // {
-  //   icon: Zap,
-  //   title: "Fast by default",
-  //   description:
-  //     "Built on Next.js App Router with server components and optimized rendering out of the box.",
-  // },
-  // {
-  //   icon: ShieldCheck,
-  //   title: "Auth ready",
-  //   description:
-  //     "Better Auth integrated with email/password and OAuth support. Sessions just work.",
-  // },
-  // {
-  //   icon: Code2,
-  //   title: "Great DX",
-  //   description:
-  //     "shadcn/ui components, Tailwind CSS, and TypeScript — a stack you'll actually enjoy.",
-  // },
+/*
+interface FeatureItem {
+  icon: LucideIcon;
+  title: string;
+  description: string;
+}
+
+const FEATURES: FeatureItem[] = [
+  {
+    icon: Zap,
+    title: "Fast by default",
+    description:
+      "Built on Next.js App Router with server components and optimized rendering out of the box.",
+  },
+  {
+    icon: ShieldCheck,
+    title: "Auth ready",
+    description:
+      "Better Auth integrated with email/password and OAuth support. Sessions just work.",
+  },
+  {
+    icon: Code2,
+    title: "Great DX",
+    description:
+      "shadcn/ui components, Tailwind CSS, and TypeScript - a stack you'll actually enjoy.",
+  },
 ];
+*/
 
 export function LandingPage() {
   return (
@@ -54,7 +62,7 @@ export function LandingPage() {
         </div>
       </section>
 
-      <section className="border-t border-border px-4 py-16">
+      {/* <section className="border-t border-border px-4 py-16">
         <div className="max-w-4xl mx-auto grid grid-cols-1 sm:grid-cols-3 gap-8">
           {FEATURES.map(({icon: Icon, title, description}) => (
             <div key={title} className="flex flex-col gap-3">
@@ -68,7 +76,7 @@ export function LandingPage() {
             </div>
           ))}
         </div>
-      </section>
+      </section> */}
     </main>
   );
 }
