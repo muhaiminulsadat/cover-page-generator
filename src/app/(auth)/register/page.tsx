@@ -95,7 +95,7 @@ export default function RegisterPage() {
                 id="name"
                 name="name"
                 type="text"
-                placeholder="John Doe"
+                placeholder="e.g. Muhaiminul Islam Sadat"
                 value={form.name}
                 onChange={handleChange}
                 disabled={loading}
