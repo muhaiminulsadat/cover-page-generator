@@ -8,15 +8,17 @@ import {
 } from "@/components/ui/card";
 import {Badge} from "@/components/ui/badge";
 import {Button} from "@/components/ui/button";
-import {ArrowRight, BookOpen, Layers} from "lucide-react";
+import {ArrowRight, BookOpen, Layers, Pencil} from "lucide-react";
 import {templates} from "@/db/schema";
 import {getDepartmentLabel} from "@/lib/constants/departments";
 
 interface TemplateCardProps {
   template: typeof templates.$inferSelect;
+  userId: string;
 }
 
-export function TemplateCard({template}: TemplateCardProps) {
+export function TemplateCard({template, userId}: TemplateCardProps) {
+  const isOwner = template.createdBy === userId;
   return (
     <Card className="flex flex-col flex-1 h-full overflow-hidden hover:shadow-md transition-shadow">
       <CardHeader className="flex-1 pb-4">
@@ -59,12 +61,19 @@ export function TemplateCard({template}: TemplateCardProps) {
           )}
         </div>
       </CardHeader>
-      <CardFooter className="pt-0 border-t bg-muted/20 px-6 py-4">
-        <Button variant="default" className="w-full" asChild>
+      <CardFooter className="pt-0 border-t bg-muted/20 px-6 py-4 gap-2">
+        <Button variant="default" className="flex-1" asChild>
           <Link href={`/templates/${template.id}`}>
             Preview & Generate <ArrowRight className="ml-2 w-4 h-4" />
           </Link>
         </Button>
+        {isOwner && (
+          <Button variant="outline" size="icon" asChild title="Edit template">
+            <Link href={`/templates/${template.id}/edit`}>
+              <Pencil className="w-4 h-4" />
+            </Link>
+          </Button>
+        )}
       </CardFooter>
     </Card>
   );

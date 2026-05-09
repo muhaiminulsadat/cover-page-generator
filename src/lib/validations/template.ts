@@ -110,3 +110,9 @@ export const editTemplateSchema = createTemplateSchema.extend({
 });
 
 export type EditTemplateInput = z.infer<typeof editTemplateSchema>;
+
+export const deleteTemplateSchema = z.object({
+  id: z.string().min(1, "Template ID is required"),
+});
+
+export type DeleteTemplateInput = z.infer<typeof deleteTemplateSchema>;

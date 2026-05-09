@@ -7,11 +7,13 @@ import {Button} from "@/components/ui/button";
 interface DashboardContentProps {
   templatesList: Array<typeof templates.$inferSelect>;
   departmentLabel: string;
+  userId: string;
 }
 
 export function DashboardContent({
   templatesList,
   departmentLabel,
+  userId,
 }: DashboardContentProps) {
   return (
     <main className="w-full max-w-5xl mx-auto px-4 py-10">
@@ -48,7 +50,11 @@ export function DashboardContent({
       ) : (
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
           {templatesList.map((template) => (
-            <TemplateCard key={template.id} template={template} />
+            <TemplateCard
+              key={template.id}
+              template={template}
+              userId={userId}
+            />
           ))}
         </div>
       )}

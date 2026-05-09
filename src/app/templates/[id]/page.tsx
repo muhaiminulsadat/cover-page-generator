@@ -43,10 +43,17 @@ async function TemplatePreview({params}: {params: Promise<{id: string}>}) {
     return redirect("/login");
   }
 
-  const [currentUser] = await db
-    .select()
-    .from(userSchema)
-    .where(eq(userSchema.id, session.user.id));
+  let currentUser = null;
+  try {
+    const users = await db
+      .select()
+      .from(userSchema)
+      .where(eq(userSchema.id, session.user.id));
+    currentUser = users[0];
+  } catch (error) {
+    console.error("Error fetching user in TemplatePreview:", error);
+    throw error;
+  }
 
   const template = await getTemplateById(id);
 

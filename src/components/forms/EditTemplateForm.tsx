@@ -6,7 +6,7 @@ import {
   editTemplateSchema,
   EditTemplateInput,
 } from "@/lib/validations/template";
-import {editTemplateAction} from "@/app/actions/template";
+import {deleteTemplateAction, editTemplateAction} from "@/app/actions/template";
 import {useRouter} from "next/navigation";
 import toast from "react-hot-toast";
 import {useAction} from "next-safe-action/hooks";
@@ -28,7 +28,7 @@ import {
   CardHeader,
   CardTitle,
 } from "@/components/ui/card";
-import {Building2, ChevronDown, Loader2} from "lucide-react";
+import {Building2, ChevronDown, Loader2, Trash2} from "lucide-react";
 import {
   COVER_PAGE_DESIGNS,
   DEFAULT_COVER_PAGE_DESIGN,
@@ -43,7 +43,10 @@ import {PageSelection} from "./_components/PageSelection";
 export function EditTemplateForm({template}: {template: EditTemplateInput}) {
   const router = useRouter();
 
-  const {executeAsync, isPending} = useAction(editTemplateAction);
+  const {executeAsync: executeEdit, isPending: isEditing} = useAction(editTemplateAction);
+  const {executeAsync: executeDelete, isPending: isDeleting} = useAction(deleteTemplateAction);
+
+  const isPending = isEditing || isDeleting;
 
   const form = useForm<EditTemplateInput>({
     resolver: zodResolver(editTemplateSchema),
@@ -85,7 +88,7 @@ export function EditTemplateForm({template}: {template: EditTemplateInput}) {
   const subsectionTargetOptions = getSubsectionOptions(selectedSectionTarget);
 
   async function onSubmit(data: EditTemplateInput) {
-    const result = await executeAsync(data);
+    const result = await executeEdit(data);
     if (result?.data?.success) {
       toast.success("Template updated successfully");
       router.push(`/templates/${result.data.data.id}`);
@@ -95,6 +98,27 @@ export function EditTemplateForm({template}: {template: EditTemplateInput}) {
       toast.error("Please check the form for errors.");
     } else {
       toast.error("Something went wrong");
+    }
+  }
+
+  async function onDelete() {
+    if (
+      !window.confirm(
+        "Are you sure you want to delete this template? This action cannot be undone.",
+      )
+    ) {
+      return;
+    }
+
+    const result = await executeDelete({id: template.id});
+    if (result?.data?.success) {
+      toast.success("Template deleted successfully");
+      router.push("/");
+      router.refresh();
+    } else if (result?.serverError) {
+      toast.error(result.serverError);
+    } else {
+      toast.error("Failed to delete template");
     }
   }
 
@@ -399,16 +423,43 @@ export function EditTemplateForm({template}: {template: EditTemplateInput}) {
             </div>
           </div>
 
-          <Button type="submit" className="w-full" disabled={isPending}>
-            {isPending ? (
-              <>
-                <Loader2 className="mr-2 h-4 w-4 animate-spin" />
-                Saving Changes...
-              </>
-            ) : (
-              "Save Template"
-            )}
-          </Button>
+          <div className="flex flex-col gap-3">
+            <Button type="submit" className="w-full" disabled={isPending}>
+              {isEditing ? (
+                <>
+                  <Loader2 className="mr-2 h-4 w-4 animate-spin" />
+                  Saving Changes...
+                </>
+              ) : (
+                "Save Template"
+              )}
+            </Button>
+            
+            <div className="pt-4 border-t mt-4">
+              <Button 
+                type="button" 
+                variant="destructive" 
+                className="w-full" 
+                onClick={onDelete}
+                disabled={isPending}
+              >
+                {isDeleting ? (
+                  <>
+                    <Loader2 className="mr-2 h-4 w-4 animate-spin" />
+                    Deleting...
+                  </>
+                ) : (
+                  <>
+                    <Trash2 className="mr-2 h-4 w-4" />
+                    Delete Template
+                  </>
+                )}
+              </Button>
+              <p className="text-xs text-muted-foreground text-center mt-2">
+                This action is permanent and cannot be reversed.
+              </p>
+            </div>
+          </div>
         </form>
       </CardContent>
     </Card>

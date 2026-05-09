@@ -27,7 +27,8 @@ export const updateProfile = authActionClient
         .where(eq(user.id, ctx.user.id));
 
       return {success: true, data: parsedInput};
-    } catch {
+    } catch (error) {
+      console.error("Error updating profile:", error);
       throw new Error("Failed to update profile");
     }
   });
@@ -56,7 +57,8 @@ export const updateProfileSettings = authActionClient
       revalidatePath("/settings");
 
       return {success: true, data: parsedInput};
-    } catch {
+    } catch (error) {
+      console.error("Error updating profile settings:", error);
       throw new Error("Failed to update profile settings");
     }
   });

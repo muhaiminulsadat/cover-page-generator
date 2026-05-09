@@ -132,10 +132,9 @@ export async function insertTemplate(data: typeof templates.$inferInsert) {
   };
 
   try {
-    const [newTemplate] = await db
-      .insert(templates)
-      .values(payload)
-      .returning();
+    const results = await db.insert(templates).values(payload).returning();
+    const newTemplate = results[0];
+    if (!newTemplate) throw new Error("Failed to create template");
     return hydrateTemplateRow(newTemplate as TemplateSelectRow);
   } catch (error) {
     if (supportsCoverDesign || !("coverDesignId" in payload)) {
@@ -145,22 +144,30 @@ export async function insertTemplate(data: typeof templates.$inferInsert) {
     const fallbackPayload = {...payload};
     delete fallbackPayload.coverDesignId;
 
-    const [newTemplate] = await db
+    const results = await db
       .insert(templates)
       .values(fallbackPayload)
       .returning();
+    const newTemplate = results[0];
+    if (!newTemplate) throw new Error("Failed to create template");
 
     return hydrateTemplateRow(newTemplate as TemplateSelectRow);
   }
 }
 
 export async function getTemplateById(id: string) {
-  const columns = await selectTemplateColumns();
-  const [template] = await db
-    .select(columns)
-    .from(templates)
-    .where(eq(templates.id, id));
-  return hydrateTemplateRow(template as TemplateSelectRow);
+  try {
+    const columns = await selectTemplateColumns();
+    const rows = await db
+      .select(columns)
+      .from(templates)
+      .where(eq(templates.id, id));
+    const template = rows[0];
+    return template ? hydrateTemplateRow(template as TemplateSelectRow) : null;
+  } catch (error) {
+    console.error("Error in getTemplateById:", error);
+    throw error;
+  }
 }
 
 export async function updateTemplate(
@@ -180,11 +187,12 @@ export async function updateTemplate(
   }
 
   try {
-    const [updatedTemplate] = await db
+    const results = await db
       .update(templates)
       .set(payload)
       .where(and(eq(templates.id, id), eq(templates.createdBy, userId)))
       .returning();
+    const updatedTemplate = results[0];
     return updatedTemplate
       ? hydrateTemplateRow(updatedTemplate as TemplateSelectRow)
       : undefined;
@@ -196,11 +204,12 @@ export async function updateTemplate(
     const fallbackPayload = {...payload};
     delete fallbackPayload.coverDesignId;
 
-    const [updatedTemplate] = await db
+    const results = await db
       .update(templates)
       .set(fallbackPayload)
       .where(and(eq(templates.id, id), eq(templates.createdBy, userId)))
       .returning();
+    const updatedTemplate = results[0];
 
     return updatedTemplate
       ? hydrateTemplateRow(updatedTemplate as TemplateSelectRow)
@@ -216,63 +225,86 @@ export async function getTemplatesByMetadata(userMeta: {
   subsection?: string | null;
   hscBatch?: string | null;
 }) {
-  const columns = await selectTemplateColumns();
-  const rows = await db
-    .select(columns)
-    .from(templates)
-    .where(
-      and(
-        userMeta.department
-          ? or(
-              eq(templates.departmentTarget, userMeta.department),
-              eq(templates.departmentTarget, ""),
-              isNull(templates.departmentTarget),
-            )
-          : undefined,
-        userMeta.level
-          ? or(
-              eq(templates.levelTarget, userMeta.level),
-              eq(templates.levelTarget, ""),
-              isNull(templates.levelTarget),
-            )
-          : undefined,
-        userMeta.term
-          ? or(
-              eq(templates.termTarget, userMeta.term),
-              eq(templates.termTarget, ""),
-              isNull(templates.termTarget),
-            )
-          : undefined,
-        userMeta.section
-          ? or(
-              eq(templates.sectionTarget, userMeta.section),
-              eq(templates.sectionTarget, ""),
-              isNull(templates.sectionTarget),
-            )
-          : undefined,
-        userMeta.subsection
-          ? or(
-              eq(templates.subsectionTarget, userMeta.subsection),
-              eq(templates.subsectionTarget, ""),
-              isNull(templates.subsectionTarget),
-            )
-          : undefined,
-        userMeta.hscBatch
-          ? or(
-              eq(templates.hscBatchTarget, userMeta.hscBatch),
-              eq(templates.hscBatchTarget, ""),
-              isNull(templates.hscBatchTarget),
-            )
-          : undefined,
-      ),
-    );
+  try {
+    const columns = await selectTemplateColumns();
+    const rows = await db
+      .select(columns)
+      .from(templates)
+      .where(
+        and(
+          userMeta.department
+            ? or(
+                eq(templates.departmentTarget, userMeta.department),
+                eq(templates.departmentTarget, ""),
+                isNull(templates.departmentTarget),
+              )
+            : undefined,
+          userMeta.level
+            ? or(
+                eq(templates.levelTarget, userMeta.level),
+                eq(templates.levelTarget, ""),
+                isNull(templates.levelTarget),
+              )
+            : undefined,
+          userMeta.term
+            ? or(
+                eq(templates.termTarget, userMeta.term),
+                eq(templates.termTarget, ""),
+                isNull(templates.termTarget),
+              )
+            : undefined,
+          userMeta.section
+            ? or(
+                eq(templates.sectionTarget, userMeta.section),
+                eq(templates.sectionTarget, ""),
+                isNull(templates.sectionTarget),
+              )
+            : undefined,
+          userMeta.subsection
+            ? or(
+                eq(templates.subsectionTarget, userMeta.subsection),
+                eq(templates.subsectionTarget, ""),
+                isNull(templates.subsectionTarget),
+              )
+            : undefined,
+          userMeta.hscBatch
+            ? or(
+                eq(templates.hscBatchTarget, userMeta.hscBatch),
+                eq(templates.hscBatchTarget, ""),
+                isNull(templates.hscBatchTarget),
+              )
+            : undefined,
+        ),
+      );
 
-  return rows.map((row) => hydrateTemplateRow(row as TemplateSelectRow));
+    return rows.map((row) => hydrateTemplateRow(row as TemplateSelectRow));
+  } catch (error) {
+    console.error("Error in getTemplatesByMetadata:", error);
+    throw error;
+  }
 }
 
 export async function getAllTemplates() {
-  const columns = await selectTemplateColumns();
-  const rows = await db.select(columns).from(templates);
+  try {
+    const columns = await selectTemplateColumns();
+    const rows = await db.select(columns).from(templates);
 
-  return rows.map((row) => hydrateTemplateRow(row as TemplateSelectRow));
+    return rows.map((row) => hydrateTemplateRow(row as TemplateSelectRow));
+  } catch (error) {
+    console.error("Error in getAllTemplates:", error);
+    throw error;
+  }
+}
+
+export async function deleteTemplate(id: string, userId: string) {
+  try {
+    const results = await db
+      .delete(templates)
+      .where(and(eq(templates.id, id), eq(templates.createdBy, userId)))
+      .returning();
+    return results[0];
+  } catch (error) {
+    console.error("Error in deleteTemplate:", error);
+    throw error;
+  }
 }

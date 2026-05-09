@@ -25,10 +25,17 @@ async function Dashboard() {
 
   const sessionUser = session.user;
 
-  const [currentUser] = await db
-    .select()
-    .from(userSchema)
-    .where(eq(userSchema.id, sessionUser.id));
+  let currentUser = null;
+  try {
+    const users = await db
+      .select()
+      .from(userSchema)
+      .where(eq(userSchema.id, sessionUser.id));
+    currentUser = users[0];
+  } catch (error) {
+    console.error("Error fetching user in Dashboard:", error);
+    throw error;
+  }
 
   const templatesList = currentUser
     ? await getTemplatesByMetadata({
@@ -44,6 +51,7 @@ async function Dashboard() {
   return (
     <DashboardContent
       templatesList={templatesList}
+      userId={sessionUser.id}
       departmentLabel={
         currentUser?.department
           ? getDepartmentLabel(currentUser.department)

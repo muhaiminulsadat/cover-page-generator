@@ -3,9 +3,14 @@
 import {authActionClient} from "@/lib/safe-action";
 import {
   createTemplateSchema,
+  deleteTemplateSchema,
   editTemplateSchema,
 } from "@/lib/validations/template";
-import {insertTemplate, updateTemplate} from "@/lib/queries/template";
+import {
+  deleteTemplate,
+  insertTemplate,
+  updateTemplate,
+} from "@/lib/queries/template";
 import {revalidatePath} from "next/cache";
 
 export const createTemplateAction = authActionClient
@@ -26,6 +31,7 @@ export const createTemplateAction = authActionClient
 
       return {success: true, data: template};
     } catch (error) {
+      console.error("Error creating template:", error);
       if (error instanceof Error) {
         throw error;
       }
@@ -51,10 +57,36 @@ export const editTemplateAction = authActionClient
 
       return {success: true, data: updatedTemplate};
     } catch (error) {
+      console.error("Error editing template:", error);
       if (error instanceof Error) {
         throw error;
       }
 
       throw new Error("Failed to edit template");
+    }
+  });
+
+export const deleteTemplateAction = authActionClient
+  .schema(deleteTemplateSchema)
+  .action(async ({parsedInput, ctx}) => {
+    try {
+      const {id} = parsedInput;
+      const deletedTemplate = await deleteTemplate(id, ctx.user.id);
+
+      if (!deletedTemplate) {
+        throw new Error("Not authorized or template not found");
+      }
+
+      revalidatePath("/");
+      revalidatePath("/templates");
+      revalidatePath(`/templates/${id}`);
+
+      return {success: true};
+    } catch (error) {
+      console.error("Error deleting template:", error);
+      if (error instanceof Error) {
+        throw error;
+      }
+      throw new Error("Failed to delete template");
     }
   });

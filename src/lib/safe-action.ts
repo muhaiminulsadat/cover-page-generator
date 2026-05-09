@@ -9,13 +9,18 @@ export const actionClient = createSafeActionClient({
 });
 
 export const authActionClient = actionClient.use(async ({next}) => {
-  const session = await auth.api.getSession({
-    headers: await headers(),
-  });
+  try {
+    const session = await auth.api.getSession({
+      headers: await headers(),
+    });
 
-  if (!session?.user) {
-    throw new Error("Unauthorized");
+    if (!session?.user) {
+      throw new Error("Unauthorized");
+    }
+
+    return next({ctx: {user: session.user}});
+  } catch (error) {
+    console.error("Auth middleware error:", error);
+    throw error;
   }
-
-  return next({ctx: {user: session.user}});
 });
