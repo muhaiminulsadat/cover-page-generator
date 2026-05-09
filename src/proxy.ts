@@ -1,6 +1,7 @@
 import {betterFetch} from "@better-fetch/fetch";
 import {NextResponse} from "next/server";
 import type {NextRequest} from "next/server";
+import {hasCompletedProfile} from "@/lib/auth";
 
 export async function proxy(request: NextRequest) {
   const {data: session} = await betterFetch<{
@@ -8,6 +9,13 @@ export async function proxy(request: NextRequest) {
       id: string;
       email: string;
       studentId: string | null;
+      university: string | null;
+      department: string | null;
+      section: string | null;
+      subsection: string | null;
+      level: string | null;
+      term: string | null;
+      hscBatch: string | null;
     };
   }>("/api/auth/get-session", {
     baseURL: request.nextUrl.origin,
@@ -24,13 +32,13 @@ export async function proxy(request: NextRequest) {
       return NextResponse.redirect(new URL("/login", request.url));
     }
   } else {
-    const hasCompletedProfile = !!session.user.studentId;
+    const profileComplete = hasCompletedProfile(session.user);
 
-    if (!hasCompletedProfile && request.nextUrl.pathname !== "/onboarding") {
+    if (!profileComplete && request.nextUrl.pathname !== "/onboarding") {
       return NextResponse.redirect(new URL("/onboarding", request.url));
     }
 
-    if (hasCompletedProfile && request.nextUrl.pathname === "/onboarding") {
+    if (profileComplete && request.nextUrl.pathname === "/onboarding") {
       return NextResponse.redirect(new URL("/", request.url));
     }
   }

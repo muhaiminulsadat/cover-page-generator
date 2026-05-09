@@ -3,7 +3,7 @@ import {headers} from "next/headers";
 import {db} from "@/db";
 import {user as userSchema} from "@/db/schema";
 import {eq} from "drizzle-orm";
-import {getTemplatesByMetadata, getAllTemplates} from "@/lib/queries/template";
+import {getTemplatesByMetadata} from "@/lib/queries/template";
 import {Suspense} from "react";
 import {DashboardContent} from "@/components/home/DashboardContent";
 import {DashboardSkeleton} from "@/components/home/DashboardSkeleton";
@@ -13,6 +13,8 @@ import {
   normalizeSectionCode,
   normalizeSubsectionCode,
 } from "@/lib/constants/levels";
+import {hasCompletedProfile} from "@/lib/auth";
+import {redirect} from "next/navigation";
 
 async function Dashboard() {
   const session = await auth.api.getSession({
@@ -37,16 +39,18 @@ async function Dashboard() {
     throw error;
   }
 
-  const templatesList = currentUser
-    ? await getTemplatesByMetadata({
-        department: currentUser.department,
-        level: currentUser.level,
-        term: currentUser.term,
-        section: normalizeSectionCode(currentUser.section),
-        subsection: normalizeSubsectionCode(currentUser.subsection),
-        hscBatch: currentUser.hscBatch,
-      })
-    : await getAllTemplates();
+  if (!currentUser || !hasCompletedProfile(currentUser)) {
+    redirect("/onboarding");
+  }
+
+  const templatesList = await getTemplatesByMetadata({
+    department: currentUser.department,
+    level: currentUser.level,
+    term: currentUser.term,
+    section: normalizeSectionCode(currentUser.section),
+    subsection: normalizeSubsectionCode(currentUser.subsection),
+    hscBatch: currentUser.hscBatch,
+  });
 
   return (
     <DashboardContent

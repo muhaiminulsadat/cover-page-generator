@@ -2,6 +2,17 @@ import {db} from "@/db";
 import {betterAuth} from "better-auth";
 import {drizzleAdapter} from "better-auth/adapters/drizzle";
 
+interface ProfileCompletionInput {
+  studentId?: string | null;
+  university?: string | null;
+  department?: string | null;
+  section?: string | null;
+  subsection?: string | null;
+  level?: string | null;
+  term?: string | null;
+  hscBatch?: string | null;
+}
+
 export const auth = betterAuth({
   database: drizzleAdapter(db, {
     provider: "pg",
@@ -36,3 +47,16 @@ export const auth = betterAuth({
     minPasswordLength: 6,
   },
 });
+
+export function hasCompletedProfile(user: ProfileCompletionInput) {
+  return Boolean(
+    user.studentId &&
+    user.university &&
+    user.department &&
+    user.section &&
+    user.subsection &&
+    user.level &&
+    user.term &&
+    user.hscBatch,
+  );
+}
