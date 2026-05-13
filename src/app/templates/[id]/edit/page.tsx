@@ -7,11 +7,13 @@ import {Suspense} from "react";
 import {Loader2} from "lucide-react";
 import {DEFAULT_COVER_PAGE_DESIGN} from "@/lib/constants/cover-designs";
 
-export default function EditTemplatePage({
+export default async function EditTemplatePage({
   params,
 }: {
   params: Promise<{id: string}>;
 }) {
+  const {id} = await params;
+
   return (
     <Suspense
       fallback={
@@ -20,14 +22,13 @@ export default function EditTemplatePage({
         </div>
       }
     >
-      <EditTemplate params={params} />
+      <EditTemplate id={id} />
     </Suspense>
   );
 }
 
-async function EditTemplate({params}: {params: Promise<{id: string}>}) {
+async function EditTemplate({id}: {id: string}) {
   try {
-    const {id} = await params;
     const session = await auth.api.getSession({
       headers: await headers(),
     });

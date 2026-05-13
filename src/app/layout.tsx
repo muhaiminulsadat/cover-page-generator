@@ -50,17 +50,19 @@ export default function RootLayout({
       )}
     >
       <body className="min-h-full flex flex-col text-foreground">
-        <ThemeProvider>
-          <Suspense
-            fallback={
-              <div className="fixed top-0 left-0 right-0 z-50 h-16 border-b border-border bg-background" />
-            }
-          >
-            <Navbar />
-          </Suspense>
-          <main className="flex-1 pt-16">{children}</main>
-          <Toaster position="top-center" />
-        </ThemeProvider>
+        <Suspense fallback={null}>
+          <ThemeProvider>
+            <Suspense
+              fallback={
+                <div className="fixed top-0 left-0 right-0 z-50 h-16 border-b border-border bg-background" />
+              }
+            >
+              <Navbar />
+            </Suspense>
+            <main className="flex-1 pt-16">{children}</main>
+            <Toaster position="top-center" />
+          </ThemeProvider>
+        </Suspense>
       </body>
     </html>
   );
