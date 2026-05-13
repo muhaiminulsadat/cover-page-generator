@@ -1,6 +1,6 @@
 "use client";
 
-import {useState} from "react";
+import {useState, useEffect} from "react";
 import Link from "next/link";
 import {useRouter} from "next/navigation";
 import {
@@ -29,11 +29,18 @@ import toast from "react-hot-toast";
 
 export default function LoginPage() {
   const router = useRouter();
+  const {data: session, isPending: sessionPending} = authClient.useSession();
   const [form, setForm] = useState({email: "", password: ""});
   const [error, setError] = useState("");
   const [loading, setLoading] = useState(false);
   const [googleLoading, setGoogleLoading] = useState(false);
   const [showPassword, setShowPassword] = useState(false);
+
+  useEffect(() => {
+    if (!sessionPending && session) {
+      router.push("/");
+    }
+  }, [sessionPending, session, router]);
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setForm((prev) => ({...prev, [e.target.name]: e.target.value}));
@@ -249,3 +256,4 @@ export default function LoginPage() {
     </div>
   );
 }
+// login page redirect handled inside component

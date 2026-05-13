@@ -1,6 +1,6 @@
 "use client";
 
-import {useState} from "react";
+import {useState, useEffect} from "react";
 import Link from "next/link";
 import {useRouter} from "next/navigation";
 import {Loader2} from "lucide-react";
@@ -20,9 +20,16 @@ import toast from "react-hot-toast";
 
 export default function RegisterPage() {
   const router = useRouter();
+  const {data: session, isPending: sessionPending} = authClient.useSession();
   const [form, setForm] = useState({name: "", email: "", password: ""});
   const [error, setError] = useState("");
   const [loading, setLoading] = useState(false);
+
+  useEffect(() => {
+    if (!sessionPending && session) {
+      router.push("/");
+    }
+  }, [sessionPending, session, router]);
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setForm((prev) => ({...prev, [e.target.name]: e.target.value}));
