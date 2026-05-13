@@ -49,12 +49,45 @@ export default function Navbar() {
   const {resolvedTheme, setTheme} = useTheme();
   const [scrolled, setScrolled] = useState(false);
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
+  const [profileComplete, setProfileComplete] = useState<boolean | null>(null);
 
   useEffect(() => {
     const onScroll = () => setScrolled(window.scrollY > 10);
     window.addEventListener("scroll", onScroll);
     return () => window.removeEventListener("scroll", onScroll);
   }, []);
+
+  useEffect(() => {
+    let cancelled = false;
+
+    async function checkProfile() {
+      if (!session?.user) {
+        setProfileComplete(null);
+        return;
+      }
+
+      try {
+        const res = await fetch("/api/home/dashboard", {
+          cache: "no-store",
+          credentials: "include",
+        });
+        if (!res.ok) {
+          setProfileComplete(null);
+          return;
+        }
+        const data = await res.json();
+        if (!cancelled) setProfileComplete(Boolean(data.profileComplete));
+      } catch {
+        if (!cancelled) setProfileComplete(null);
+      }
+    }
+
+    void checkProfile();
+
+    return () => {
+      cancelled = true;
+    };
+  }, [session]);
 
   const handleSignOut = async () => {
     await authClient.signOut({
@@ -154,9 +187,11 @@ export default function Navbar() {
                     </p>
                   </div>
                   <DropdownMenuSeparator />
-                  <DropdownMenuItem asChild className="cursor-pointer">
-                    <Link href="/settings">Settings</Link>
-                  </DropdownMenuItem>
+                  {profileComplete !== false && (
+                    <DropdownMenuItem asChild className="cursor-pointer">
+                      <Link href="/settings">Settings</Link>
+                    </DropdownMenuItem>
+                  )}
                   <DropdownMenuSeparator />
                   <DropdownMenuItem
                     onClick={handleSignOut}
@@ -277,7 +312,7 @@ export default function Navbar() {
                       </span>
                     </Button>
 
-                    {session && (
+                    {session && profileComplete !== false && (
                       <SheetClose asChild>
                         <Button
                           variant={

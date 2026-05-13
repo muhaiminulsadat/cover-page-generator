@@ -3,6 +3,7 @@ import {Geist, Geist_Mono, Inter, Outfit} from "next/font/google";
 import "./globals.css";
 import Navbar from "@/components/Navbar";
 import {ThemeProvider} from "@/components/theme-provider";
+import OnboardingGuard from "@/components/OnboardingGuard";
 import {cn} from "@/lib/utils";
 import {Toaster} from "react-hot-toast";
 import {Suspense} from "react";
@@ -59,6 +60,7 @@ export default function RootLayout({
             >
               <Navbar />
             </Suspense>
+            <OnboardingGuard />
             <main className="flex-1 pt-16">{children}</main>
             <Toaster position="top-center" />
           </ThemeProvider>
