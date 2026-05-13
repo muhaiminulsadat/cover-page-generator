@@ -1,9 +1,6 @@
 import {getTemplateById} from "@/lib/queries/template";
 import {auth} from "@/lib/auth";
 import {headers} from "next/headers";
-import {db} from "@/db";
-import {user as userSchema} from "@/db/schema";
-import {eq} from "drizzle-orm";
 import {notFound, redirect} from "next/navigation";
 import {CoverPageWebPreview} from "@/components/pdf/CoverPageWebPreview";
 import {ArrowLeft, Edit} from "lucide-react";
@@ -41,18 +38,6 @@ async function TemplatePreview({params}: {params: Promise<{id: string}>}) {
 
   if (!session?.user) {
     return redirect("/login");
-  }
-
-  let currentUser = null;
-  try {
-    const users = await db
-      .select()
-      .from(userSchema)
-      .where(eq(userSchema.id, session.user.id));
-    currentUser = users[0];
-  } catch (error) {
-    console.error("Error fetching user in TemplatePreview:", error);
-    throw error;
   }
 
   const template = await getTemplateById(id);
@@ -106,7 +91,7 @@ async function TemplatePreview({params}: {params: Promise<{id: string}>}) {
           )}
         </div>
       </div>
-      <CoverPageWebPreview template={template} user={currentUser} />
+      <CoverPageWebPreview template={template} user={session.user} />
     </main>
   );
 }

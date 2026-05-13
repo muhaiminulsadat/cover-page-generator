@@ -1,8 +1,5 @@
 import {auth} from "@/lib/auth";
 import {headers} from "next/headers";
-import {db} from "@/db";
-import {user as userSchema} from "@/db/schema";
-import {eq} from "drizzle-orm";
 import {getTemplatesByMetadata} from "@/lib/queries/template";
 import {Suspense} from "react";
 import {DashboardContent} from "@/components/home/DashboardContent";
@@ -25,21 +22,9 @@ async function Dashboard() {
     return <LandingPage />;
   }
 
-  const sessionUser = session.user;
+  const currentUser = session.user;
 
-  let currentUser = null;
-  try {
-    const users = await db
-      .select()
-      .from(userSchema)
-      .where(eq(userSchema.id, sessionUser.id));
-    currentUser = users[0];
-  } catch (error) {
-    console.error("Error fetching user in Dashboard:", error);
-    throw error;
-  }
-
-  if (!currentUser || !hasCompletedProfile(currentUser)) {
+  if (!hasCompletedProfile(currentUser)) {
     redirect("/onboarding");
   }
 
@@ -55,7 +40,7 @@ async function Dashboard() {
   return (
     <DashboardContent
       templatesList={templatesList}
-      userId={sessionUser.id}
+      userId={currentUser.id}
       departmentLabel={
         currentUser?.department
           ? getDepartmentLabel(currentUser.department)

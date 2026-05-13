@@ -1,11 +1,8 @@
 import {redirect} from "next/navigation";
 import {headers} from "next/headers";
-import {eq} from "drizzle-orm";
 import {Suspense} from "react";
 import {UserRound, ShieldCheck, GraduationCap, Settings} from "lucide-react";
 import {auth} from "@/lib/auth";
-import {db} from "@/db";
-import {user as userSchema} from "@/db/schema";
 import {ProfileSettingsForm} from "@/components/forms/ProfileSettingsForm";
 import {Card, CardContent} from "@/components/ui/card";
 import {Badge} from "@/components/ui/badge";
@@ -44,14 +41,7 @@ async function SettingsPageContent() {
     return redirect("/login");
   }
 
-  const [currentUser] = await db
-    .select()
-    .from(userSchema)
-    .where(eq(userSchema.id, session.user.id));
-
-  if (!currentUser) {
-    return redirect("/onboarding");
-  }
+  const currentUser = session.user;
 
   const universityLabel =
     currentUser.university && currentUser.university in UNIVERSITY_LABELS
