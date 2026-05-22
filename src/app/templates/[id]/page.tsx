@@ -99,9 +99,9 @@ async function TemplatePreview({params}: {params: Promise<{id: string}>}) {
 function PreviewSkeleton() {
   return (
     <div className="w-full max-w-5xl mx-auto px-4 py-8 space-y-6">
-      <div className="flex justify-between items-center">
-        <Skeleton className="h-10 w-40" />
-        <div className="space-y-2 flex flex-col items-end">
+      <div className="flex flex-col sm:flex-row sm:justify-between sm:items-center gap-4 sm:gap-0">
+        <Skeleton className="h-10 w-full sm:w-40" />
+        <div className="space-y-2 flex flex-col items-start sm:items-end w-full sm:w-auto">
           <Skeleton className="h-8 w-24" />
           <Skeleton className="h-4 w-32" />
         </div>

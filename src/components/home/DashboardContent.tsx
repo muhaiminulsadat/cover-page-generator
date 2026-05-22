@@ -17,7 +17,7 @@ export function DashboardContent({
 }: DashboardContentProps) {
   return (
     <main className="w-full max-w-5xl mx-auto px-4 py-10">
-      <div className="flex justify-between items-end mb-8 border-b pb-6">
+      <div className="flex flex-col sm:flex-row sm:justify-between sm:items-end mb-8 border-b pb-6 gap-4 sm:gap-0">
         <div>
           <h1 className="text-2xl sm:text-3xl font-bold tracking-tight text-foreground">
             Available Templates
@@ -26,7 +26,7 @@ export function DashboardContent({
             Showing top sheet templates for {departmentLabel}.
           </p>
         </div>
-        <Button asChild>
+        <Button asChild className="w-full sm:w-auto">
           <Link href="/templates/new">
             Create Template <ArrowRight className="ml-2 w-4 h-4" />
           </Link>
