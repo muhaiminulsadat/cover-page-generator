@@ -1,48 +1,27 @@
 "use client";
 
-import {useEffect, useState} from "react";
+import {useEffect} from "react";
 import {usePathname, useRouter} from "next/navigation";
 import {authClient} from "@/lib/auth-client";
+import useSWR from "swr";
+import {fetcher} from "@/lib/fetcher";
 
 export default function OnboardingGuard() {
   const router = useRouter();
   const pathname = usePathname();
   const {data: session, isPending} = authClient.useSession();
-  const [profileComplete, setProfileComplete] = useState<boolean | null>(null);
 
-  useEffect(() => {
-    let cancelled = false;
+  const {data: dashboardData} = useSWR(
+    session?.user && !isPending ? "/api/home/dashboard" : null,
+    fetcher,
+  );
 
-    async function check() {
-      if (!session?.user) {
-        setProfileComplete(null);
-        return;
-      }
-
-      try {
-        const res = await fetch("/api/home/dashboard", {cache: "no-store"});
-        if (!res.ok) {
-          setProfileComplete(null);
-          return;
-        }
-        const data = await res.json();
-        if (!cancelled) setProfileComplete(Boolean(data.profileComplete));
-      } catch {
-        if (!cancelled) setProfileComplete(null);
-      }
-    }
-
-    void check();
-
-    return () => {
-      cancelled = true;
-    };
-  }, [session]);
+  const profileComplete = dashboardData?.profileComplete;
 
   useEffect(() => {
     if (isPending) return;
     if (!session?.user) return;
-    if (profileComplete === null) return; // unknown yet
+    if (profileComplete === undefined || profileComplete === null) return; // unknown yet
 
     if (!profileComplete && pathname !== "/onboarding") {
       router.replace("/onboarding");

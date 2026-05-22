@@ -1,6 +1,6 @@
 import {db} from "@/db";
 import {templates} from "@/db/schema";
-import {and, eq, isNull, or, sql} from "drizzle-orm";
+import {and, eq, isNull, or} from "drizzle-orm";
 import {DEFAULT_COVER_PAGE_DESIGN} from "@/lib/constants/cover-designs";
 
 interface TemplateQueryRow {
@@ -85,27 +85,6 @@ const templateColumnsWithCover = {
   coverDesignId: templates.coverDesignId,
 } as const;
 
-let hasCoverDesignColumnPromise: Promise<boolean> | null = null;
-
-async function hasCoverDesignColumn(): Promise<boolean> {
-  if (!hasCoverDesignColumnPromise) {
-    hasCoverDesignColumnPromise = db
-      .execute(
-        sql`
-        select 1
-        from information_schema.columns
-        where table_name = 'templates'
-          and column_name = 'cover_design_id'
-        limit 1
-      `,
-      )
-      .then((result) => result.rows.length > 0)
-      .catch(() => false);
-  }
-
-  return hasCoverDesignColumnPromise;
-}
-
 function hydrateTemplateRow(row: TemplateSelectRow): TemplateQueryRow {
   return {
     ...row,
@@ -114,25 +93,16 @@ function hydrateTemplateRow(row: TemplateSelectRow): TemplateQueryRow {
   };
 }
 
-async function selectTemplateColumns() {
-  const supportsCoverDesign = await hasCoverDesignColumn();
-
-  if (supportsCoverDesign) {
-    return templateColumnsWithCover;
-  }
-
-  return templateColumnsWithoutCover;
+function selectTemplateColumns() {
+  return templateColumnsWithCover;
 }
 
 export async function insertTemplate(data: typeof templates.$inferInsert) {
-  const supportsCoverDesign = await hasCoverDesignColumn();
   const baseData = data as typeof templates.$inferInsert;
   const payload: typeof templates.$inferInsert = {
     ...baseData,
     updatedAt: data.updatedAt ?? new Date(),
-    ...(supportsCoverDesign
-      ? {coverDesignId: data.coverDesignId || DEFAULT_COVER_PAGE_DESIGN}
-      : {}),
+    coverDesignId: data.coverDesignId || DEFAULT_COVER_PAGE_DESIGN,
   };
 
   try {
@@ -141,27 +111,13 @@ export async function insertTemplate(data: typeof templates.$inferInsert) {
     if (!newTemplate) throw new Error("Failed to create template");
     return hydrateTemplateRow(newTemplate as TemplateSelectRow);
   } catch (error) {
-    if (supportsCoverDesign || !("coverDesignId" in payload)) {
-      throw error;
-    }
-
-    const fallbackPayload = {...payload};
-    delete fallbackPayload.coverDesignId;
-
-    const results = await db
-      .insert(templates)
-      .values(fallbackPayload)
-      .returning();
-    const newTemplate = results[0];
-    if (!newTemplate) throw new Error("Failed to create template");
-
-    return hydrateTemplateRow(newTemplate as TemplateSelectRow);
+    throw error;
   }
 }
 
 export async function getTemplateById(id: string) {
   try {
-    const columns = await selectTemplateColumns();
+    const columns = selectTemplateColumns();
     const rows = await db
       .select(columns)
       .from(templates)
@@ -179,14 +135,13 @@ export async function updateTemplate(
   userId: string,
   data: Partial<typeof templates.$inferInsert>,
 ) {
-  const supportsCoverDesign = await hasCoverDesignColumn();
   const baseData = data as Partial<typeof templates.$inferInsert>;
   const payload: Partial<typeof templates.$inferInsert> = {
     ...baseData,
     updatedAt: new Date(),
   };
 
-  if (supportsCoverDesign && "coverDesignId" in data) {
+  if ("coverDesignId" in data) {
     payload.coverDesignId = data.coverDesignId || DEFAULT_COVER_PAGE_DESIGN;
   }
 
@@ -201,23 +156,7 @@ export async function updateTemplate(
       ? hydrateTemplateRow(updatedTemplate as TemplateSelectRow)
       : undefined;
   } catch (error) {
-    if (supportsCoverDesign || !("coverDesignId" in payload)) {
-      throw error;
-    }
-
-    const fallbackPayload = {...payload};
-    delete fallbackPayload.coverDesignId;
-
-    const results = await db
-      .update(templates)
-      .set(fallbackPayload)
-      .where(and(eq(templates.id, id), eq(templates.createdBy, userId)))
-      .returning();
-    const updatedTemplate = results[0];
-
-    return updatedTemplate
-      ? hydrateTemplateRow(updatedTemplate as TemplateSelectRow)
-      : undefined;
+    throw error;
   }
 }
 
@@ -230,7 +169,7 @@ export async function getTemplatesByMetadata(userMeta: {
   hscBatch?: string | null;
 }) {
   try {
-    const columns = await selectTemplateColumns();
+    const columns = selectTemplateColumns();
     const rows = await db
       .select(columns)
       .from(templates)
@@ -290,7 +229,7 @@ export async function getTemplatesByMetadata(userMeta: {
 
 export async function getAllTemplates() {
   try {
-    const columns = await selectTemplateColumns();
+    const columns = selectTemplateColumns();
     const rows = await db.select(columns).from(templates);
 
     return rows.map((row) => hydrateTemplateRow(row as TemplateSelectRow));

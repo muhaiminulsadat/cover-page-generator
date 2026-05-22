@@ -5,6 +5,7 @@ import Link from "next/link";
 import {usePathname, useRouter} from "next/navigation";
 import {useEffect, useState} from "react";
 import {authClient} from "@/lib/auth-client";
+import useSWR from "swr";
 import {Button} from "@/components/ui/button";
 import {
   DropdownMenu,
@@ -36,6 +37,7 @@ import {
 } from "lucide-react";
 import {useTheme} from "next-themes";
 import {cn} from "@/lib/utils";
+import {fetcher} from "@/lib/fetcher";
 
 const ThemeToggle = dynamic(
   () => import("@/components/theme-toggle").then((mod) => mod.ThemeToggle),
@@ -46,48 +48,23 @@ export default function Navbar() {
   const router = useRouter();
   const pathname = usePathname();
   const {data: session, isPending} = authClient.useSession();
+
+  const {data: dashboardData} = useSWR(
+    session?.user && !isPending ? "/api/home/dashboard" : null,
+    fetcher,
+  );
+
+  const profileComplete = dashboardData?.profileComplete;
+
   const {resolvedTheme, setTheme} = useTheme();
   const [scrolled, setScrolled] = useState(false);
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
-  const [profileComplete, setProfileComplete] = useState<boolean | null>(null);
 
   useEffect(() => {
     const onScroll = () => setScrolled(window.scrollY > 10);
     window.addEventListener("scroll", onScroll);
     return () => window.removeEventListener("scroll", onScroll);
   }, []);
-
-  useEffect(() => {
-    let cancelled = false;
-
-    async function checkProfile() {
-      if (!session?.user) {
-        setProfileComplete(null);
-        return;
-      }
-
-      try {
-        const res = await fetch("/api/home/dashboard", {
-          cache: "no-store",
-          credentials: "include",
-        });
-        if (!res.ok) {
-          setProfileComplete(null);
-          return;
-        }
-        const data = await res.json();
-        if (!cancelled) setProfileComplete(Boolean(data.profileComplete));
-      } catch {
-        if (!cancelled) setProfileComplete(null);
-      }
-    }
-
-    void checkProfile();
-
-    return () => {
-      cancelled = true;
-    };
-  }, [session]);
 
   const handleSignOut = async () => {
     await authClient.signOut({

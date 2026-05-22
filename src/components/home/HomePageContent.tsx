@@ -1,15 +1,12 @@
 "use client";
 
-import {useEffect, useState} from "react";
+import {useEffect} from "react";
 import {useRouter} from "next/navigation";
 import {authClient} from "@/lib/auth-client";
 import {LandingPage} from "@/components/home/LandingPage";
 import {DashboardContent} from "@/components/home/DashboardContent";
 import {DashboardSkeleton} from "@/components/home/DashboardSkeleton";
-import {
-  normalizeSectionCode,
-  normalizeSubsectionCode,
-} from "@/lib/constants/levels";
+import useSWR from "swr";
 
 interface DashboardPayload {
   loggedIn: boolean;
@@ -51,64 +48,23 @@ interface DashboardPayload {
   }>;
 }
 
+import {fetcher} from "@/lib/fetcher";
+
 export function HomePageContent() {
   const router = useRouter();
   const {data: session, isPending} = authClient.useSession();
-  const [payload, setPayload] = useState<DashboardPayload | null>(null);
-  const [loadingDashboard, setLoadingDashboard] = useState(false);
+
+  const {data: payload, isValidating: loadingDashboard} =
+    useSWR<DashboardPayload>(
+      session?.user && !isPending ? "/api/home/dashboard" : null,
+      fetcher,
+    );
 
   useEffect(() => {
-    if (isPending) {
-      return;
+    if (payload?.loggedIn && payload?.profileComplete === false) {
+      router.replace("/onboarding");
     }
-
-    if (!session?.user) {
-      setPayload(null);
-      setLoadingDashboard(false);
-      return;
-    }
-
-    let cancelled = false;
-
-    async function loadDashboard() {
-      setLoadingDashboard(true);
-
-      try {
-        const response = await fetch("/api/home/dashboard", {
-          method: "GET",
-          credentials: "include",
-          cache: "no-store",
-        });
-
-        if (!response.ok) {
-          throw new Error("Failed to load dashboard");
-        }
-
-        const data = (await response.json()) as DashboardPayload;
-
-        if (!cancelled) {
-          setPayload(data);
-          if (data.loggedIn && data.profileComplete === false) {
-            router.replace("/onboarding");
-          }
-        }
-      } catch {
-        if (!cancelled) {
-          setPayload(null);
-        }
-      } finally {
-        if (!cancelled) {
-          setLoadingDashboard(false);
-        }
-      }
-    }
-
-    void loadDashboard();
-
-    return () => {
-      cancelled = true;
-    };
-  }, [isPending, router, session]);
+  }, [payload, router]);
 
   if (isPending || (session?.user && loadingDashboard && !payload)) {
     return <DashboardSkeleton />;
