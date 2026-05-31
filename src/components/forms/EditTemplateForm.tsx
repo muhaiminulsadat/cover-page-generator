@@ -119,7 +119,7 @@ export function EditTemplateForm({template}: {template: EditTemplateInput}) {
     const result = await executeDelete({id: template.id});
     if (result?.data?.success) {
       toast.success("Template deleted successfully");
-      router.push("/");
+      router.push("/dashboard");
       router.refresh();
     } else if (result?.serverError) {
       toast.error(result.serverError);

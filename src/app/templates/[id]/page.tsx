@@ -50,7 +50,7 @@ async function TemplatePreview({params}: {params: Promise<{id: string}>}) {
     <main className="w-full max-w-5xl mx-auto px-4 py-8">
       <div className="mb-6 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
         <Button variant="ghost" asChild className="-ml-4 sm:ml-0">
-          <Link href="/">
+          <Link href="/dashboard">
             <ArrowLeft className="w-4 h-4 mr-2" />
             Back to Dashboard
           </Link>

@@ -57,7 +57,7 @@ export function OnboardingForm() {
   async function onSubmit(data: UserProfileInput) {
     const result = await executeAsync(data);
     if (result?.data?.success) {
-      router.push("/");
+      router.push("/dashboard");
       return;
     }
 

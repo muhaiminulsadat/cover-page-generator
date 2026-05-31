@@ -240,7 +240,7 @@ export function LandingPage() {
             </Link>
           </div>
           <span className="text-center text-muted-foreground text-xs">
-            © {new Date().getFullYear()} CoverIt. Made for students.
+            © 2026 CoverDe. Made for students.
           </span>
         </div>
       </footer>

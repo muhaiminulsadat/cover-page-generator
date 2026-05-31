@@ -10,7 +10,9 @@ import {Button} from "@/components/ui/button";
 import {
   DropdownMenu,
   DropdownMenuContent,
+  DropdownMenuGroup,
   DropdownMenuItem,
+  DropdownMenuLabel,
   DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
@@ -27,6 +29,7 @@ import {
 import toast from "react-hot-toast";
 import {
   House,
+  LayoutDashboard,
   LogIn,
   LogOut,
   Menu,
@@ -125,8 +128,6 @@ export default function Navbar() {
           </span>
         </Link>
 
-        <div className="hidden md:flex items-center gap-1"></div>
-
         <div className="flex items-center gap-1.5 sm:gap-2">
           <ThemeToggle className="text-muted-foreground hover:text-foreground" />
 
@@ -139,9 +140,9 @@ export default function Navbar() {
                   <Button
                     variant="ghost"
                     size="icon"
-                    className="rounded-full ring-2 ring-transparent hover:ring-border"
+                    className="rounded-full ring-2 ring-transparent transition-all hover:ring-border/80 data-[state=open]:ring-border"
                   >
-                    <Avatar className="w-8 h-8">
+                    <Avatar className="size-8">
                       <AvatarImage
                         src={session.user.image ?? ""}
                         alt={session.user.name ?? ""}
@@ -154,28 +155,79 @@ export default function Navbar() {
                     </Avatar>
                   </Button>
                 </DropdownMenuTrigger>
-                <DropdownMenuContent align="end" className="w-52 mt-1">
-                  <div className="px-3 py-2">
-                    <p className="text-sm font-medium text-foreground truncate">
-                      {session.user.name || "User"}
-                    </p>
-                    <p className="text-xs text-muted-foreground truncate mt-0.5">
-                      {session.user.email}
-                    </p>
+                <DropdownMenuContent
+                  align="end"
+                  sideOffset={8}
+                  className="w-64 overflow-hidden p-0"
+                >
+                  <div className="flex items-center gap-3 border-b border-border/70 bg-muted/30 px-4 py-3">
+                    <Avatar className="size-10 shrink-0 ring-2 ring-background">
+                      <AvatarImage
+                        src={session.user.image ?? ""}
+                        alt={session.user.name ?? ""}
+                      />
+                      <AvatarFallback className="bg-muted text-foreground text-sm font-medium">
+                        {session.user.name
+                          ? getInitials(session.user.name)
+                          : "U"}
+                      </AvatarFallback>
+                    </Avatar>
+                    <div className="min-w-0 flex-1">
+                      <p className="truncate text-sm font-semibold text-foreground">
+                        {session.user.name || "User"}
+                      </p>
+                      <p className="truncate text-xs text-muted-foreground">
+                        {session.user.email}
+                      </p>
+                    </div>
                   </div>
-                  <DropdownMenuSeparator />
+
                   {profileComplete !== false && (
-                    <DropdownMenuItem asChild className="cursor-pointer">
-                      <Link href="/settings">Settings</Link>
-                    </DropdownMenuItem>
+                    <DropdownMenuGroup className="p-1.5">
+                      <DropdownMenuLabel className="px-2.5 text-[11px] font-medium uppercase tracking-[0.12em] text-muted-foreground">
+                        Workspace
+                      </DropdownMenuLabel>
+                      <DropdownMenuItem
+                        asChild
+                        className={cn(
+                          "cursor-pointer rounded-lg px-2.5 py-2",
+                          pathname === "/dashboard" &&
+                            "bg-accent text-accent-foreground",
+                        )}
+                      >
+                        <Link href="/dashboard">
+                          <LayoutDashboard className="size-4 text-muted-foreground" />
+                          Dashboard
+                        </Link>
+                      </DropdownMenuItem>
+                      <DropdownMenuItem
+                        asChild
+                        className={cn(
+                          "cursor-pointer rounded-lg px-2.5 py-2",
+                          pathname === "/settings" &&
+                            "bg-accent text-accent-foreground",
+                        )}
+                      >
+                        <Link href="/settings">
+                          <Settings className="size-4 text-muted-foreground" />
+                          Settings
+                        </Link>
+                      </DropdownMenuItem>
+                    </DropdownMenuGroup>
                   )}
-                  <DropdownMenuSeparator />
-                  <DropdownMenuItem
-                    onClick={handleSignOut}
-                    className="cursor-pointer text-destructive focus:text-destructive focus:bg-destructive/10"
-                  >
-                    Sign out
-                  </DropdownMenuItem>
+
+                  <DropdownMenuSeparator className="mx-0" />
+
+                  <div className="p-1.5">
+                    <DropdownMenuItem
+                      variant="destructive"
+                      onClick={handleSignOut}
+                      className="cursor-pointer rounded-lg px-2.5 py-2"
+                    >
+                      <LogOut className="size-4" />
+                      Sign out
+                    </DropdownMenuItem>
+                  </div>
                 </DropdownMenuContent>
               </DropdownMenu>
             </div>
@@ -288,6 +340,28 @@ export default function Navbar() {
                         Theme
                       </span>
                     </Button>
+
+                    {session && profileComplete !== false && (
+                      <SheetClose asChild>
+                        <Button
+                          variant={
+                            pathname === "/dashboard" ? "secondary" : "ghost"
+                          }
+                          className="h-11 w-full justify-between rounded-xl px-3"
+                          asChild
+                        >
+                          <Link href="/dashboard">
+                            <span className="flex items-center gap-2.5">
+                              <LayoutDashboard className="h-4 w-4" />
+                              Dashboard
+                            </span>
+                            <span className="text-xs text-muted-foreground">
+                              Templates
+                            </span>
+                          </Link>
+                        </Button>
+                      </SheetClose>
+                    )}
 
                     {session && profileComplete !== false && (
                       <SheetClose asChild>

@@ -19,7 +19,7 @@ import {
 import {Button} from "@/components/ui/button";
 import {Input} from "@/components/ui/input";
 import {Label} from "@/components/ui/label";
-import {DialogTitle} from "@/components/ui/dialog";
+import {DialogDescription, DialogTitle} from "@/components/ui/dialog";
 
 interface ProfileSettingsFormProps {
   initialValues: UserSettingsInput;
@@ -75,10 +75,10 @@ export function ProfileSettingsForm({initialValues}: ProfileSettingsFormProps) {
     <div className="w-full">
       <div className="space-y-1 pb-4">
         <DialogTitle className="text-xl sm:text-2xl">Edit Profile</DialogTitle>
-        <p className="text-sm text-muted-foreground">
+        <DialogDescription>
           Keep your details up to date so templates and PDFs are generated
           correctly.
-        </p>
+        </DialogDescription>
       </div>
       <div className="pb-6">
         <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-6">

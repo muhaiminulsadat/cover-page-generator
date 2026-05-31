@@ -32,7 +32,7 @@ export default function LoginPage() {
 
   useEffect(() => {
     if (!sessionPending && session) {
-      router.push("/");
+      router.push("/dashboard");
     }
   }, [sessionPending, session, router]);
 
@@ -63,7 +63,7 @@ export default function LoginPage() {
         {
           onSuccess: () => {
             toast.success("Signed in successfully.");
-            router.push("/");
+            router.push("/dashboard");
             router.refresh();
           },
         },
@@ -74,7 +74,7 @@ export default function LoginPage() {
         return;
       }
 
-      router.push("/");
+      router.push("/dashboard");
       router.refresh();
     } catch {
       setError("Unable to sign in right now. Please try again.");
@@ -90,7 +90,7 @@ export default function LoginPage() {
 
       const {error} = await authClient.signIn.social({
         provider: "google",
-        callbackURL: "/",
+        callbackURL: "/dashboard",
       });
 
       if (error) {
