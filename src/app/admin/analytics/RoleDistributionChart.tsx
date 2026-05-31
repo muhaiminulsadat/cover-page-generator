@@ -7,19 +7,19 @@ import {ChartConfig, ChartContainer, ChartTooltip, ChartTooltipContent} from "@/
 const chartConfig = {
   student: {
     label: "Student",
-    color: "hsl(var(--chart-1))",
+    color: "var(--chart-1)",
   },
   moderator: {
     label: "Moderator",
-    color: "hsl(var(--chart-2))",
+    color: "var(--chart-2)",
   },
   admin: {
     label: "Admin",
-    color: "hsl(var(--chart-3))",
+    color: "var(--chart-3)",
   },
   superadmin: {
     label: "Superadmin",
-    color: "hsl(var(--chart-4))",
+    color: "var(--chart-4)",
   },
 } satisfies ChartConfig;
 
@@ -27,7 +27,7 @@ export function RoleDistributionChart({data}: {data: {role: string; count: numbe
   const chartData = data.map(item => ({
     role: item.role,
     count: item.count,
-    fill: chartConfig[item.role as keyof typeof chartConfig]?.color || "hsl(var(--chart-5))",
+    fill: chartConfig[item.role as keyof typeof chartConfig]?.color || "var(--chart-5)",
   }));
 
   return (

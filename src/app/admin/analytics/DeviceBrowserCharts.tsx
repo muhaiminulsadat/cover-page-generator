@@ -7,35 +7,35 @@ import {ChartConfig, ChartContainer, ChartTooltip, ChartTooltipContent} from "@/
 const chartConfig = {
   desktop: {
     label: "Desktop",
-    color: "hsl(var(--chart-1))",
+    color: "var(--chart-1)",
   },
   mobile: {
     label: "Mobile",
-    color: "hsl(var(--chart-2))",
+    color: "var(--chart-2)",
   },
   tablet: {
     label: "Tablet",
-    color: "hsl(var(--chart-3))",
+    color: "var(--chart-3)",
   },
   Chrome: {
     label: "Chrome",
-    color: "hsl(var(--chart-1))",
+    color: "var(--chart-1)",
   },
   Edge: {
     label: "Edge",
-    color: "hsl(var(--chart-2))",
+    color: "var(--chart-2)",
   },
   Firefox: {
     label: "Firefox",
-    color: "hsl(var(--chart-3))",
+    color: "var(--chart-3)",
   },
   Safari: {
     label: "Safari",
-    color: "hsl(var(--chart-4))",
+    color: "var(--chart-4)",
   },
   Other: {
     label: "Other",
-    color: "hsl(var(--chart-5))",
+    color: "var(--chart-5)",
   }
 } satisfies ChartConfig;
 
@@ -49,13 +49,13 @@ export function DeviceBrowserCharts({
   const formattedDeviceData = deviceData.map(item => ({
     name: item.device || "Unknown",
     count: item.count,
-    fill: chartConfig[(item.device || "desktop") as keyof typeof chartConfig]?.color || "hsl(var(--chart-5))",
+    fill: chartConfig[(item.device || "desktop") as keyof typeof chartConfig]?.color || "var(--chart-5)",
   }));
 
   const formattedBrowserData = browserData.map(item => ({
     name: item.browser || "Unknown",
     count: item.count,
-    fill: chartConfig[(item.browser || "Other") as keyof typeof chartConfig]?.color || "hsl(var(--chart-5))",
+    fill: chartConfig[(item.browser || "Other") as keyof typeof chartConfig]?.color || "var(--chart-5)",
   }));
 
   return (
