@@ -6,20 +6,25 @@ import {
   BadgeCheck,
   BookOpen,
   CalendarDays,
+  GraduationCap,
   Group,
   Hash,
   Layers,
   Lock,
   LogOut,
+  Mail,
   Pencil,
   School,
+  ShieldCheck,
   Users,
 } from "lucide-react";
+import {cn} from "@/lib/utils";
 import {auth} from "@/lib/auth";
 import {ProfileSettingsForm} from "@/components/forms/ProfileSettingsForm";
 import {Card, CardContent, CardHeader, CardTitle} from "@/components/ui/card";
 import {Button} from "@/components/ui/button";
 import {Avatar, AvatarFallback, AvatarImage} from "@/components/ui/avatar";
+import {Badge} from "@/components/ui/badge";
 import {UNIVERSITY_LABELS} from "@/lib/constants/universities";
 import {normalizeDepartmentCode} from "@/lib/constants/departments";
 import {
@@ -27,6 +32,7 @@ import {
   normalizeSubsectionCode,
 } from "@/lib/constants/levels";
 import {Skeleton} from "@/components/ui/skeleton";
+import {Separator} from "@/components/ui/separator";
 import {Dialog, DialogContent, DialogTrigger} from "@/components/ui/dialog";
 
 function getInitials(name: string) {
@@ -64,103 +70,113 @@ async function SettingsPageContent() {
         ]
       : "Not selected";
 
+  const departmentLabel =
+    normalizeDepartmentCode(currentUser.department) || "Not set";
+  const sectionLabel = normalizeSectionCode(currentUser.section) || "Not set";
+  const subsectionLabel =
+    normalizeSubsectionCode(currentUser.subsection) || "Not set";
+
   return (
-    <div className="min-h-[calc(100vh-4rem)] flex justify-center pb-8 p-4 bg-background">
-      <main className="flex flex-col gap-6 w-full max-w-xl">
-        <div className="relative">
-          <div className="bg-linear-to-br from-primary to-primary/60 w-full h-32 rounded-xl mt-4" />
-          <div className="flex -mt-14 px-4 flex-col items-center gap-4">
-            <div className="relative">
-              <Avatar className="size-28 ring-4 ring-background shadow-md">
-                <AvatarImage
-                  src={session.user.image ?? ""}
-                  alt={session.user.name ?? "User"}
+    <div className="min-h-[calc(100vh-4rem)] bg-muted/30 pb-12 dark:bg-background">
+      <div className="mx-auto w-full max-w-xl sm:px-6">
+        <div className="flex flex-col gap-5">
+          <Card className="overflow-hidden rounded-none border-0 shadow-sm sm:mt-10 sm:rounded-xl">
+            <div className="h-28 bg-gradient-to-r from-muted via-muted/80 to-muted sm:h-32" />
+
+            <div className="relative px-5 pb-6 sm:px-6">
+              <div className="-mt-12 flex flex-col items-center gap-4 sm:-mt-14 sm:flex-row sm:items-end sm:gap-5">
+                <Avatar className="size-22 shrink-0 rounded-full ring-[3px] ring-card shadow-md sm:size-24">
+                  <AvatarImage
+                    src={session.user.image ?? ""}
+                    alt={session.user.name ?? "User"}
+                  />
+                  <AvatarFallback className="bg-muted text-xl font-semibold sm:text-2xl">
+                    {getInitials(currentUser.name)}
+                  </AvatarFallback>
+                </Avatar>
+
+                <div className="flex min-w-0 flex-1 flex-col items-center gap-1 text-center sm:items-start sm:pb-0.5 sm:text-left">
+                  <div className="flex items-center gap-1.5">
+                    <h1 className="truncate text-xl font-bold tracking-tight sm:text-2xl">
+                      {currentUser.name}
+                    </h1>
+                    <BadgeCheck className="size-5 shrink-0 fill-primary text-primary-foreground" />
+                  </div>
+                  <div className="flex items-center gap-1.5 text-[13px] text-muted-foreground">
+                    <Mail className="size-3.5 shrink-0" />
+                    <span className="truncate">{currentUser.email}</span>
+                  </div>
+                </div>
+              </div>
+
+              <div className="mt-4 flex flex-wrap items-center justify-center gap-1.5 sm:justify-start">
+                <Badge variant="secondary" className="gap-1 py-1">
+                  <School className="size-3" />
+                  <span className="max-w-[200px] truncate sm:max-w-none">
+                    {universityLabel !== "Not selected" && universityLabel
+                      ? universityLabel
+                      : "University not set"}
+                  </span>
+                </Badge>
+                {departmentLabel !== "Not set" && (
+                  <Badge variant="secondary" className="gap-1 py-1">
+                    <BookOpen className="size-3" />
+                    {departmentLabel}
+                  </Badge>
+                )}
+                {currentUser.studentId && (
+                  <Badge variant="secondary" className="gap-1 py-1">
+                    <Hash className="size-3" />
+                    {currentUser.studentId}
+                  </Badge>
+                )}
+              </div>
+
+              <Separator className="mt-5" />
+
+              <div className="mt-4 grid grid-cols-2 gap-2.5 sm:grid-cols-4">
+                <StatCell
+                  label="Level"
+                  value={currentUser.level || "—"}
                 />
-                <AvatarFallback className="text-2xl font-medium">
-                  {getInitials(currentUser.name)}
-                </AvatarFallback>
-              </Avatar>
-            </div>
-
-            <div className="flex flex-col items-center gap-1 text-center">
-              <div className="flex items-center gap-1.5">
-                <h1 className="font-bold text-2xl tracking-tight">
-                  {currentUser.name}
-                </h1>
-                <BadgeCheck className="size-5 text-primary" />
-              </div>
-              <p className="text-muted-foreground text-sm">
-                {currentUser.email}
-              </p>
-              <div className="inline-flex bg-primary/10 text-primary rounded-full mt-2 px-3 py-1 items-center gap-1.5 text-center max-w-70 sm:max-w-xs">
-                <School className="size-3.5 shrink-0" />
-                <span className="font-medium text-xs truncate">
-                  {universityLabel !== "Not selected" && universityLabel
-                    ? universityLabel
-                    : "University not set"}
-                </span>
+                <StatCell
+                  label="Term"
+                  value={currentUser.term || "—"}
+                />
+                <StatCell
+                  label="Section"
+                  value={sectionLabel !== "Not set" ? sectionLabel : "—"}
+                />
+                <StatCell
+                  label="Subsection"
+                  value={subsectionLabel !== "Not set" ? subsectionLabel : "—"}
+                />
               </div>
             </div>
-          </div>
-        </div>
+          </Card>
 
-        <div className="flex flex-col gap-4">
-          <div className="grid grid-cols-3 gap-3">
-            <Card className="rounded-xl p-4 flex flex-col items-center gap-2">
-              <div className="size-9 bg-primary/10 rounded-lg flex justify-center items-center">
-                <Layers className="size-4 text-primary" />
+          <Card className="mx-4 border-0 shadow-sm sm:mx-0">
+            <CardHeader className="flex flex-row items-center justify-between pb-3">
+              <div className="flex items-center gap-2">
+                <div className="flex size-7 items-center justify-center rounded-md bg-muted">
+                  <GraduationCap className="size-4 text-muted-foreground" />
+                </div>
+                <CardTitle className="text-base font-semibold">
+                  Academic Details
+                </CardTitle>
               </div>
-              <span className="font-bold text-xl tracking-tight">
-                {currentUser.level || "-"}
-              </span>
-              <span className="text-center text-muted-foreground text-xs">
-                Level
-              </span>
-            </Card>
-
-            <Card className="rounded-xl p-4 flex flex-col items-center gap-2">
-              <div className="size-9 bg-primary/10 rounded-lg flex justify-center items-center">
-                <CalendarDays className="size-4 text-primary" />
-              </div>
-              <span className="font-bold text-xl tracking-tight">
-                {currentUser.term || "-"}
-              </span>
-              <span className="text-center text-muted-foreground text-xs">
-                Term
-              </span>
-            </Card>
-
-            <Card className="rounded-xl p-4 flex flex-col items-center gap-2">
-              <div className="size-9 bg-primary/10 rounded-lg flex justify-center items-center">
-                <Users className="size-4 text-primary" />
-              </div>
-              <span className="font-bold text-xl tracking-tight">
-                {normalizeSectionCode(currentUser.section) || "-"}
-              </span>
-              <span className="text-center text-muted-foreground text-xs">
-                Section
-              </span>
-            </Card>
-          </div>
-
-          <Card className="rounded-xl p-6 gap-4 flex flex-col">
-            <CardHeader className="p-0 flex flex-row justify-between items-center space-y-0">
-              <CardTitle className="font-semibold text-base">
-                Academic Details
-              </CardTitle>
               <Dialog>
                 <DialogTrigger asChild>
                   <Button
-                    className="text-primary hover:text-primary hover:bg-primary/10 h-8 px-2"
+                    className="h-8 gap-1.5 px-3 text-xs"
                     size="sm"
-                    variant="ghost"
+                    variant="outline"
                   >
-                    <Pencil className="size-3.5 mr-1" />
+                    <Pencil className="size-3" />
                     Edit
                   </Button>
                 </DialogTrigger>
-                <DialogContent className="w-[95vw] max-h-[90dvh] overflow-y-auto sm:max-w-2xl rounded-xl sm:rounded-xl p-4 sm:p-6">
-                  {/* Remove Card wrapper padding applied by ProfileSettingsForm since Dialog handles layout */}
+                <DialogContent className="w-[95vw] max-h-[90dvh] overflow-y-auto rounded-xl p-4 sm:max-w-2xl sm:rounded-xl sm:p-6">
                   <ProfileSettingsForm
                     initialValues={{
                       name: currentUser.name,
@@ -182,268 +198,267 @@ async function SettingsPageContent() {
               </Dialog>
             </CardHeader>
 
-            <CardContent className="flex p-0 flex-col gap-4">
-              <div className="flex items-center gap-3">
-                <div className="size-9 shrink-0 rounded-lg bg-secondary/50 flex justify-center items-center">
-                  <School className="size-4 text-foreground" />
-                </div>
-                <div className="flex flex-col">
-                  <span className="text-muted-foreground text-xs">
-                    University
-                  </span>
-                  <span className="font-medium text-sm">{universityLabel}</span>
-                </div>
-              </div>
+            <CardContent className="pt-0">
+              <div className="flex flex-col gap-0.5">
+                <DetailRow
+                  icon={<School className="size-4" />}
+                  label="University"
+                  value={universityLabel}
+                />
+                <DetailRow
+                  icon={<BookOpen className="size-4" />}
+                  label="Department"
+                  value={departmentLabel}
+                />
+                <DetailRow
+                  icon={<Hash className="size-4" />}
+                  label="Student ID"
+                  value={currentUser.studentId || "Not set"}
+                />
 
-              <div className="flex items-center gap-3">
-                <div className="size-9 shrink-0 rounded-lg bg-secondary/50 flex justify-center items-center">
-                  <BookOpen className="size-4 text-foreground" />
-                </div>
-                <div className="flex flex-col">
-                  <span className="text-muted-foreground text-xs">
-                    Department
-                  </span>
-                  <span className="font-medium text-sm">
-                    {normalizeDepartmentCode(currentUser.department) ||
-                      "Not set"}
-                  </span>
-                </div>
-              </div>
+                <Separator className="my-2" />
 
-              <div className="flex items-center gap-3">
-                <div className="size-9 shrink-0 rounded-lg bg-secondary/50 flex justify-center items-center">
-                  <Hash className="size-4 text-foreground" />
+                <div className="grid grid-cols-1 gap-0.5 sm:grid-cols-2">
+                  <DetailRow
+                    icon={<Layers className="size-4" />}
+                    label="Level"
+                    value={currentUser.level || "Not set"}
+                  />
+                  <DetailRow
+                    icon={<CalendarDays className="size-4" />}
+                    label="Term"
+                    value={currentUser.term || "Not set"}
+                  />
+                  <DetailRow
+                    icon={<Users className="size-4" />}
+                    label="Section"
+                    value={sectionLabel}
+                  />
+                  <DetailRow
+                    icon={<Group className="size-4" />}
+                    label="Subsection"
+                    value={subsectionLabel}
+                  />
                 </div>
-                <div className="flex flex-col">
-                  <span className="text-muted-foreground text-xs">
-                    Student ID
-                  </span>
-                  <span className="font-medium text-sm">
-                    {currentUser.studentId || "Not set"}
-                  </span>
-                </div>
-              </div>
 
-              <div className="bg-border h-px w-full" />
+                <Separator className="my-2" />
 
-              <div className="grid grid-cols-2 gap-4">
-                <div className="flex items-center gap-3">
-                  <div className="size-9 shrink-0 rounded-lg bg-secondary/50 flex justify-center items-center">
-                    <Layers className="size-4 text-foreground" />
-                  </div>
-                  <div className="flex flex-col">
-                    <span className="text-muted-foreground text-xs">Level</span>
-                    <span className="font-medium text-sm">
-                      {currentUser.level || "Not set"}
-                    </span>
-                  </div>
-                </div>
-                <div className="flex items-center gap-3">
-                  <div className="size-9 shrink-0 rounded-lg bg-secondary/50 flex justify-center items-center">
-                    <CalendarDays className="size-4 text-foreground" />
-                  </div>
-                  <div className="flex flex-col">
-                    <span className="text-muted-foreground text-xs">Term</span>
-                    <span className="font-medium text-sm">
-                      {currentUser.term || "Not set"}
-                    </span>
-                  </div>
-                </div>
-              </div>
-
-              <div className="grid grid-cols-2 gap-4">
-                <div className="flex items-center gap-3">
-                  <div className="size-9 shrink-0 rounded-lg bg-secondary/50 flex justify-center items-center">
-                    <Users className="size-4 text-foreground" />
-                  </div>
-                  <div className="flex flex-col">
-                    <span className="text-muted-foreground text-xs">
-                      Section
-                    </span>
-                    <span className="font-medium text-sm">
-                      {normalizeSectionCode(currentUser.section) || "Not set"}
-                    </span>
-                  </div>
-                </div>
-                <div className="flex items-center gap-3">
-                  <div className="size-9 shrink-0 rounded-lg bg-secondary/50 flex justify-center items-center">
-                    <Group className="size-4 text-foreground" />
-                  </div>
-                  <div className="flex flex-col">
-                    <span className="text-muted-foreground text-xs">
-                      Subsection
-                    </span>
-                    <span className="font-medium text-sm">
-                      {normalizeSubsectionCode(currentUser.subsection) ||
-                        "Not set"}
-                    </span>
-                  </div>
-                </div>
-              </div>
-
-              <div className="flex items-center gap-3">
-                <div className="size-9 shrink-0 rounded-lg bg-secondary/50 flex justify-center items-center">
-                  <Award className="size-4 text-foreground" />
-                </div>
-                <div className="flex flex-col">
-                  <span className="text-muted-foreground text-xs">
-                    HSC Batch
-                  </span>
-                  <span className="font-medium text-sm">
-                    {currentUser.hscBatch || "Not set"}
-                  </span>
-                </div>
+                <DetailRow
+                  icon={<Award className="size-4" />}
+                  label="HSC Batch"
+                  value={currentUser.hscBatch || "Not set"}
+                />
               </div>
             </CardContent>
           </Card>
 
-          <form
-            action={async () => {
-              "use server";
-              // we don't have access to auth client directly inside RSC, handled with button inside client componnet ideally
-            }}
-          >
-            <Button
-              className="mt-2 text-destructive border-destructive/30 hover:bg-destructive/10 w-full"
-              variant="outline"
-            >
-              <LogOut className="size-4 mr-2" />
-              Log out
-            </Button>
-          </form>
+          <Card className="mx-4 border-0 shadow-sm sm:mx-0">
+            <CardContent className="py-0">
+              <div className="flex items-center justify-between py-3.5">
+                <div className="flex items-center gap-3">
+                  <div className="flex size-9 items-center justify-center rounded-lg bg-muted">
+                    <ShieldCheck className="size-4 text-muted-foreground" />
+                  </div>
+                  <div>
+                    <p className="text-sm font-medium">Privacy</p>
+                    <p className="text-xs text-muted-foreground">
+                      Your data is encrypted and secure
+                    </p>
+                  </div>
+                </div>
+                <Lock className="size-4 text-muted-foreground/50" />
+              </div>
 
-          <div className="flex justify-center items-center gap-2 mt-2">
-            <Lock className="size-3.5 text-muted-foreground" />
-            <span className="text-muted-foreground text-xs">
-              Your academic data stays private and secure.
-            </span>
-          </div>
+              <Separator />
+
+              <div className="flex items-center justify-between py-3.5">
+                <div className="flex items-center gap-3">
+                  <div className="flex size-9 items-center justify-center rounded-lg bg-destructive/10">
+                    <LogOut className="size-4 text-destructive" />
+                  </div>
+                  <div>
+                    <p className="text-sm font-medium">Sign out</p>
+                    <p className="text-xs text-muted-foreground">
+                      End your current session
+                    </p>
+                  </div>
+                </div>
+                <form
+                  action={async () => {
+                    "use server";
+                  }}
+                >
+                  <Button
+                    size="sm"
+                    variant="ghost"
+                    className="h-8 text-xs text-destructive hover:bg-destructive/10 hover:text-destructive"
+                  >
+                    Log out
+                  </Button>
+                </form>
+              </div>
+            </CardContent>
+          </Card>
         </div>
-      </main>
+      </div>
+    </div>
+  );
+}
+
+interface StatCellProps {
+  label: string;
+  value: string;
+}
+
+function StatCell({label, value}: StatCellProps) {
+  return (
+    <div className="flex flex-col items-center gap-0.5 rounded-lg bg-muted/50 px-3 py-2.5">
+      <span className="text-lg font-bold tracking-tight">{value}</span>
+      <span className="text-[11px] text-muted-foreground">{label}</span>
+    </div>
+  );
+}
+
+interface DetailRowProps {
+  icon: React.ReactNode;
+  label: string;
+  value: string;
+}
+
+function DetailRow({icon, label, value}: DetailRowProps) {
+  const isEmpty = value === "Not set" || value === "Not selected";
+
+  return (
+    <div className="flex items-center gap-3 rounded-lg px-2 py-2.5 transition-colors hover:bg-muted/40">
+      <div className="flex size-8 shrink-0 items-center justify-center rounded-md bg-muted/60 text-muted-foreground">
+        {icon}
+      </div>
+      <div className="flex min-w-0 flex-1 items-center justify-between gap-2">
+        <span className="text-sm text-muted-foreground">{label}</span>
+        <span
+          className={cn(
+            "truncate text-sm font-medium",
+            isEmpty && "italic text-muted-foreground/50",
+          )}
+        >
+          {value}
+        </span>
+      </div>
     </div>
   );
 }
 
 function SettingsPageSkeleton() {
   return (
-    <div className="min-h-[calc(100vh-4rem)] flex justify-center pb-8 p-4 bg-background">
-      <main className="flex flex-col gap-6 w-full max-w-xl">
-        <div className="relative">
-          <div className="bg-muted w-full h-32 rounded-xl mt-4 animate-pulse" />
-          <div className="flex -mt-14 px-4 flex-col items-center gap-4">
-            <div className="relative">
-              <Skeleton className="size-28 rounded-full ring-4 ring-background shadow-md" />
+    <div className="min-h-[calc(100vh-4rem)] bg-muted/30 pb-12 dark:bg-background">
+      <div className="mx-auto w-full max-w-xl sm:px-6">
+        <div className="flex flex-col gap-5">
+          <Card className="overflow-hidden rounded-none border-0 shadow-sm sm:mt-10 sm:rounded-xl">
+            <div className="h-28 animate-pulse bg-muted sm:h-32" />
+
+            <div className="relative px-5 pb-6 sm:px-6">
+              <div className="-mt-12 flex flex-col items-center gap-4 sm:-mt-14 sm:flex-row sm:items-end sm:gap-5">
+                <Skeleton className="size-22 shrink-0 rounded-full ring-[3px] ring-card shadow-md sm:size-24" />
+                <div className="flex flex-1 flex-col items-center gap-2 sm:items-start sm:pb-0.5">
+                  <Skeleton className="h-7 w-44" />
+                  <Skeleton className="h-4 w-36" />
+                </div>
+              </div>
+
+              <div className="mt-4 flex justify-center gap-1.5 sm:justify-start">
+                <Skeleton className="h-6 w-36 rounded-full" />
+                <Skeleton className="h-6 w-20 rounded-full" />
+              </div>
+
+              <Separator className="mt-5" />
+
+              <div className="mt-4 grid grid-cols-2 gap-2.5 sm:grid-cols-4">
+                {Array.from({length: 4}).map((_, i) => (
+                  <div
+                    key={i}
+                    className="flex flex-col items-center gap-1.5 rounded-lg bg-muted/50 px-3 py-2.5"
+                  >
+                    <Skeleton className="h-6 w-8" />
+                    <Skeleton className="h-3 w-14" />
+                  </div>
+                ))}
+              </div>
             </div>
+          </Card>
 
-            <div className="flex flex-col items-center gap-2 text-center w-full">
-              <Skeleton className="h-8 w-48" />
-              <Skeleton className="h-4 w-32" />
-              <Skeleton className="h-6 w-24 rounded-full mt-1" />
-            </div>
-          </div>
-        </div>
-
-        <div className="flex flex-col gap-4">
-          <div className="grid grid-cols-3 gap-3">
-            <Card className="rounded-xl p-4 flex flex-col items-center gap-2">
-              <Skeleton className="size-9 rounded-lg" />
-              <Skeleton className="h-6 w-8" />
-              <Skeleton className="h-3 w-10" />
-            </Card>
-
-            <Card className="rounded-xl p-4 flex flex-col items-center gap-2">
-              <Skeleton className="size-9 rounded-lg" />
-              <Skeleton className="h-6 w-8" />
-              <Skeleton className="h-3 w-10" />
-            </Card>
-
-            <Card className="rounded-xl p-4 flex flex-col items-center gap-2">
-              <Skeleton className="size-9 rounded-lg" />
-              <Skeleton className="h-6 w-8" />
-              <Skeleton className="h-3 w-10" />
-            </Card>
-          </div>
-
-          <Card className="rounded-xl p-6 gap-4 flex flex-col">
-            <CardHeader className="p-0 flex flex-row justify-between items-center space-y-0">
-              <Skeleton className="h-6 w-32" />
-              <Skeleton className="h-8 w-16" />
+          <Card className="mx-4 border-0 shadow-sm sm:mx-0">
+            <CardHeader className="flex flex-row items-center justify-between pb-3">
+              <div className="flex items-center gap-2">
+                <Skeleton className="size-7 rounded-md" />
+                <Skeleton className="h-5 w-32" />
+              </div>
+              <Skeleton className="h-8 w-16 rounded-md" />
             </CardHeader>
-
-            <CardContent className="flex p-0 flex-col gap-4 mt-2">
-              <div className="flex items-center gap-3">
-                <Skeleton className="size-9 rounded-lg shrink-0" />
-                <div className="flex flex-col gap-1 w-full">
-                  <Skeleton className="h-3 w-20" />
-                  <Skeleton className="h-4 w-3/4" />
+            <CardContent className="pt-0">
+              <div className="flex flex-col gap-1">
+                {Array.from({length: 3}).map((_, i) => (
+                  <div key={i} className="flex items-center gap-3 px-2 py-2.5">
+                    <Skeleton className="size-8 shrink-0 rounded-md" />
+                    <div className="flex flex-1 items-center justify-between">
+                      <Skeleton className="h-4 w-20" />
+                      <Skeleton className="h-4 w-28" />
+                    </div>
+                  </div>
+                ))}
+                <Separator className="my-2" />
+                <div className="grid grid-cols-1 gap-1 sm:grid-cols-2">
+                  {Array.from({length: 4}).map((_, i) => (
+                    <div
+                      key={i}
+                      className="flex items-center gap-3 px-2 py-2.5"
+                    >
+                      <Skeleton className="size-8 shrink-0 rounded-md" />
+                      <div className="flex flex-1 items-center justify-between">
+                        <Skeleton className="h-4 w-14" />
+                        <Skeleton className="h-4 w-12" />
+                      </div>
+                    </div>
+                  ))}
                 </div>
-              </div>
-
-              <div className="flex items-center gap-3">
-                <Skeleton className="size-9 rounded-lg shrink-0" />
-                <div className="flex flex-col gap-1 w-full">
-                  <Skeleton className="h-3 w-20" />
-                  <Skeleton className="h-4 w-1/2" />
-                </div>
-              </div>
-
-              <div className="flex items-center gap-3">
-                <Skeleton className="size-9 rounded-lg shrink-0" />
-                <div className="flex flex-col gap-1 w-full">
-                  <Skeleton className="h-3 w-20" />
-                  <Skeleton className="h-4 w-1/3" />
-                </div>
-              </div>
-
-              <div className="bg-border h-px w-full my-1" />
-
-              <div className="grid grid-cols-2 gap-4">
-                <div className="flex items-center gap-3">
-                  <Skeleton className="size-9 rounded-lg shrink-0" />
-                  <div className="flex flex-col gap-1 w-full">
-                    <Skeleton className="h-3 w-12" />
+                <Separator className="my-2" />
+                <div className="flex items-center gap-3 px-2 py-2.5">
+                  <Skeleton className="size-8 shrink-0 rounded-md" />
+                  <div className="flex flex-1 items-center justify-between">
+                    <Skeleton className="h-4 w-20" />
                     <Skeleton className="h-4 w-16" />
                   </div>
-                </div>
-                <div className="flex items-center gap-3">
-                  <Skeleton className="size-9 rounded-lg shrink-0" />
-                  <div className="flex flex-col gap-1 w-full">
-                    <Skeleton className="h-3 w-12" />
-                    <Skeleton className="h-4 w-16" />
-                  </div>
-                </div>
-              </div>
-
-              <div className="grid grid-cols-2 gap-4">
-                <div className="flex items-center gap-3">
-                  <Skeleton className="size-9 rounded-lg shrink-0" />
-                  <div className="flex flex-col gap-1 w-full">
-                    <Skeleton className="h-3 w-16" />
-                    <Skeleton className="h-4 w-16" />
-                  </div>
-                </div>
-                <div className="flex items-center gap-3">
-                  <Skeleton className="size-9 rounded-lg shrink-0" />
-                  <div className="flex flex-col gap-1 w-full">
-                    <Skeleton className="h-3 w-20" />
-                    <Skeleton className="h-4 w-16" />
-                  </div>
-                </div>
-              </div>
-
-              <div className="flex items-center gap-3">
-                <Skeleton className="size-9 rounded-lg shrink-0" />
-                <div className="flex flex-col gap-1 w-full">
-                  <Skeleton className="h-3 w-20" />
-                  <Skeleton className="h-4 w-24" />
                 </div>
               </div>
             </CardContent>
           </Card>
 
-          <Skeleton className="h-10 w-full rounded-lg mt-2" />
+          <Card className="mx-4 border-0 shadow-sm sm:mx-0">
+            <CardContent className="py-0">
+              <div className="flex items-center justify-between py-3.5">
+                <div className="flex items-center gap-3">
+                  <Skeleton className="size-9 rounded-lg" />
+                  <div className="flex flex-col gap-1">
+                    <Skeleton className="h-4 w-14" />
+                    <Skeleton className="h-3 w-40" />
+                  </div>
+                </div>
+                <Skeleton className="size-4" />
+              </div>
+              <Separator />
+              <div className="flex items-center justify-between py-3.5">
+                <div className="flex items-center gap-3">
+                  <Skeleton className="size-9 rounded-lg" />
+                  <div className="flex flex-col gap-1">
+                    <Skeleton className="h-4 w-16" />
+                    <Skeleton className="h-3 w-36" />
+                  </div>
+                </div>
+                <Skeleton className="h-8 w-16" />
+              </div>
+            </CardContent>
+          </Card>
         </div>
-      </main>
+      </div>
     </div>
   );
 }
