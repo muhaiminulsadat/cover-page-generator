@@ -33,8 +33,13 @@ async function DashboardGrid({
   userId: string;
 }) {
   "use cache: remote";
-  cacheLife("minutes");
+  cacheLife({
+    stale: 86400, // 1 day
+    revalidate: 86400 * 30 * 6, // 6 months
+    expire: 86400 * 30 * 6, // 6 months
+  });
   cacheTag(`templates-${department}-${level}`);
+  cacheTag("templates");
 
   const templatesList = await getTemplatesByMetadata({
     department,
