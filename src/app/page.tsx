@@ -15,7 +15,7 @@ export default function HomePage() {
           key="hero-suspense"
           fallback={
             <Button disabled className="text-base leading-6 h-12 px-8">
-              Generate your first PDF
+              Generate PDF
               <ArrowRight className="size-4 ml-2" />
             </Button>
           }
