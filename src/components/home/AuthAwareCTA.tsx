@@ -3,12 +3,13 @@ import {headers} from "next/headers";
 import {Button} from "@/components/ui/button";
 import Link from "next/link";
 import {ArrowRight} from "lucide-react";
+import {cacheLife} from "next/cache";
 
-export async function AuthAwareHeroCTA() {
-  const session = await auth.api.getSession({
-    headers: await headers(),
-  });
-  const targetHref = session ? "/dashboard" : "/register";
+async function CachedHeroCTA({isLoggedIn}: {isLoggedIn: boolean}) {
+  "use cache: remote";
+  cacheLife("max");
+
+  const targetHref = isLoggedIn ? "/dashboard" : "/register";
 
   return (
     <Button asChild className="text-base leading-6 h-12 px-8">
@@ -20,11 +21,20 @@ export async function AuthAwareHeroCTA() {
   );
 }
 
-export async function AuthAwareFooterCTA() {
+export async function AuthAwareHeroCTA() {
   const session = await auth.api.getSession({
     headers: await headers(),
   });
-  const targetHref = session ? "/dashboard" : "/register";
+  const isLoggedIn = !!session;
+
+  return <CachedHeroCTA isLoggedIn={isLoggedIn} />;
+}
+
+async function CachedFooterCTA({isLoggedIn}: {isLoggedIn: boolean}) {
+  "use cache: remote";
+  cacheLife("max");
+
+  const targetHref = isLoggedIn ? "/dashboard" : "/register";
 
   return (
     <Button
@@ -38,4 +48,13 @@ export async function AuthAwareFooterCTA() {
       </Link>
     </Button>
   );
+}
+
+export async function AuthAwareFooterCTA() {
+  const session = await auth.api.getSession({
+    headers: await headers(),
+  });
+  const isLoggedIn = !!session;
+
+  return <CachedFooterCTA isLoggedIn={isLoggedIn} />;
 }

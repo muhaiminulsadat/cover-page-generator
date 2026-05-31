@@ -13,20 +13,36 @@ import Link from "next/link";
 import {ArrowRight, Layers} from "lucide-react";
 import {Button} from "@/components/ui/button";
 import {TemplateCard} from "@/components/ui-custom/TemplateCard";
-import {unstable_cacheLife as cacheLife, unstable_cacheTag as cacheTag} from "next/cache";
+import {cacheLife, cacheTag} from "next/cache";
 
-async function DashboardGrid({user}: {user: any}) {
+async function DashboardGrid({
+  department,
+  level,
+  term,
+  section,
+  subsection,
+  hscBatch,
+  userId,
+}: {
+  department: string;
+  level: string;
+  term: string;
+  section: string;
+  subsection: string;
+  hscBatch: string;
+  userId: string;
+}) {
   "use cache: remote";
   cacheLife("minutes");
-  cacheTag(`templates-${user.department}-${user.level}`);
+  cacheTag(`templates-${department}-${level}`);
 
   const templatesList = await getTemplatesByMetadata({
-    department: user.department,
-    level: user.level,
-    term: user.term,
-    section: normalizeSectionCode(user.section),
-    subsection: normalizeSubsectionCode(user.subsection),
-    hscBatch: user.hscBatch,
+    department,
+    level,
+    term,
+    section: normalizeSectionCode(section),
+    subsection: normalizeSubsectionCode(subsection),
+    hscBatch,
   });
 
   if (templatesList.length === 0) {
@@ -53,7 +69,7 @@ async function DashboardGrid({user}: {user: any}) {
         <TemplateCard
           key={template.id}
           template={template as never}
-          userId={user.id}
+          userId={userId}
         />
       ))}
     </div>
@@ -131,7 +147,15 @@ export default async function DashboardPage() {
           </div>
         }
       >
-        <DashboardGrid user={user} />
+        <DashboardGrid
+          department={user.department as string}
+          level={user.level as string}
+          term={user.term as string}
+          section={user.section as string}
+          subsection={user.subsection as string}
+          hscBatch={user.hscBatch as string}
+          userId={user.id}
+        />
       </Suspense>
     </main>
   );
