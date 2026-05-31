@@ -46,15 +46,7 @@ export function ProfileSettingsForm({initialValues}: ProfileSettingsFormProps) {
 
     if (result?.data?.success) {
       toast.success("Profile updated");
-      // Close parent Dialog or Sheet by finding the rendered close button and clicking it.
-      try {
-        const closeBtn = document.querySelector(
-          '[data-slot="dialog-close"] button, [data-slot="sheet-close"] button',
-        ) as HTMLButtonElement | null;
-        if (closeBtn) closeBtn.click();
-      } catch {
-        // ignore if running in unexpected environment
-      }
+      window.location.reload();
       return;
     }
 
