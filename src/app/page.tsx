@@ -12,6 +12,7 @@ export default function HomePage() {
     <LandingPage
       heroCTA={
         <Suspense
+          key="hero-suspense"
           fallback={
             <Button disabled className="text-base leading-6 h-12 px-8">
               Generate your first PDF
@@ -24,6 +25,7 @@ export default function HomePage() {
       }
       footerCTA={
         <Suspense
+          key="footer-suspense"
           fallback={
             <Button
               disabled

@@ -12,7 +12,7 @@ import {
 import {Button} from "@/components/ui/button";
 import {Card, CardContent, CardHeader, CardTitle} from "@/components/ui/card";
 
-export function LandingPage({
+export async function LandingPage({
   heroCTA,
   footerCTA,
 }: {

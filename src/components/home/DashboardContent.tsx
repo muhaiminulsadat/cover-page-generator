@@ -3,6 +3,7 @@ import {ArrowRight, Layers} from "lucide-react";
 import {templates} from "@/db/schema";
 import {TemplateCard} from "@/components/ui-custom/TemplateCard";
 import {Button} from "@/components/ui/button";
+import {cacheLife} from "next/cache";
 
 interface DashboardContentProps {
   templatesList: Array<typeof templates.$inferSelect>;
@@ -15,6 +16,9 @@ export function DashboardContent({
   departmentLabel,
   userId,
 }: DashboardContentProps) {
+  "use cache: remote";
+  cacheLife("minutes");
+
   return (
     <main className="w-full max-w-5xl mx-auto px-4 py-10">
       <div className="flex flex-col sm:flex-row sm:justify-between sm:items-end mb-8 border-b pb-6 gap-4 sm:gap-0">
