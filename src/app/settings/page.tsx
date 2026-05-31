@@ -159,7 +159,7 @@ async function SettingsPageContent() {
                     Edit
                   </Button>
                 </DialogTrigger>
-                <DialogContent className="max-w-[425px] sm:max-w-2xl sm:rounded-xl">
+                <DialogContent className="w-[95vw] max-h-[90dvh] overflow-y-auto sm:max-w-2xl rounded-xl sm:rounded-xl p-4 sm:p-6">
                   {/* Remove Card wrapper padding applied by ProfileSettingsForm since Dialog handles layout */}
                   <ProfileSettingsForm
                     initialValues={{
