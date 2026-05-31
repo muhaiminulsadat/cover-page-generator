@@ -1,5 +1,5 @@
 import {db} from "@/db";
-import {templates} from "@/db/schema";
+import {templates, downloadLogs} from "@/db/schema";
 import {and, eq, isNull, or} from "drizzle-orm";
 import {DEFAULT_COVER_PAGE_DESIGN} from "@/lib/constants/cover-designs";
 
@@ -134,6 +134,7 @@ export async function updateTemplate(
   id: string,
   userId: string,
   data: Partial<typeof templates.$inferInsert>,
+  bypassOwnerCheck = false
 ) {
   const baseData = data as Partial<typeof templates.$inferInsert>;
   const payload: Partial<typeof templates.$inferInsert> = {
@@ -146,10 +147,14 @@ export async function updateTemplate(
   }
 
   try {
+    const condition = bypassOwnerCheck
+      ? eq(templates.id, id)
+      : and(eq(templates.id, id), eq(templates.createdBy, userId));
+
     const results = await db
       .update(templates)
       .set(payload)
-      .where(and(eq(templates.id, id), eq(templates.createdBy, userId)))
+      .where(condition)
       .returning();
     const updatedTemplate = results[0];
     return updatedTemplate
@@ -239,15 +244,29 @@ export async function getAllTemplates() {
   }
 }
 
-export async function deleteTemplate(id: string, userId: string) {
+export async function deleteTemplate(id: string, userId: string, bypassOwnerCheck = false) {
   try {
+    const condition = bypassOwnerCheck
+      ? eq(templates.id, id)
+      : and(eq(templates.id, id), eq(templates.createdBy, userId));
+
     const results = await db
       .delete(templates)
-      .where(and(eq(templates.id, id), eq(templates.createdBy, userId)))
+      .where(condition)
       .returning();
     return results[0];
   } catch (error) {
     console.error("Error in deleteTemplate:", error);
+    throw error;
+  }
+}
+
+export async function logDownload(data: typeof downloadLogs.$inferInsert) {
+  try {
+    const results = await db.insert(downloadLogs).values(data).returning();
+    return results[0];
+  } catch (error) {
+    console.error("Error in logDownload:", error);
     throw error;
   }
 }

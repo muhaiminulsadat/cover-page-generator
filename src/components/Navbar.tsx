@@ -35,6 +35,7 @@ import {
   Menu,
   Moon,
   Settings,
+  Shield,
   Sun,
   UserPlus,
 } from "lucide-react";
@@ -213,6 +214,21 @@ export default function Navbar() {
                           Settings
                         </Link>
                       </DropdownMenuItem>
+                      {(session.user.role === "admin" || session.user.role === "superadmin") && (
+                        <DropdownMenuItem
+                          asChild
+                          className={cn(
+                            "cursor-pointer rounded-lg px-2.5 py-2",
+                            pathname.startsWith("/admin") &&
+                              "bg-accent text-accent-foreground",
+                          )}
+                        >
+                          <Link href="/admin">
+                            <Shield className="size-4 text-muted-foreground" />
+                            Admin Panel
+                          </Link>
+                        </DropdownMenuItem>
+                      )}
                     </DropdownMenuGroup>
                   )}
 
@@ -379,6 +395,28 @@ export default function Navbar() {
                             </span>
                             <span className="text-xs text-muted-foreground">
                               Account
+                            </span>
+                          </Link>
+                        </Button>
+                      </SheetClose>
+                    )}
+
+                    {session && (session.user.role === "admin" || session.user.role === "superadmin") && (
+                      <SheetClose asChild>
+                        <Button
+                          variant={
+                            pathname.startsWith("/admin") ? "secondary" : "ghost"
+                          }
+                          className="h-11 w-full justify-between rounded-xl px-3"
+                          asChild
+                        >
+                          <Link href="/admin">
+                            <span className="flex items-center gap-2.5">
+                              <Shield className="h-4 w-4" />
+                              Admin Panel
+                            </span>
+                            <span className="text-xs text-muted-foreground">
+                              Manage
                             </span>
                           </Link>
                         </Button>

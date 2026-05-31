@@ -1,4 +1,5 @@
 export interface TopSheetTemplateData {
+  id?: string;
   designId?: string | null;
   coverDesignId?: string | null;
   courseNumber: string;

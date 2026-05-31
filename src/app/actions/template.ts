@@ -1,19 +1,21 @@
 "use server";
 
-import {authActionClient} from "@/lib/safe-action";
+import {authActionClient, moderatorActionClient} from "@/lib/safe-action";
 import {
   createTemplateSchema,
   deleteTemplateSchema,
   editTemplateSchema,
 } from "@/lib/validations/template";
+import {logDownloadSchema} from "@/lib/validations/admin";
 import {
   deleteTemplate,
   insertTemplate,
   updateTemplate,
+  logDownload,
 } from "@/lib/queries/template";
 import {revalidatePath} from "next/cache";
 
-export const createTemplateAction = authActionClient
+export const createTemplateAction = moderatorActionClient
   .schema(createTemplateSchema)
   .action(async ({parsedInput, ctx}) => {
     try {
@@ -54,10 +56,17 @@ export const editTemplateAction = authActionClient
   .action(async ({parsedInput, ctx}) => {
     try {
       const {id, coverDesignId, ...data} = parsedInput;
-      const updatedTemplate = await updateTemplate(id, ctx.user.id, {
-        ...data,
-        coverDesignId,
-      });
+      const isSuperadmin = ctx.user.role === "superadmin";
+      
+      const updatedTemplate = await updateTemplate(
+        id, 
+        ctx.user.id, 
+        {
+          ...data,
+          coverDesignId,
+        },
+        isSuperadmin
+      );
       if (!updatedTemplate) throw new Error("Not authorized or not found");
 
       revalidatePath("/");
@@ -89,7 +98,9 @@ export const deleteTemplateAction = authActionClient
   .action(async ({parsedInput, ctx}) => {
     try {
       const {id} = parsedInput;
-      const deletedTemplate = await deleteTemplate(id, ctx.user.id);
+      const isSuperadmin = ctx.user.role === "superadmin";
+      
+      const deletedTemplate = await deleteTemplate(id, ctx.user.id, isSuperadmin);
 
       if (!deletedTemplate) {
         throw new Error("Not authorized or template not found");
@@ -117,3 +128,46 @@ export const deleteTemplateAction = authActionClient
       throw new Error("Failed to delete template");
     }
   });
+
+export const logDownloadAction = authActionClient
+  .schema(logDownloadSchema)
+  .action(async ({parsedInput, ctx}) => {
+    try {
+      const {templateId} = parsedInput;
+
+      // Extract headers from next/headers
+      const {headers} = await import("next/headers");
+      const headersList = await headers();
+      const userAgent = headersList.get("user-agent") || "";
+      
+      // Simple parse for device type and browser
+      let deviceType = "desktop";
+      if (/Mobi|Android/i.test(userAgent)) deviceType = "mobile";
+      else if (/Tablet|iPad/i.test(userAgent)) deviceType = "tablet";
+
+      let browser = "Other";
+      if (/Edg/i.test(userAgent)) browser = "Edge";
+      else if (/Chrome/i.test(userAgent)) browser = "Chrome";
+      else if (/Firefox/i.test(userAgent)) browser = "Firefox";
+      else if (/Safari/i.test(userAgent)) browser = "Safari";
+
+      await logDownload({
+        id: crypto.randomUUID(),
+        templateId,
+        userId: ctx.user.id,
+        deviceType,
+        browser,
+      });
+
+      const {updateTag, refresh} = await import("next/cache");
+      updateTag("downloads");
+      updateTag("analytics");
+      refresh();
+
+      return {success: true};
+    } catch (error) {
+      console.error("Error logging download:", error);
+      throw new Error("Failed to log download");
+    }
+  });
+

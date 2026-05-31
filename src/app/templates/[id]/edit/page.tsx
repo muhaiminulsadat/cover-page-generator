@@ -43,7 +43,10 @@ async function EditTemplate({id}: {id: string}) {
       return notFound();
     }
 
-    if (template.createdBy !== session.user.id) {
+    const isOwner = template.createdBy === session.user.id;
+    const isSuperadmin = session.user.role === "superadmin";
+
+    if (!isOwner && !isSuperadmin) {
       return redirect(`/templates/${id}`);
     }
 

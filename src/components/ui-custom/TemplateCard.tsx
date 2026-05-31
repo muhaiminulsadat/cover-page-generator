@@ -15,10 +15,12 @@ import {getDepartmentLabel} from "@/lib/constants/departments";
 interface TemplateCardProps {
   template: typeof templates.$inferSelect;
   userId: string;
+  userRole?: string;
 }
 
-export function TemplateCard({template, userId}: TemplateCardProps) {
+export function TemplateCard({template, userId, userRole}: TemplateCardProps) {
   const isOwner = template.createdBy === userId;
+  const canEdit = isOwner || userRole === "superadmin";
   return (
     <Card className="flex flex-col flex-1 h-full overflow-hidden hover:shadow-md transition-shadow">
       <CardHeader className="flex-1 pb-4">
@@ -67,7 +69,7 @@ export function TemplateCard({template, userId}: TemplateCardProps) {
             Preview & Generate <ArrowRight className="ml-2 w-4 h-4" />
           </Link>
         </Button>
-        {isOwner && (
+        {canEdit && (
           <Button variant="outline" size="icon" asChild title="Edit template">
             <Link href={`/templates/${template.id}/edit`}>
               <Pencil className="w-4 h-4" />

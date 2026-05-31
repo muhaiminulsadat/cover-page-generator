@@ -23,6 +23,7 @@ async function DashboardGrid({
   subsection,
   hscBatch,
   userId,
+  userRole,
 }: {
   department: string;
   level: string;
@@ -31,6 +32,7 @@ async function DashboardGrid({
   subsection: string;
   hscBatch: string;
   userId: string;
+  userRole: string;
 }) {
   "use cache: remote";
   cacheLife("hours");
@@ -54,12 +56,15 @@ async function DashboardGrid({
           No templates found for your department
         </h3>
         <p className="text-muted-foreground max-w-sm mx-auto mt-2">
-          Be the first to create a template for your class. Your classmates will
-          be able to reuse it instantly.
+          {userRole !== "student" 
+            ? "Be the first to create a template for your class. Your classmates will be able to reuse it instantly."
+            : "Ask your class representative or a moderator to create a template for this class."}
         </p>
-        <Button asChild className="mt-6" variant="outline">
-          <Link href="/templates/new">Create First Template</Link>
-        </Button>
+        {userRole !== "student" && (
+          <Button asChild className="mt-6" variant="outline">
+            <Link href="/templates/new">Create First Template</Link>
+          </Button>
+        )}
       </div>
     );
   }
@@ -71,6 +76,7 @@ async function DashboardGrid({
           key={template.id}
           template={template as never}
           userId={userId}
+          userRole={userRole}
         />
       ))}
     </div>
@@ -117,11 +123,13 @@ export default async function DashboardPage() {
             Showing top sheet templates for {departmentLabel}.
           </p>
         </div>
-        <Button asChild className="w-full sm:w-auto">
-          <Link href="/templates/new">
-            Create Template <ArrowRight className="ml-2 w-4 h-4" />
-          </Link>
-        </Button>
+        {user.role !== "student" && (
+          <Button asChild className="w-full sm:w-auto">
+            <Link href="/templates/new">
+              Create Template <ArrowRight className="ml-2 w-4 h-4" />
+            </Link>
+          </Button>
+        )}
       </div>
 
       <Suspense
@@ -156,6 +164,7 @@ export default async function DashboardPage() {
           subsection={user.subsection as string}
           hscBatch={user.hscBatch as string}
           userId={user.id}
+          userRole={user.role as string}
         />
       </Suspense>
     </main>

@@ -386,10 +386,10 @@ Each `/admin` page checks the session role server-side and redirects unauthorize
 
 #### `/admin/users/page.tsx` — [NEW]
 
-- Page shell wraps `<UsersTable />` in `<Suspense fallback={<DataTableSkeleton />}>`.
-- `UsersTable` is an async Server Component with `"use cache: remote"`, `cacheLife("minutes")`, `cacheTag("users")`.
+- Page shell wraps `<UsersTable />` in `<Suspense fallback={<DataTableSkeleton />}>`. Reads `page` and `search` from URL `searchParams` and passes them down.
+- `UsersTable` is an async Server Component with `"use cache: remote"`, `cacheLife("minutes")`, `cacheTag("users")`. Takes `page` and `search` props to fetch paginated data.
 - Data table with columns: Avatar, Name, Email, Current Role, Joined Date, Actions.
-- Search input to filter by name or email.
+- Server-side search input (updates URL `?search=...`) and pagination controls (Next/Prev updates URL `?page=...`).
 - "Manage Role" button opens a Dialog with a role selector dropdown.
 - Admin view: dropdown shows only `student` and `moderator`.
 - Superadmin view: dropdown shows all 4 roles.
@@ -397,9 +397,9 @@ Each `/admin` page checks the session role server-side and redirects unauthorize
 
 #### `/admin/templates/page.tsx` — [NEW] (Superadmin only)
 
-- Page shell wraps `<AdminTemplatesTable />` in `<Suspense fallback={<DataTableSkeleton />}>`.
-- `AdminTemplatesTable` is an async Server Component with `"use cache: remote"`, `cacheLife("minutes")`, `cacheTag("templates")`, `cacheTag("admin-templates")`.
-- Lists all templates with: Course Number, Course Title, Creator Name, Created Date, Actions.
+- Page shell wraps `<AdminTemplatesTable />` in `<Suspense fallback={<DataTableSkeleton />}>`. Reads `page` from URL `searchParams` and passes it down.
+- `AdminTemplatesTable` is an async Server Component with `"use cache: remote"`, `cacheLife("minutes")`, `cacheTag("templates")`, `cacheTag("admin-templates")`. Takes `page` prop to fetch paginated data.
+- Lists templates with server-side pagination controls. Columns: Course Number, Course Title, Creator Name, Created Date, Actions.
 - "Delete" button with a confirmation Dialog.
 - "Edit" button links to `/templates/[id]/edit`.
 

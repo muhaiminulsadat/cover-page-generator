@@ -24,3 +24,28 @@ export const authActionClient = actionClient.use(async ({next}) => {
     throw error;
   }
 });
+
+export const moderatorActionClient = authActionClient.use(
+  async ({next, ctx}) => {
+    if (ctx.user.role === "student") {
+      throw new Error("Insufficient permissions");
+    }
+    return next({ctx});
+  },
+);
+
+export const adminActionClient = authActionClient.use(async ({next, ctx}) => {
+  if (ctx.user.role === "student" || ctx.user.role === "moderator") {
+    throw new Error("Admin access required");
+  }
+  return next({ctx});
+});
+
+export const superadminActionClient = authActionClient.use(
+  async ({next, ctx}) => {
+    if (ctx.user.role !== "superadmin") {
+      throw new Error("Superadmin access required");
+    }
+    return next({ctx});
+  },
+);

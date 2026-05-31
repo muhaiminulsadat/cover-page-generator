@@ -94,3 +94,19 @@ export const templates = t.pgTable("templates", {
   createdAt: t.timestamp("created_at").notNull().defaultNow(),
   updatedAt: t.timestamp("updated_at").notNull().defaultNow(),
 });
+
+export const downloadLogs = t.pgTable("download_logs", {
+  id: t.text("id").primaryKey(),
+  templateId: t
+    .text("template_id")
+    .notNull()
+    .references(() => templates.id, {onDelete: "cascade"}),
+  userId: t
+    .text("user_id")
+    .notNull()
+    .references(() => user.id, {onDelete: "cascade"}),
+  deviceType: t.text("device_type"),
+  browser: t.text("browser"),
+  downloadedAt: t.timestamp("downloaded_at").notNull().defaultNow(),
+});
+
