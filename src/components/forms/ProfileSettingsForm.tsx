@@ -19,13 +19,7 @@ import {
 import {Button} from "@/components/ui/button";
 import {Input} from "@/components/ui/input";
 import {Label} from "@/components/ui/label";
-import {
-  Card,
-  CardContent,
-  CardDescription,
-  CardHeader,
-  CardTitle,
-} from "@/components/ui/card";
+import {DialogTitle} from "@/components/ui/dialog";
 
 interface ProfileSettingsFormProps {
   initialValues: UserSettingsInput;
@@ -69,15 +63,15 @@ export function ProfileSettingsForm({initialValues}: ProfileSettingsFormProps) {
   }
 
   return (
-    <Card className="w-full border-border/60 bg-card/95 shadow-xl">
-      <CardHeader className="space-y-2 pb-4">
-        <CardTitle className="text-xl sm:text-2xl">Edit Profile</CardTitle>
-        <CardDescription>
+    <div className="w-full">
+      <div className="space-y-1 pb-4">
+        <DialogTitle className="text-xl sm:text-2xl">Edit Profile</DialogTitle>
+        <p className="text-sm text-muted-foreground">
           Keep your details up to date so templates and PDFs are generated
           correctly.
-        </CardDescription>
-      </CardHeader>
-      <CardContent className="pb-6">
+        </p>
+      </div>
+      <div className="pb-6">
         <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-6">
           <div className="space-y-2">
             <Label htmlFor="name">Full Name</Label>
@@ -332,7 +326,7 @@ export function ProfileSettingsForm({initialValues}: ProfileSettingsFormProps) {
             </Button>
           </div>
         </form>
-      </CardContent>
-    </Card>
+      </div>
+    </div>
   );
 }
