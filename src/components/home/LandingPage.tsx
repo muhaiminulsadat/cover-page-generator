@@ -12,9 +12,13 @@ import {
 import {Button} from "@/components/ui/button";
 import {Card, CardContent, CardHeader, CardTitle} from "@/components/ui/card";
 
-export function LandingPage({isLoggedIn}: {isLoggedIn?: boolean}) {
-  const targetHref = isLoggedIn ? "/dashboard" : "/register";
-
+export function LandingPage({
+  heroCTA,
+  footerCTA,
+}: {
+  heroCTA: React.ReactNode;
+  footerCTA: React.ReactNode;
+}) {
   return (
     <div className="w-full flex-1 flex flex-col justify-between">
       <main className="px-6 container mx-auto flex-1">
@@ -36,12 +40,7 @@ export function LandingPage({isLoggedIn}: {isLoggedIn?: boolean}) {
             using shared course templates.
           </p>
           <div className="flex flex-col sm:flex-row gap-3 mt-6 w-full sm:w-auto">
-            <Button asChild className="text-base leading-6 h-12 px-8">
-              <Link href={targetHref}>
-                Generate your first PDF
-                <ArrowRight className="size-4 ml-2" />
-              </Link>
-            </Button>
+            {heroCTA}
           </div>
           <div className="relative mt-12 w-full max-w-4xl mx-auto">
             <div className="rounded-2xl border-border border overflow-hidden relative w-full h-75 sm:h-100">
@@ -208,16 +207,7 @@ export function LandingPage({isLoggedIn}: {isLoggedIn?: boolean}) {
               Join engineering students generating clean lab submissions in
               seconds.
             </p>
-            <Button
-              asChild
-              className="bg-background text-foreground hover:bg-muted text-base h-12 px-8 relative z-10"
-              size="lg"
-            >
-              <Link href={targetHref}>
-                Get started free
-                <ArrowRight className="size-4 ml-2" />
-              </Link>
-            </Button>
+            {footerCTA}
           </div>
         </section>
       </main>
