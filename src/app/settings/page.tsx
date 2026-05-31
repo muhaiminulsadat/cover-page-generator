@@ -84,8 +84,8 @@ async function SettingsPageContent() {
             <div className="h-28 bg-gradient-to-r from-muted via-muted/80 to-muted sm:h-32" />
 
             <div className="relative px-5 pb-6 sm:px-6">
-              <div className="-mt-12 flex flex-col items-center gap-4 sm:-mt-14 sm:flex-row sm:items-end sm:gap-5">
-                <Avatar className="size-22 shrink-0 rounded-full ring-[3px] ring-card shadow-md sm:size-24">
+              <div className="-mt-14 flex flex-col items-center gap-4 sm:-mt-16 sm:flex-row sm:items-end sm:gap-5">
+                <Avatar className="size-24 shrink-0 rounded-full ring-[3px] ring-card shadow-md sm:size-28">
                   <AvatarImage
                     src={session.user.image ?? ""}
                     alt={session.user.name ?? "User"}
