@@ -26,6 +26,9 @@ export const updateProfile = authActionClient
         })
         .where(eq(user.id, ctx.user.id));
 
+      revalidatePath("/");
+      revalidatePath("/dashboard");
+
       return {success: true, data: parsedInput};
     } catch (error) {
       console.error("Error updating profile:", error);

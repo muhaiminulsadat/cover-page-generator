@@ -27,6 +27,8 @@ import {
   CardTitle,
 } from "@/components/ui/card";
 
+import toast from "react-hot-toast";
+
 export function OnboardingForm() {
   const router = useRouter();
 
@@ -57,15 +59,18 @@ export function OnboardingForm() {
   async function onSubmit(data: UserProfileInput) {
     const result = await executeAsync(data);
     if (result?.data?.success) {
+      toast.success("Details saved successfully");
+      router.refresh();
       router.push("/dashboard");
       return;
     }
 
-    console.error(
+    const errorMessage =
       result?.serverError ||
-        result?.validationErrors ||
-        "Failed to save profile",
-    );
+      (result?.validationErrors ? "Please check your form details" : "Failed to save profile");
+    
+    toast.error(errorMessage);
+    console.error(result);
   }
 
   return (
