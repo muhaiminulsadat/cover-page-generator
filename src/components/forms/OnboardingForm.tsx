@@ -60,15 +60,17 @@ export function OnboardingForm() {
     const result = await executeAsync(data);
     if (result?.data?.success) {
       toast.success("Details saved successfully");
-      router.refresh();
+      // router.refresh();
       router.push("/dashboard");
       return;
     }
 
     const errorMessage =
       result?.serverError ||
-      (result?.validationErrors ? "Please check your form details" : "Failed to save profile");
-    
+      (result?.validationErrors
+        ? "Please check your form details"
+        : "Failed to save profile");
+
     toast.error(errorMessage);
     console.error(result);
   }
