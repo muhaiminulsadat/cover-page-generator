@@ -13,8 +13,13 @@ import Link from "next/link";
 import {ArrowRight, Layers} from "lucide-react";
 import {Button} from "@/components/ui/button";
 import {TemplateCard} from "@/components/ui-custom/TemplateCard";
+import {unstable_cacheLife as cacheLife, unstable_cacheTag as cacheTag} from "next/cache";
 
 async function DashboardGrid({user}: {user: any}) {
+  "use cache: remote";
+  cacheLife("minutes");
+  cacheTag(`templates-${user.department}-${user.level}`);
+
   const templatesList = await getTemplatesByMetadata({
     department: user.department,
     level: user.level,
