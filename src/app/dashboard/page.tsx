@@ -33,11 +33,7 @@ async function DashboardGrid({
   userId: string;
 }) {
   "use cache: remote";
-  cacheLife({
-    stale: 86400, // 1 day
-    revalidate: 86400 * 30 * 6, // 6 months
-    expire: 86400 * 30 * 6, // 6 months
-  });
+  cacheLife("hours");
   cacheTag(`templates-${department}-${level}`);
   cacheTag("templates");
 
@@ -58,8 +54,8 @@ async function DashboardGrid({
           No templates found for your department
         </h3>
         <p className="text-muted-foreground max-w-sm mx-auto mt-2">
-          Be the first to create a template for your class. Your classmates
-          will be able to reuse it instantly.
+          Be the first to create a template for your class. Your classmates will
+          be able to reuse it instantly.
         </p>
         <Button asChild className="mt-6" variant="outline">
           <Link href="/templates/new">Create First Template</Link>
@@ -93,13 +89,13 @@ export default async function DashboardPage() {
   const user = session.user;
   const profileComplete = Boolean(
     user.studentId &&
-      user.university &&
-      user.department &&
-      user.section &&
-      user.subsection &&
-      user.level &&
-      user.term &&
-      user.hscBatch,
+    user.university &&
+    user.department &&
+    user.section &&
+    user.subsection &&
+    user.level &&
+    user.term &&
+    user.hscBatch,
   );
 
   if (!profileComplete) {
@@ -165,4 +161,3 @@ export default async function DashboardPage() {
     </main>
   );
 }
-

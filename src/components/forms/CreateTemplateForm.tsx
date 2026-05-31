@@ -94,6 +94,7 @@ export function CreateTemplateForm() {
     if (result?.data?.success) {
       toast.success("Template created successfully");
       router.push(`/templates/${result.data.data.id}`);
+      router.refresh();
     } else if (result?.serverError) {
       toast.error(result.serverError);
     } else if (result?.validationErrors) {

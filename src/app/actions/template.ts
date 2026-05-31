@@ -27,6 +27,7 @@ export const createTemplateAction = authActionClient
       });
 
       revalidatePath("/");
+      revalidatePath("/dashboard");
       revalidatePath("/templates");
       
       const {revalidateTag} = await import("next/cache");
@@ -59,6 +60,7 @@ export const editTemplateAction = authActionClient
       if (!updatedTemplate) throw new Error("Not authorized or not found");
 
       revalidatePath("/");
+      revalidatePath("/dashboard");
       revalidatePath(`/templates/${id}`);
       revalidatePath("/templates");
 
@@ -92,6 +94,7 @@ export const deleteTemplateAction = authActionClient
       }
 
       revalidatePath("/");
+      revalidatePath("/dashboard");
       revalidatePath("/templates");
       revalidatePath(`/templates/${id}`);
 

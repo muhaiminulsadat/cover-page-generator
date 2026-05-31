@@ -98,6 +98,7 @@ export function EditTemplateForm({template}: {template: EditTemplateInput}) {
     if (result?.data?.success) {
       toast.success("Template updated successfully");
       router.push(`/templates/${result.data.data.id}`);
+      router.refresh();
     } else if (result?.serverError) {
       toast.error(result.serverError);
     } else if (result?.validationErrors) {
