@@ -30,12 +30,13 @@ export const createTemplateAction = authActionClient
       revalidatePath("/dashboard");
       revalidatePath("/templates");
       
-      const {revalidateTag} = await import("next/cache");
+      const {updateTag, refresh} = await import("next/cache");
       if (template.departmentTarget && template.levelTarget) {
-        revalidateTag(`templates-${template.departmentTarget}-${template.levelTarget}`);
+        updateTag(`templates-${template.departmentTarget}-${template.levelTarget}`);
       } else {
-        revalidateTag("templates");
+        updateTag("templates");
       }
+      refresh();
 
       return {success: true, data: template};
     } catch (error) {
@@ -64,12 +65,13 @@ export const editTemplateAction = authActionClient
       revalidatePath(`/templates/${id}`);
       revalidatePath("/templates");
 
-      const {revalidateTag} = await import("next/cache");
+      const {updateTag, refresh} = await import("next/cache");
       if (updatedTemplate.departmentTarget && updatedTemplate.levelTarget) {
-        revalidateTag(`templates-${updatedTemplate.departmentTarget}-${updatedTemplate.levelTarget}`);
+        updateTag(`templates-${updatedTemplate.departmentTarget}-${updatedTemplate.levelTarget}`);
       } else {
-        revalidateTag("templates");
+        updateTag("templates");
       }
+      refresh();
 
       return {success: true, data: updatedTemplate};
     } catch (error) {
@@ -98,12 +100,13 @@ export const deleteTemplateAction = authActionClient
       revalidatePath("/templates");
       revalidatePath(`/templates/${id}`);
 
-      const {revalidateTag} = await import("next/cache");
+      const {updateTag, refresh} = await import("next/cache");
       if (deletedTemplate.departmentTarget && deletedTemplate.levelTarget) {
-        revalidateTag(`templates-${deletedTemplate.departmentTarget}-${deletedTemplate.levelTarget}`);
+        updateTag(`templates-${deletedTemplate.departmentTarget}-${deletedTemplate.levelTarget}`);
       } else {
-        revalidateTag("templates");
+        updateTag("templates");
       }
+      refresh();
 
       return {success: true};
     } catch (error) {
