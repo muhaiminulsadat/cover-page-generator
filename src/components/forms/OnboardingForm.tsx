@@ -29,8 +29,11 @@ import {
 
 import toast from "react-hot-toast";
 
+import { useState } from "react";
+
 export function OnboardingForm() {
   const router = useRouter();
+  const [isRedirecting, setIsRedirecting] = useState(false);
 
   const {executeAsync, isPending} = useAction(updateProfile);
 
@@ -60,8 +63,8 @@ export function OnboardingForm() {
     const result = await executeAsync(data);
     if (result?.data?.success) {
       toast.success("Details saved successfully");
-      router.push("/dashboard");
-      router.refresh();
+      setIsRedirecting(true);
+      window.location.href = "/dashboard";
       return;
     }
 
@@ -319,9 +322,9 @@ export function OnboardingForm() {
             <Button
               type="submit"
               className="w-full sm:w-auto sm:min-w-40"
-              disabled={isPending}
+              disabled={isPending || isRedirecting}
             >
-              {isPending ? "Saving..." : "Save Profile"}
+              {isPending ? "Saving..." : isRedirecting ? "Redirecting..." : "Save Profile"}
             </Button>
           </div>
         </form>
