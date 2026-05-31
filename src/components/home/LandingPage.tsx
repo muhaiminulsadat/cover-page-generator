@@ -12,7 +12,9 @@ import {
 import {Button} from "@/components/ui/button";
 import {Card, CardContent, CardHeader, CardTitle} from "@/components/ui/card";
 
-export function LandingPage() {
+export function LandingPage({isLoggedIn}: {isLoggedIn?: boolean}) {
+  const targetHref = isLoggedIn ? "/dashboard" : "/register";
+
   return (
     <div className="w-full flex-1 flex flex-col justify-between">
       <main className="px-6 container mx-auto flex-1">
@@ -35,7 +37,7 @@ export function LandingPage() {
           </p>
           <div className="flex flex-col sm:flex-row gap-3 mt-6 w-full sm:w-auto">
             <Button asChild className="text-base leading-6 h-12 px-8">
-              <Link href="/register">
+              <Link href={targetHref}>
                 Generate your first PDF
                 <ArrowRight className="size-4 ml-2" />
               </Link>
@@ -211,7 +213,7 @@ export function LandingPage() {
               className="bg-background text-foreground hover:bg-muted text-base h-12 px-8 relative z-10"
               size="lg"
             >
-              <Link href="/register">
+              <Link href={targetHref}>
                 Get started free
                 <ArrowRight className="size-4 ml-2" />
               </Link>
