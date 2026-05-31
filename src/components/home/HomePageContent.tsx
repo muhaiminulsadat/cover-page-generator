@@ -82,7 +82,7 @@ export function HomePageContent() {
   ) {
     return (
       <DashboardContent
-        templatesList={payload.templatesList as any}
+        templatesList={payload.templatesList as never}
         userId={payload.user.id}
         departmentLabel={payload.departmentLabel || "your department"}
       />
