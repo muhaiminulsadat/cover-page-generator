@@ -33,7 +33,7 @@ export default function RegisterPage() {
 
   useEffect(() => {
     if (!sessionPending && session) {
-      router.push("/dashboard");
+      router.push("/onboarding");
     }
   }, [sessionPending, session, router]);
 
@@ -46,7 +46,7 @@ export default function RegisterPage() {
     setGoogleLoading(true);
     await authClient.signIn.social({
       provider: "google",
-      callbackURL: "/dashboard",
+      callbackURL: "/onboarding",
     });
   };
 
@@ -81,7 +81,7 @@ export default function RegisterPage() {
       {
         onSuccess: () => {
           toast.success("Account created successfully!");
-          router.push("/dashboard");
+          router.push("/onboarding");
         },
       },
     );
@@ -93,7 +93,7 @@ export default function RegisterPage() {
       return;
     }
 
-    router.push("/dashboard");
+    router.push("/onboarding");
     router.refresh();
   };
 
