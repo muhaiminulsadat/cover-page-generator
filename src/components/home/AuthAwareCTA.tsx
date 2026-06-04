@@ -15,7 +15,7 @@ async function CachedHeroCTA({isLoggedIn}: {isLoggedIn: boolean}) {
     <Button asChild className="text-base leading-6 h-12 px-8">
       <Link href={targetHref}>
         Generate {isLoggedIn ? "" : "your first "} PDF
-        <ArrowRight className="size-4 ml-2" />
+        <ArrowRight className="size-4 ml-2 transition-transform duration-200 group-hover/button:translate-x-0.5" />
       </Link>
     </Button>
   );
@@ -44,7 +44,7 @@ async function CachedFooterCTA({isLoggedIn}: {isLoggedIn: boolean}) {
     >
       <Link href={targetHref}>
         Get started free
-        <ArrowRight className="size-4 ml-2" />
+        <ArrowRight className="size-4 ml-2 transition-transform duration-200 group-hover/button:translate-x-0.5" />
       </Link>
     </Button>
   );
