@@ -40,9 +40,7 @@ export async function LandingPage({
           </h1>
 
           <p className="text-muted-foreground text-base sm:text-lg leading-6 max-w-2xl mt-4 font-sans">
-            Set up your academic profile once and instantly generate perfectly
-            formatted, multi-page lab PDFs — Top Sheet, Cover Page, and Index —
-            using shared course templates.
+            Set up your profile once to generate formatted lab PDFs using shared course templates.
           </p>
 
           <div className="flex flex-col sm:flex-row gap-3 mt-6 w-full sm:w-auto">
