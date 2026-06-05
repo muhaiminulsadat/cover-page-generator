@@ -12,7 +12,7 @@ export function AuthAwareHeroCTA() {
 
   if (isPending) {
     return (
-      <Button disabled className="text-base leading-6 h-12 px-8">
+      <Button disabled className="text-base leading-6 h-12 px-8 w-fit mx-auto lg:mx-0">
         Generate PDF
         <ArrowRight className="size-4 ml-2" />
       </Button>
@@ -20,7 +20,7 @@ export function AuthAwareHeroCTA() {
   }
 
   return (
-    <Button asChild className="text-base leading-6 h-12 px-8 w-full sm:w-auto group/button">
+    <Button asChild className="text-base leading-6 h-12 px-8 w-fit mx-auto lg:mx-0 group/button transition-all duration-200 active:scale-[0.98]">
       <Link href={targetHref}>
         {isLoggedIn ? "Go to dashboard" : "Get started free"}
         <ArrowRight className="size-4 ml-2 transition-transform duration-200 group-hover/button:translate-x-0.5" />
@@ -36,7 +36,7 @@ export function AuthAwareFooterCTA() {
 
   if (isPending) {
     return (
-      <Button disabled className="text-base h-12 px-8" size="lg">
+      <Button disabled className="text-base h-12 px-8 w-fit mx-auto" size="lg">
         Get started free
         <ArrowRight className="size-4 ml-2" />
       </Button>
@@ -44,7 +44,7 @@ export function AuthAwareFooterCTA() {
   }
 
   return (
-    <Button asChild className="text-base h-12 px-8 group/button" size="lg">
+    <Button asChild className="text-base h-12 px-8 group/button transition-all duration-200 active:scale-[0.98] w-fit mx-auto" size="lg">
       <Link href={targetHref}>
         Get started free
         <ArrowRight className="size-4 ml-2 transition-transform duration-200 group-hover/button:translate-x-0.5" />
