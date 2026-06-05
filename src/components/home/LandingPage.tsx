@@ -161,7 +161,7 @@ export async function LandingPage({ heroCTA, footerCTA }: LandingPageProps) {
   return (
     <div className="w-full flex-1 flex flex-col">
       <main>
-        <section className="relative overflow-hidden pt-20 md:pt-24 pb-20 md:pb-24">
+        <section className="relative overflow-hidden pt-20 md:pt-22 pb-20 md:pb-24">
           <div className="absolute inset-0 bg-[radial-gradient(var(--border)_1px,transparent_1px)] bg-[size:24px_24px] opacity-70 [mask-image:radial-gradient(ellipse_at_center,black_60%,transparent_100%)] pointer-events-none" />
           <div className="pointer-events-none absolute inset-0 overflow-hidden">
             <div className="absolute -top-40 -right-56 size-[700px] rounded-full bg-primary/[0.04] blur-[120px]" />
@@ -246,7 +246,7 @@ export async function LandingPage({ heroCTA, footerCTA }: LandingPageProps) {
                 <ScrollReveal
                   key={step.n}
                   delay={i * 0.08}
-                  className="group relative bg-card hover:bg-muted/15 border border-border rounded-2xl p-6 flex flex-col justify-between h-full transition-colors duration-300"
+                  className="group relative bg-card hover:bg-muted/15 border border-border rounded-lg p-6 flex flex-col justify-between h-full transition-colors duration-300"
                 >
                   <div className="flex flex-col gap-4">
                     <div className="flex items-center justify-between">
@@ -279,7 +279,7 @@ export async function LandingPage({ heroCTA, footerCTA }: LandingPageProps) {
               
               <ScrollReveal
                 delay={0}
-                className="md:col-span-2 rounded-2xl border border-border p-6 sm:p-8 flex flex-col justify-between bg-muted/10 hover:bg-muted/15 transition-colors duration-300"
+                className="md:col-span-2 rounded-lg border border-border p-6 sm:p-8 flex flex-col justify-between bg-muted/10 hover:bg-muted/15 transition-colors duration-300"
               >
                 <div className="flex flex-col gap-4">
                   <div className="size-10 rounded-xl bg-muted border border-border flex items-center justify-center text-foreground">
@@ -314,7 +314,7 @@ export async function LandingPage({ heroCTA, footerCTA }: LandingPageProps) {
 
               <ScrollReveal
                 delay={0.08}
-                className="md:col-span-1 rounded-2xl border border-border p-6 sm:p-8 flex flex-col justify-between bg-muted/10 hover:bg-muted/15 transition-colors duration-300"
+                className="md:col-span-1 rounded-lg border border-border p-6 sm:p-8 flex flex-col justify-between bg-muted/10 hover:bg-muted/15 transition-colors duration-300"
               >
                 <div className="flex flex-col gap-4">
                   <div className="size-10 rounded-xl bg-muted border border-border flex items-center justify-center text-foreground">
@@ -341,7 +341,7 @@ export async function LandingPage({ heroCTA, footerCTA }: LandingPageProps) {
 
               <ScrollReveal
                 delay={0.16}
-                className="md:col-span-1 rounded-2xl border border-border p-6 sm:p-8 flex flex-col justify-between bg-muted/10 hover:bg-muted/15 transition-colors duration-300"
+                className="md:col-span-1 rounded-lg border border-border p-6 sm:p-8 flex flex-col justify-between bg-muted/10 hover:bg-muted/15 transition-colors duration-300"
               >
                 <div className="flex flex-col gap-4">
                   <div className="size-10 rounded-xl bg-muted border border-border flex items-center justify-center text-foreground">
@@ -371,7 +371,7 @@ export async function LandingPage({ heroCTA, footerCTA }: LandingPageProps) {
 
               <ScrollReveal
                 delay={0.24}
-                className="md:col-span-2 rounded-2xl border border-border p-6 sm:p-8 flex flex-col justify-between bg-muted/10 hover:bg-muted/15 transition-colors duration-300"
+                className="md:col-span-2 rounded-lg border border-border p-6 sm:p-8 flex flex-col justify-between bg-muted/10 hover:bg-muted/15 transition-colors duration-300"
               >
                 <div className="flex flex-col gap-4">
                   <div className="size-10 rounded-xl bg-muted border border-border flex items-center justify-center text-foreground">
@@ -397,9 +397,36 @@ export async function LandingPage({ heroCTA, footerCTA }: LandingPageProps) {
           </div>
         </section>
 
+        <section className="w-full border-t border-b border-border/40 bg-muted/30 py-16 md:py-20 relative overflow-hidden my-12">
+          <div className="absolute inset-0 bg-[radial-gradient(var(--border)_1px,transparent_1px)] bg-[size:32px_32px] opacity-[0.25] pointer-events-none" />
+          <ScrollReveal className="max-w-4xl mx-auto px-6 text-center relative">
+            <div className="absolute inset-0 -z-10 flex items-center justify-center opacity-[0.04] dark:opacity-[0.07] pointer-events-none select-none">
+              <span className="font-serif text-[16rem] font-bold leading-none select-none translate-y-[-2rem]">“</span>
+            </div>
+            <div className="flex flex-col items-center gap-6">
+              <blockquote className="text-xl sm:text-2xl font-medium tracking-tight italic text-foreground/90 max-w-2xl leading-relaxed">
+                "My lab partner spent 3 hours formatting the cover page to look 'professional.' I did it in 30 seconds on CoverDe. We got the same grade. He doesn't talk to me anymore."
+              </blockquote>
+              <div className="flex items-center gap-3">
+                <div className="size-8 rounded-full bg-background border border-border flex items-center justify-center text-[10px] font-bold font-mono text-muted-foreground select-none">
+                  CE
+                </div>
+                <div className="text-left">
+                  <cite className="not-italic text-sm font-bold text-foreground">
+                    Anisul Islam
+                  </cite>
+                  <p className="text-xs text-muted-foreground">
+                    Civil Engineering Student, BUET
+                  </p>
+                </div>
+              </div>
+            </div>
+          </ScrollReveal>
+        </section>
+
         <section className="px-6 container mx-auto pb-20 md:pb-24">
           <ScrollReveal>
-            <div className="relative rounded-2xl border border-border bg-muted/10 overflow-hidden w-full max-w-4xl mx-auto">
+            <div className="relative rounded-lg border border-border bg-muted/10 overflow-hidden w-full max-w-4xl mx-auto">
               <div className="absolute inset-0 bg-[radial-gradient(var(--border)_1px,transparent_1px)] bg-[size:24px_24px] opacity-40 pointer-events-none" />
               <div className="pointer-events-none absolute inset-x-0 top-0 h-px bg-gradient-to-r from-transparent via-border to-transparent" />
               <div className="pointer-events-none absolute inset-0 bg-[radial-gradient(ellipse_70%_60%_at_50%_0%,_hsl(from_var(--primary)_h_s_l_/_0.04),transparent)]" />
