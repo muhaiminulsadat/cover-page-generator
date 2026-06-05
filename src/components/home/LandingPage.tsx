@@ -282,7 +282,7 @@ export async function LandingPage({heroCTA, footerCTA}: LandingPageProps) {
           </div>
         </section>
 
-        <section className="px-6 container mx-auto pb-16 md:pb-20">
+        <section className="px-6 container mx-auto pb-20 md:pb-24">
           <div className="max-w-5xl mx-auto">
             <div className="grid grid-cols-1 md:grid-cols-3 gap-5">
               <ScrollReveal
@@ -422,7 +422,7 @@ export async function LandingPage({heroCTA, footerCTA}: LandingPageProps) {
           </div>
         </section>
 
-        <section className="w-full border-t border-b border-border/40 bg-muted/30 py-16 md:py-20 relative overflow-hidden my-0">
+        <section className="w-full border-t border-b border-border/40 bg-muted/30 py-16 md:py-20 relative overflow-hidden my-12">
           <div className="absolute inset-0 bg-[radial-gradient(var(--border)_1px,transparent_1px)] bg-[size:32px_32px] opacity-[0.25] pointer-events-none" />
           <ScrollReveal className="max-w-4xl mx-auto px-6 text-center relative">
             <div className="absolute inset-0 -z-10 flex items-center justify-center opacity-[0.04] dark:opacity-[0.07] pointer-events-none select-none">
@@ -432,18 +432,20 @@ export async function LandingPage({heroCTA, footerCTA}: LandingPageProps) {
             </div>
             <div className="flex flex-col items-center gap-6">
               <blockquote className="text-xl sm:text-2xl font-medium tracking-tight italic text-foreground/90 max-w-2xl leading-relaxed">
-                "I formatted my sessional reports so fast that I actually slept for six hours. My roommates thought I had dropped out."
+                "My lab partner spent 3 hours formatting the cover page to look
+                'professional.' I did it in 30 seconds on CoverDe. We got the
+                same grade. He doesn't talk to me anymore."
               </blockquote>
               <div className="flex items-center gap-3">
                 <div className="size-8 rounded-full bg-background border border-border flex items-center justify-center text-[10px] font-bold font-mono text-muted-foreground select-none">
-                  CSE
+                  CE
                 </div>
                 <div className="text-left">
                   <cite className="not-italic text-sm font-bold text-foreground">
-                    Anika Rahman
+                    Anisul Islam
                   </cite>
                   <p className="text-xs text-muted-foreground">
-                    Computer Science & Engineering Student, BUET
+                    Civil Engineering Student, BUET
                   </p>
                 </div>
               </div>
@@ -451,7 +453,7 @@ export async function LandingPage({heroCTA, footerCTA}: LandingPageProps) {
           </ScrollReveal>
         </section>
 
-        <section className="px-6 container mx-auto pt-16 md:pt-20 pb-20 md:pb-24">
+        <section className="px-6 container mx-auto pb-20 md:pb-24">
           <ScrollReveal>
             <div className="relative rounded-lg border border-border bg-muted/10 overflow-hidden w-full max-w-4xl mx-auto">
               <div className="absolute inset-0 bg-[radial-gradient(var(--border)_1px,transparent_1px)] bg-[size:24px_24px] opacity-40 pointer-events-none" />

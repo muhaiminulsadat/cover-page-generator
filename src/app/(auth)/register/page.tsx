@@ -20,6 +20,7 @@ import {Checkbox} from "@/components/ui/checkbox";
 import {Input} from "@/components/ui/input";
 import {Label} from "@/components/ui/label";
 import toast from "react-hot-toast";
+import {FunnyTermsDialog} from "@/components/FunnyTermsDialog";
 
 export default function RegisterPage() {
   const router = useRouter();
@@ -66,7 +67,7 @@ export default function RegisterPage() {
     }
 
     if (!terms) {
-      setError("You must agree to the Terms and Privacy Policy.");
+      setError("You must agree to the Terms & Conditions (and the Coffee Tax).");
       return;
     }
 
@@ -247,14 +248,18 @@ export default function RegisterPage() {
               className="leading-relaxed text-muted-foreground text-xs"
               htmlFor="terms"
             >
-              I agree to CoverDe's{" "}
-              <Link href="#" className="underline font-medium text-foreground">
-                Terms
-              </Link>{" "}
-              and{" "}
-              <Link href="#" className="underline font-medium text-foreground">
-                Privacy Policy
-              </Link>
+              I agree to the{" "}
+              <FunnyTermsDialog
+                trigger={
+                  <Button
+                    type="button"
+                    variant="link"
+                    className="p-0 h-auto font-medium text-foreground underline hover:text-primary text-xs"
+                  >
+                    Terms & Conditions
+                  </Button>
+                }
+              />
               .
             </Label>
           </div>
