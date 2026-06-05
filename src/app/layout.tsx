@@ -7,6 +7,7 @@ import OnboardingGuard from "@/components/OnboardingGuard";
 import {cn} from "@/lib/utils";
 import {Toaster} from "react-hot-toast";
 import {Suspense} from "react";
+import {LenisProvider} from "@/components/LenisProvider";
 
 const inter = Inter({subsets: ["latin"], variable: "--font-sans"});
 
@@ -53,16 +54,18 @@ export default function RootLayout({
       <body className="min-h-full flex flex-col text-foreground">
         <Suspense fallback={null}>
           <ThemeProvider>
-            <Suspense
-              fallback={
-                <div className="fixed top-0 left-0 right-0 z-50 h-16 border-b border-border bg-background" />
-              }
-            >
-              <Navbar />
-            </Suspense>
-            <OnboardingGuard />
-            <main className="flex-1 pt-16">{children}</main>
-            <Toaster position="top-center" />
+            <LenisProvider>
+              <Suspense
+                fallback={
+                  <div className="fixed top-0 left-0 right-0 z-50 h-16 border-b border-border bg-background" />
+                }
+              >
+                <Navbar />
+              </Suspense>
+              <OnboardingGuard />
+              <main className="flex-1 pt-16">{children}</main>
+              <Toaster position="top-center" />
+            </LenisProvider>
           </ThemeProvider>
         </Suspense>
       </body>

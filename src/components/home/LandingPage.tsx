@@ -218,23 +218,37 @@ export async function LandingPage({heroCTA, footerCTA}: LandingPageProps) {
           </div>
         </section>
 
-        <div className="border-t border-b border-border/50 py-6 bg-muted/10">
-          <div className="max-w-5xl mx-auto px-6 flex flex-col md:flex-row items-center justify-between gap-5">
-            <span className="text-[10px] font-bold text-muted-foreground uppercase tracking-widest text-center md:text-left">
-              Supported Departments
-            </span>
-            <div className="flex flex-wrap justify-center gap-2 sm:gap-3">
-              {["CE", "CSE", "EEE", "ME", "IPE", "ChE", "WRE", "NAME"].map(
-                (dept) => (
-                  <span
-                    key={dept}
-                    className="px-2.5 py-1 rounded-md bg-muted border border-border/80 text-[10px] font-mono font-bold text-foreground/80"
-                  >
-                    {dept}
-                  </span>
-                ),
-              )}
-            </div>
+        <div className="border-t border-b border-border/40 py-5 bg-muted/5 select-none relative overflow-hidden w-full">
+          <div className="absolute left-0 top-0 bottom-0 w-20 sm:w-32 bg-gradient-to-r from-background to-transparent z-10 pointer-events-none" />
+          <div className="absolute right-0 top-0 bottom-0 w-20 sm:w-32 bg-gradient-to-l from-background to-transparent z-10 pointer-events-none" />
+          <div className="flex w-max items-center animate-marquee hover:[animation-play-state:paused] gap-6 will-change-transform">
+            {[
+              "CE · Civil Engineering",
+              "CSE · Computer Science",
+              "EEE · Electrical & Electronic",
+              "ME · Mechanical",
+              "IPE · Industrial & Production",
+              "ChE · Chemical",
+              "WRE · Water Resources",
+              "NAME · Naval Architecture",
+            ].concat([
+              "CE · Civil Engineering",
+              "CSE · Computer Science",
+              "EEE · Electrical & Electronic",
+              "ME · Mechanical",
+              "IPE · Industrial & Production",
+              "ChE · Chemical",
+              "WRE · Water Resources",
+              "NAME · Naval Architecture",
+            ]).map((dept, idx) => (
+              <span
+                key={idx}
+                className="px-3.5 py-2 rounded-xl bg-card border border-border/70 text-[10px] font-mono font-semibold text-muted-foreground tracking-wide flex items-center gap-2 shadow-2xs hover:border-primary/20 hover:text-foreground transition-colors duration-200"
+              >
+                <span className="size-1.5 rounded-full bg-primary/30 animate-pulse" />
+                {dept}
+              </span>
+            ))}
           </div>
         </div>
 
@@ -255,7 +269,7 @@ export async function LandingPage({heroCTA, footerCTA}: LandingPageProps) {
                 <ScrollReveal
                   key={step.n}
                   delay={i * 0.08}
-                  className="group relative bg-card hover:bg-muted/15 border border-border rounded-lg p-6 flex flex-col justify-between h-full transition-colors duration-300"
+                  className="group relative bg-card hover:bg-muted/5 border border-border hover:border-primary/20 rounded-lg p-6 flex flex-col justify-between h-full transition-all duration-300 hover:-translate-y-1 hover:shadow-md hover:shadow-primary/[0.01] cursor-default"
                 >
                   <div className="flex flex-col gap-4">
                     <div className="flex items-center justify-between">
@@ -287,7 +301,7 @@ export async function LandingPage({heroCTA, footerCTA}: LandingPageProps) {
             <div className="grid grid-cols-1 md:grid-cols-3 gap-5">
               <ScrollReveal
                 delay={0}
-                className="md:col-span-2 rounded-lg border border-border p-6 sm:p-8 flex flex-col justify-between bg-muted/10 hover:bg-muted/15 transition-colors duration-300"
+                className="md:col-span-2 rounded-lg border border-border hover:border-primary/20 p-6 sm:p-8 flex flex-col justify-between bg-muted/5 hover:bg-muted/10 transition-all duration-300 hover:-translate-y-1 hover:shadow-md hover:shadow-primary/[0.01] cursor-default"
               >
                 <div className="flex flex-col gap-4">
                   <div className="size-10 rounded-xl bg-muted border border-border flex items-center justify-center text-foreground">
@@ -331,7 +345,7 @@ export async function LandingPage({heroCTA, footerCTA}: LandingPageProps) {
 
               <ScrollReveal
                 delay={0.08}
-                className="md:col-span-1 rounded-lg border border-border p-6 sm:p-8 flex flex-col justify-between bg-muted/10 hover:bg-muted/15 transition-colors duration-300"
+                className="md:col-span-1 rounded-lg border border-border hover:border-primary/20 p-6 sm:p-8 flex flex-col justify-between bg-muted/5 hover:bg-muted/10 transition-all duration-300 hover:-translate-y-1 hover:shadow-md hover:shadow-primary/[0.01] cursor-default"
               >
                 <div className="flex flex-col gap-4">
                   <div className="size-10 rounded-xl bg-muted border border-border flex items-center justify-center text-foreground">
@@ -361,7 +375,7 @@ export async function LandingPage({heroCTA, footerCTA}: LandingPageProps) {
 
               <ScrollReveal
                 delay={0.16}
-                className="md:col-span-1 rounded-lg border border-border p-6 sm:p-8 flex flex-col justify-between bg-muted/10 hover:bg-muted/15 transition-colors duration-300"
+                className="md:col-span-1 rounded-lg border border-border hover:border-primary/20 p-6 sm:p-8 flex flex-col justify-between bg-muted/5 hover:bg-muted/10 transition-all duration-300 hover:-translate-y-1 hover:shadow-md hover:shadow-primary/[0.01] cursor-default"
               >
                 <div className="flex flex-col gap-4">
                   <div className="size-10 rounded-xl bg-muted border border-border flex items-center justify-center text-foreground">
@@ -392,7 +406,7 @@ export async function LandingPage({heroCTA, footerCTA}: LandingPageProps) {
 
               <ScrollReveal
                 delay={0.24}
-                className="md:col-span-2 rounded-lg border border-border p-6 sm:p-8 flex flex-col justify-between bg-muted/10 hover:bg-muted/15 transition-colors duration-300"
+                className="md:col-span-2 rounded-lg border border-border hover:border-primary/20 p-6 sm:p-8 flex flex-col justify-between bg-muted/5 hover:bg-muted/10 transition-all duration-300 hover:-translate-y-1 hover:shadow-md hover:shadow-primary/[0.01] cursor-default"
               >
                 <div className="flex flex-col gap-4">
                   <div className="size-10 rounded-xl bg-muted border border-border flex items-center justify-center text-foreground">
