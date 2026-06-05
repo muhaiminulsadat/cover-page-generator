@@ -161,7 +161,7 @@ export async function LandingPage({ heroCTA, footerCTA }: LandingPageProps) {
   return (
     <div className="w-full flex-1 flex flex-col">
       <main>
-        <section className="relative overflow-hidden pt-10 md:pt-14 pb-20 md:pb-24">
+        <section className="relative overflow-hidden pt-20 md:pt-24 pb-20 md:pb-24">
           <div className="absolute inset-0 bg-[radial-gradient(var(--border)_1px,transparent_1px)] bg-[size:24px_24px] opacity-70 [mask-image:radial-gradient(ellipse_at_center,black_60%,transparent_100%)] pointer-events-none" />
           <div className="pointer-events-none absolute inset-0 overflow-hidden">
             <div className="absolute -top-40 -right-56 size-[700px] rounded-full bg-primary/[0.04] blur-[120px]" />
