@@ -166,7 +166,7 @@ export async function LandingPage({heroCTA, footerCTA}: LandingPageProps) {
   return (
     <div className="w-full flex-1 flex flex-col">
       <main>
-        <section className="relative overflow-hidden pt-15 md:pt-24 pb-20 md:pb-24">
+        <section className="relative overflow-hidden pt-16 md:pt-24 pb-16 md:pb-20">
           <div className="absolute inset-0 bg-[radial-gradient(var(--border)_1px,transparent_1px)] bg-[size:24px_24px] opacity-70 [mask-image:radial-gradient(ellipse_at_center,black_60%,transparent_100%)] pointer-events-none" />
           <div className="pointer-events-none absolute inset-0 overflow-hidden">
             <div className="absolute -top-40 -right-56 size-[700px] rounded-full bg-primary/[0.04] blur-[120px]" />
@@ -238,7 +238,7 @@ export async function LandingPage({heroCTA, footerCTA}: LandingPageProps) {
           </div>
         </div>
 
-        <section className="px-6 container mx-auto py-20 md:py-24">
+        <section className="px-6 container mx-auto py-16 md:py-20">
           <div className="max-w-5xl mx-auto">
             <ScrollReveal className="text-center mb-14">
               <h2 className="text-2xl sm:text-3xl md:text-4xl font-bold tracking-tight font-heading">
@@ -282,7 +282,7 @@ export async function LandingPage({heroCTA, footerCTA}: LandingPageProps) {
           </div>
         </section>
 
-        <section className="px-6 container mx-auto pb-20 md:pb-24">
+        <section className="px-6 container mx-auto pb-16 md:pb-20">
           <div className="max-w-5xl mx-auto">
             <div className="grid grid-cols-1 md:grid-cols-3 gap-5">
               <ScrollReveal
@@ -422,38 +422,36 @@ export async function LandingPage({heroCTA, footerCTA}: LandingPageProps) {
           </div>
         </section>
 
-        <section className="w-full border-t border-b border-border/40 bg-muted/30 py-16 md:py-20 relative overflow-hidden my-12">
+        <section className="w-full border-t border-b border-border/40 bg-gradient-to-b from-muted/50 to-muted/20 dark:from-muted/20 dark:to-muted/5 py-16 md:py-20 relative overflow-hidden">
           <div className="absolute inset-0 bg-[radial-gradient(var(--border)_1px,transparent_1px)] bg-[size:32px_32px] opacity-[0.25] pointer-events-none" />
-          <ScrollReveal className="max-w-4xl mx-auto px-6 text-center relative">
-            <div className="absolute inset-0 -z-10 flex items-center justify-center opacity-[0.04] dark:opacity-[0.07] pointer-events-none select-none">
-              <span className="font-serif text-[16rem] font-bold leading-none select-none translate-y-[-2rem]">
+          <ScrollReveal className="max-w-4xl mx-auto px-6 text-center relative flex flex-col items-center gap-6">
+            <div className="absolute inset-0 -z-10 flex items-center justify-center opacity-[0.05] dark:opacity-[0.09] pointer-events-none select-none">
+              <span className="font-serif text-[18rem] font-bold leading-none select-none translate-y-[-2rem] text-primary">
                 “
               </span>
             </div>
-            <div className="flex flex-col items-center gap-6">
-              <blockquote className="text-xl sm:text-2xl font-medium tracking-tight italic text-foreground/90 max-w-2xl leading-relaxed">
-                "My lab partner spent 3 hours formatting the cover page to look
-                'professional.' I did it in 30 seconds on CoverDe. We got the
-                same grade. He doesn't talk to me anymore."
-              </blockquote>
-              <div className="flex items-center gap-3">
-                <div className="size-8 rounded-full bg-background border border-border flex items-center justify-center text-[10px] font-bold font-mono text-muted-foreground select-none">
-                  CE
-                </div>
-                <div className="text-left">
-                  <cite className="not-italic text-sm font-bold text-foreground">
-                    Anisul Islam
-                  </cite>
-                  <p className="text-xs text-muted-foreground">
-                    Civil Engineering Student, BUET
-                  </p>
-                </div>
+
+            <blockquote className="text-xl sm:text-2xl font-medium tracking-tight italic text-foreground/95 max-w-3xl leading-relaxed relative z-10">
+              &ldquo;I copied the entire lab report from my friend, but my cover page looked so premium that the teacher accused &lsquo;him&rsquo; of copying from &lsquo;me&rsquo;. He got a warning letter, and I got a 10/10. Best friendship break-up ever.&rdquo;
+            </blockquote>
+
+            <div className="flex items-center gap-3 mt-2 relative z-10">
+              <div className="size-9 rounded-full bg-primary/10 dark:bg-primary/20 text-primary border border-primary/20 flex items-center justify-center text-[10px] font-bold font-mono select-none">
+                CE
+              </div>
+              <div className="text-left">
+                <cite className="not-italic text-sm font-semibold text-foreground">
+                  Anisul Islam
+                </cite>
+                <p className="text-[11px] text-muted-foreground">
+                  Civil Engineering Student, BUET
+                </p>
               </div>
             </div>
           </ScrollReveal>
         </section>
 
-        <section className="px-6 container mx-auto pb-20 md:pb-24">
+        <section className="px-6 container mx-auto pt-16 md:pt-20 pb-16 md:pb-20">
           <ScrollReveal>
             <div className="relative rounded-lg border border-border bg-muted/10 overflow-hidden w-full max-w-4xl mx-auto">
               <div className="absolute inset-0 bg-[radial-gradient(var(--border)_1px,transparent_1px)] bg-[size:24px_24px] opacity-40 pointer-events-none" />
