@@ -1,8 +1,8 @@
 import Link from "next/link";
-import { FileText, Download, LayoutTemplate, Zap } from "lucide-react";
-import { cn } from "@/lib/utils";
-import { FadeIn } from "@/components/home/FadeIn";
-import { FadeUp, ScrollReveal } from "@/components/home/HeroMotion";
+import {FileText, Download, LayoutTemplate, Zap} from "lucide-react";
+import {cn} from "@/lib/utils";
+import {FadeIn} from "@/components/home/FadeIn";
+import {FadeUp, ScrollReveal} from "@/components/home/HeroMotion";
 
 interface LandingPageProps {
   heroCTA: React.ReactNode;
@@ -13,7 +13,6 @@ function DocumentPreview() {
   return (
     <div className="relative w-full max-w-[280px] sm:max-w-[320px] mx-auto py-8 [perspective:1200px] group/stack">
       <div className="relative w-full aspect-[1/1.3] [transform-style:preserve-3d] transition-transform duration-500 ease-out">
-        
         <div className="absolute inset-0 rounded-2xl border border-border/80 bg-muted/40 backdrop-blur-xs shadow-md transition-all duration-500 ease-out origin-center translate-z-[-20px] -rotate-6 -translate-x-6 translate-y-6 opacity-60 group-hover/stack:-rotate-12 group-hover/stack:-translate-x-12 group-hover/stack:translate-y-12 group-hover/stack:opacity-80 flex flex-col justify-between p-4 select-none">
           <div className="space-y-2">
             <div className="h-1.5 w-1/3 bg-muted-foreground/30 rounded" />
@@ -25,7 +24,9 @@ function DocumentPreview() {
               <div className="h-1.5 w-1/2 bg-muted-foreground/10 rounded" />
             </div>
           </div>
-          <span className="text-[7px] font-mono text-muted-foreground/60 uppercase self-end">Index Page</span>
+          <span className="text-[7px] font-mono text-muted-foreground/60 uppercase self-end">
+            Index Page
+          </span>
         </div>
 
         <div className="absolute inset-0 rounded-2xl border border-border/80 bg-muted/60 backdrop-blur-xs shadow-lg transition-all duration-500 ease-out origin-center translate-z-[-10px] rotate-3 translate-x-6 -translate-y-3 opacity-80 group-hover/stack:rotate-8 group-hover/stack:translate-x-12 group-hover/stack:-translate-y-6 group-hover/stack:opacity-95 flex flex-col justify-between p-4 select-none">
@@ -38,7 +39,9 @@ function DocumentPreview() {
               <div className="h-1.5 w-3/4 bg-muted-foreground/10 rounded mx-auto" />
             </div>
           </div>
-          <span className="text-[7px] font-mono text-muted-foreground/60 uppercase self-end">Cover Page</span>
+          <span className="text-[7px] font-mono text-muted-foreground/60 uppercase self-end">
+            Cover Page
+          </span>
         </div>
 
         <div className="absolute inset-0 rounded-2xl border border-border bg-card shadow-2xl transition-all duration-500 ease-out origin-center translate-z-0 -rotate-1 group-hover/stack:rotate-2 group-hover/stack:scale-[1.03] group-hover/stack:shadow-primary/5 flex flex-col overflow-hidden">
@@ -97,7 +100,10 @@ function DocumentPreview() {
                 ["Section / Group", "A1 · Group 03"],
                 ["Submitted to", "Prof. Dr. Tanvir Ahmed"],
               ].map(([label, value]) => (
-                <div key={label} className="flex items-center justify-between gap-2">
+                <div
+                  key={label}
+                  className="flex items-center justify-between gap-2"
+                >
                   <span className="text-[5.5px] text-muted-foreground shrink-0">
                     {label}
                   </span>
@@ -116,7 +122,6 @@ function DocumentPreview() {
             </div>
           </div>
         </div>
-
       </div>
 
       <div className="absolute -top-1 -right-4 rounded-xl border border-border bg-card/90 backdrop-blur-md shadow-lg px-2.5 py-1.5 flex items-center gap-1.5 transition-transform duration-300 group-hover/stack:scale-105 select-none">
@@ -157,11 +162,11 @@ const steps: StepItem[] = [
   },
 ];
 
-export async function LandingPage({ heroCTA, footerCTA }: LandingPageProps) {
+export async function LandingPage({heroCTA, footerCTA}: LandingPageProps) {
   return (
     <div className="w-full flex-1 flex flex-col">
       <main>
-        <section className="relative overflow-hidden pt-20 md:pt-22 pb-20 md:pb-24">
+        <section className="relative overflow-hidden pt-15 md:pt-24 pb-20 md:pb-24">
           <div className="absolute inset-0 bg-[radial-gradient(var(--border)_1px,transparent_1px)] bg-[size:24px_24px] opacity-70 [mask-image:radial-gradient(ellipse_at_center,black_60%,transparent_100%)] pointer-events-none" />
           <div className="pointer-events-none absolute inset-0 overflow-hidden">
             <div className="absolute -top-40 -right-56 size-[700px] rounded-full bg-primary/[0.04] blur-[120px]" />
@@ -190,7 +195,8 @@ export async function LandingPage({ heroCTA, footerCTA }: LandingPageProps) {
                 </h1>
 
                 <p className="text-muted-foreground text-base sm:text-lg leading-relaxed max-w-[42ch]">
-                  Set up your student profile once. Generate academic-standard top sheets, cover pages, and index sheets in 30 seconds.
+                  Set up your student profile once. Generate academic-standard
+                  top sheets, cover pages, and index sheets in 30 seconds.
                 </p>
 
                 <div className="flex flex-col sm:flex-row gap-3 w-full sm:w-auto justify-center lg:justify-start">
@@ -218,14 +224,16 @@ export async function LandingPage({ heroCTA, footerCTA }: LandingPageProps) {
               Supported Departments
             </span>
             <div className="flex flex-wrap justify-center gap-2 sm:gap-3">
-              {["CE", "CSE", "EEE", "ME", "IPE", "ChE", "WRE", "NAME"].map((dept) => (
-                <span
-                  key={dept}
-                  className="px-2.5 py-1 rounded-md bg-muted border border-border/80 text-[10px] font-mono font-bold text-foreground/80"
-                >
-                  {dept}
-                </span>
-              ))}
+              {["CE", "CSE", "EEE", "ME", "IPE", "ChE", "WRE", "NAME"].map(
+                (dept) => (
+                  <span
+                    key={dept}
+                    className="px-2.5 py-1 rounded-md bg-muted border border-border/80 text-[10px] font-mono font-bold text-foreground/80"
+                  >
+                    {dept}
+                  </span>
+                ),
+              )}
             </div>
           </div>
         </div>
@@ -237,7 +245,8 @@ export async function LandingPage({ heroCTA, footerCTA }: LandingPageProps) {
                 Three steps to done.
               </h2>
               <p className="text-muted-foreground mt-3 text-sm sm:text-base max-w-sm mx-auto">
-                No MS Word layout shifts. Simple form fields. Single click compile.
+                No MS Word layout shifts. Simple form fields. Single click
+                compile.
               </p>
             </ScrollReveal>
 
@@ -257,7 +266,7 @@ export async function LandingPage({ heroCTA, footerCTA }: LandingPageProps) {
                         {step.icon}
                       </div>
                     </div>
-                    
+
                     <div className="space-y-1.5">
                       <h3 className="font-bold text-base font-heading text-foreground">
                         {step.title}
@@ -276,7 +285,6 @@ export async function LandingPage({ heroCTA, footerCTA }: LandingPageProps) {
         <section className="px-6 container mx-auto pb-20 md:pb-24">
           <div className="max-w-5xl mx-auto">
             <div className="grid grid-cols-1 md:grid-cols-3 gap-5">
-              
               <ScrollReveal
                 delay={0}
                 className="md:col-span-2 rounded-lg border border-border p-6 sm:p-8 flex flex-col justify-between bg-muted/10 hover:bg-muted/15 transition-colors duration-300"
@@ -290,20 +298,29 @@ export async function LandingPage({ heroCTA, footerCTA }: LandingPageProps) {
                       Course-Matched Templates
                     </h3>
                     <p className="text-muted-foreground text-sm leading-relaxed max-w-[50ch]">
-                      Templates adapt instantly to specific course guidelines. Pick your department and select your target sessional module.
+                      Templates adapt instantly to specific course guidelines.
+                      Pick your department and select your target sessional
+                      module.
                     </p>
                   </div>
                 </div>
 
                 <div className="flex flex-wrap gap-2 mt-6">
-                  {["CE 320", "CSE 315", "EEE 211", "ME 401", "IPE 305", "ChE 303"].map((course, idx) => (
+                  {[
+                    "CE 320",
+                    "CSE 315",
+                    "EEE 211",
+                    "ME 401",
+                    "IPE 305",
+                    "ChE 303",
+                  ].map((course, idx) => (
                     <span
                       key={course}
                       className={cn(
                         "px-2.5 py-1.5 rounded-lg border text-[10px] font-semibold tracking-wide transition-all duration-300 select-none",
                         idx === 0
                           ? "bg-primary text-primary-foreground border-primary shadow-xs"
-                          : "bg-background border-border text-muted-foreground"
+                          : "bg-background border-border text-muted-foreground",
                       )}
                     >
                       {course}
@@ -325,7 +342,8 @@ export async function LandingPage({ heroCTA, footerCTA }: LandingPageProps) {
                       30-Second Turnaround
                     </h3>
                     <p className="text-muted-foreground text-sm leading-relaxed">
-                      Fill out essential details, check layout previews, and generate high-resolution, print-ready files instantly.
+                      Fill out essential details, check layout previews, and
+                      generate high-resolution, print-ready files instantly.
                     </p>
                   </div>
                 </div>
@@ -335,7 +353,9 @@ export async function LandingPage({ heroCTA, footerCTA }: LandingPageProps) {
                     <span className="size-1.5 rounded-full bg-emerald-500 animate-ping" />
                     Compiling PDF...
                   </span>
-                  <span className="text-[10px] font-mono font-bold text-muted-foreground relative z-10">80%</span>
+                  <span className="text-[10px] font-mono font-bold text-muted-foreground relative z-10">
+                    80%
+                  </span>
                 </div>
               </ScrollReveal>
 
@@ -352,7 +372,8 @@ export async function LandingPage({ heroCTA, footerCTA }: LandingPageProps) {
                       Three-in-One Compile
                     </h3>
                     <p className="text-muted-foreground text-sm leading-relaxed">
-                      Top sheets, main covers, and table of contents pages generated together and packed as a single PDF.
+                      Top sheets, main covers, and table of contents pages
+                      generated together and packed as a single PDF.
                     </p>
                   </div>
                 </div>
@@ -382,17 +403,21 @@ export async function LandingPage({ heroCTA, footerCTA }: LandingPageProps) {
                       100% Free, Built For Students
                     </h3>
                     <p className="text-muted-foreground text-sm leading-relaxed max-w-[50ch]">
-                      Created by a student, kept free for all. No watermarks, paywalls, or feature locking. Open, print, and submit.
+                      Created by a student, kept free for all. No watermarks,
+                      paywalls, or feature locking. Open, print, and submit.
                     </p>
                   </div>
                 </div>
 
                 <div className="flex items-baseline gap-2 mt-6">
-                  <span className="text-2xl font-black font-mono tracking-tight text-foreground">0 Taka</span>
-                  <span className="text-[10px] font-medium text-muted-foreground uppercase tracking-wider">No credit card required</span>
+                  <span className="text-2xl font-black font-mono tracking-tight text-foreground">
+                    0 Taka
+                  </span>
+                  <span className="text-[10px] font-medium text-muted-foreground uppercase tracking-wider">
+                    No credit card required
+                  </span>
                 </div>
               </ScrollReveal>
-
             </div>
           </div>
         </section>
@@ -401,11 +426,15 @@ export async function LandingPage({ heroCTA, footerCTA }: LandingPageProps) {
           <div className="absolute inset-0 bg-[radial-gradient(var(--border)_1px,transparent_1px)] bg-[size:32px_32px] opacity-[0.25] pointer-events-none" />
           <ScrollReveal className="max-w-4xl mx-auto px-6 text-center relative">
             <div className="absolute inset-0 -z-10 flex items-center justify-center opacity-[0.04] dark:opacity-[0.07] pointer-events-none select-none">
-              <span className="font-serif text-[16rem] font-bold leading-none select-none translate-y-[-2rem]">“</span>
+              <span className="font-serif text-[16rem] font-bold leading-none select-none translate-y-[-2rem]">
+                “
+              </span>
             </div>
             <div className="flex flex-col items-center gap-6">
               <blockquote className="text-xl sm:text-2xl font-medium tracking-tight italic text-foreground/90 max-w-2xl leading-relaxed">
-                "My lab partner spent 3 hours formatting the cover page to look 'professional.' I did it in 30 seconds on CoverDe. We got the same grade. He doesn't talk to me anymore."
+                "My lab partner spent 3 hours formatting the cover page to look
+                'professional.' I did it in 30 seconds on CoverDe. We got the
+                same grade. He doesn't talk to me anymore."
               </blockquote>
               <div className="flex items-center gap-3">
                 <div className="size-8 rounded-full bg-background border border-border flex items-center justify-center text-[10px] font-bold font-mono text-muted-foreground select-none">
@@ -436,7 +465,8 @@ export async function LandingPage({ heroCTA, footerCTA }: LandingPageProps) {
                   Ready to skip the formatting?
                 </h2>
                 <p className="text-muted-foreground text-sm sm:text-base max-w-sm">
-                  Save your credentials once. Generate print-ready university lab submissions in seconds.
+                  Save your credentials once. Generate print-ready university
+                  lab submissions in seconds.
                 </p>
                 {footerCTA}
               </div>
