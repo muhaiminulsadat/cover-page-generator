@@ -32,6 +32,7 @@ import {
   LayoutDashboard,
   LogIn,
   LogOut,
+  Layers,
   Menu,
   Moon,
   Settings,
@@ -93,38 +94,19 @@ export default function Navbar() {
 
   return (
     <header
-      className={`fixed top-0 left-0 right-0 z-50 transition-all duration-300 ${
+      className={cn(
+        "fixed top-0 left-0 right-0 z-50 transition-all duration-300",
         scrolled
-          ? "bg-background/95 backdrop-blur-md border-b border-border shadow-sm"
-          : "bg-background border-b border-border"
-      }`}
+          ? "bg-background/80 backdrop-blur-md border-b border-border shadow-xs"
+          : "bg-transparent border-b border-transparent"
+      )}
     >
       <nav className="mx-auto flex h-16 w-full max-w-7xl items-center justify-between px-4 sm:px-6 lg:px-8">
-        <Link href="/" className="flex items-center gap-2.5 group">
-          <div className="w-7 h-7 rounded-md bg-foreground flex items-center justify-center transition-transform duration-200 group-hover:scale-110">
-            <svg viewBox="0 0 24 24" fill="none" className="w-4 h-4">
-              <path
-                d="M12 2L2 7l10 5 10-5-10-5z"
-                fill="currentColor"
-                className="text-background"
-              />
-              <path
-                d="M2 17l10 5 10-5"
-                stroke="currentColor"
-                className="text-background"
-                strokeWidth="2"
-                strokeLinecap="round"
-              />
-              <path
-                d="M2 12l10 5 10-5"
-                stroke="currentColor"
-                className="text-background"
-                strokeWidth="2"
-                strokeLinecap="round"
-              />
-            </svg>
+        <Link href="/" className="flex items-center gap-2.5 group select-none">
+          <div className="size-7 rounded-lg bg-foreground text-background flex items-center justify-center transition-all duration-200 group-hover:scale-105 active:scale-95">
+            <Layers className="size-4" />
           </div>
-          <span className="text-foreground font-semibold text-base tracking-tight font-mono">
+          <span className="text-foreground font-bold text-sm tracking-widest uppercase font-mono bg-gradient-to-r from-foreground via-foreground/90 to-muted-foreground bg-clip-text text-transparent">
             CoverDe
           </span>
         </Link>
@@ -191,7 +173,7 @@ export default function Navbar() {
                       <DropdownMenuItem
                         asChild
                         className={cn(
-                          "cursor-pointer rounded-lg px-2.5 py-2",
+                          "cursor-pointer rounded-md px-2.5 py-2",
                           pathname === "/dashboard" &&
                             "bg-accent text-accent-foreground",
                         )}
@@ -204,7 +186,7 @@ export default function Navbar() {
                       <DropdownMenuItem
                         asChild
                         className={cn(
-                          "cursor-pointer rounded-lg px-2.5 py-2",
+                          "cursor-pointer rounded-md px-2.5 py-2",
                           pathname === "/settings" &&
                             "bg-accent text-accent-foreground",
                         )}
@@ -218,7 +200,7 @@ export default function Navbar() {
                         <DropdownMenuItem
                           asChild
                           className={cn(
-                            "cursor-pointer rounded-lg px-2.5 py-2",
+                            "cursor-pointer rounded-md px-2.5 py-2",
                             pathname.startsWith("/admin") &&
                               "bg-accent text-accent-foreground",
                           )}
@@ -238,7 +220,7 @@ export default function Navbar() {
                     <DropdownMenuItem
                       variant="destructive"
                       onClick={handleSignOut}
-                      className="cursor-pointer rounded-lg px-2.5 py-2"
+                      className="cursor-pointer rounded-md px-2.5 py-2"
                     >
                       <LogOut className="size-4" />
                       Sign out
@@ -253,11 +235,11 @@ export default function Navbar() {
                 variant="ghost"
                 size="sm"
                 asChild
-                className="hidden md:flex"
+                className="hidden md:flex active:scale-[0.98] transition-transform"
               >
                 <Link href="/login">Log in</Link>
               </Button>
-              <Button size="sm" asChild className="hidden md:flex">
+              <Button size="sm" asChild className="hidden md:flex active:scale-[0.98] transition-transform">
                 <Link href="/register">Sign up</Link>
               </Button>
             </>
@@ -268,48 +250,54 @@ export default function Navbar() {
               <Button
                 variant="ghost"
                 size="icon"
-                className="ml-1 rounded-full border border-border/70 bg-background text-muted-foreground shadow-xs hover:bg-muted hover:text-foreground md:hidden"
+                className="ml-1 size-9 rounded-md border border-border/40 bg-background/50 backdrop-blur-xs text-muted-foreground shadow-2xs hover:bg-muted hover:text-foreground active:scale-95 transition-all md:hidden"
               >
                 <Menu
                   className={cn(
-                    "h-5 w-5 transition-transform duration-200",
+                    "h-4 w-4 transition-transform duration-200",
                     mobileMenuOpen && "rotate-90",
                   )}
                 />
                 <span className="sr-only">Open menu</span>
               </Button>
             </SheetTrigger>
-            <SheetContent side="right" className="w-[80vw] max-w-xs p-0">
-              <div className="flex h-full flex-col bg-background">
-                <SheetHeader className="border-b border-border/70 bg-muted/30 px-5 pb-4 pt-8 text-left">
-                  <SheetTitle className="text-base tracking-tight">
-                    Menu
-                  </SheetTitle>
-                  <SheetDescription>
+            <SheetContent side="right" className="w-[80vw] max-w-xs p-0 border-l border-border/40 bg-background/90 backdrop-blur-lg shadow-2xl">
+              <div className="flex h-full flex-col">
+                <SheetHeader className="border-b border-border/40 px-5 pb-5 pt-8 text-left bg-muted/20">
+                  <div className="flex items-center gap-2 mb-1.5">
+                    <div className="size-6 rounded-md bg-foreground text-background flex items-center justify-center">
+                      <Layers className="size-3.5" />
+                    </div>
+                    <span className="text-foreground font-bold text-xs tracking-widest uppercase font-mono bg-gradient-to-r from-foreground via-foreground/90 to-muted-foreground bg-clip-text text-transparent">
+                      CoverDe
+                    </span>
+                  </div>
+                  <SheetTitle className="sr-only">Menu</SheetTitle>
+                  <SheetDescription className="text-xs text-muted-foreground/80 font-normal">
                     Everything you need, optimized for mobile.
                   </SheetDescription>
                 </SheetHeader>
 
-                <div className="flex h-full flex-col px-4 pb-4 pt-4">
+                <div className="flex h-full flex-col px-4 pb-6 pt-5">
                   {session ? (
-                    <div className="mb-4 rounded-2xl border border-border/70 bg-card/80 p-3.5">
+                    <div className="mb-5 rounded-lg border border-border/40 bg-muted/20 p-3.5 shadow-2xs">
                       <div className="flex items-center gap-3">
-                        <Avatar className="h-10 w-10">
+                        <Avatar className="h-9 w-9 ring-2 ring-border/10">
                           <AvatarImage
                             src={session.user.image ?? ""}
                             alt={session.user.name ?? ""}
                           />
-                          <AvatarFallback className="bg-muted text-foreground text-xs font-medium">
+                          <AvatarFallback className="bg-muted text-foreground text-xs font-semibold">
                             {session.user.name
                               ? getInitials(session.user.name)
                               : "U"}
                           </AvatarFallback>
                         </Avatar>
                         <div className="min-w-0">
-                          <p className="truncate text-sm font-medium text-foreground">
+                          <p className="truncate text-sm font-semibold text-foreground">
                             {session.user.name || "User"}
                           </p>
-                          <p className="truncate text-xs text-muted-foreground">
+                          <p className="truncate text-xs text-muted-foreground/85">
                             {session.user.email}
                           </p>
                         </div>
@@ -317,63 +305,75 @@ export default function Navbar() {
                     </div>
                   ) : null}
 
-                  <div className="space-y-2.5">
-                    <p className="px-1 text-[11px] font-medium uppercase tracking-[0.14em] text-muted-foreground">
+                  <div className="space-y-1.5">
+                    <p className="px-3 mb-2.5 text-[10px] font-semibold uppercase tracking-[0.2em] text-muted-foreground/60">
                       Navigation
                     </p>
                     <SheetClose asChild>
                       <Button
-                        variant={pathname === "/" ? "secondary" : "ghost"}
-                        className="h-11 w-full justify-between rounded-xl px-3"
+                        variant="ghost"
+                        className={cn(
+                          "h-11 w-full justify-between rounded-md px-3 transition-all active:scale-[0.98]",
+                          pathname === "/"
+                            ? "bg-secondary text-secondary-foreground font-semibold"
+                            : "text-muted-foreground hover:bg-muted/40 hover:text-foreground"
+                        )}
                         asChild
                       >
                         <Link href="/">
                           <span className="flex items-center gap-2.5">
-                            <House className="h-4 w-4" />
+                            <House className={cn("h-4 w-4 transition-transform", pathname === "/" ? "text-foreground" : "text-muted-foreground/75")} />
                             Home
                           </span>
-                          <span className="text-xs text-muted-foreground"></span>
+                          {pathname === "/" && (
+                            <span className="size-1.5 rounded-full bg-foreground" />
+                          )}
                         </Link>
                       </Button>
                     </SheetClose>
 
                     <Button
                       variant="ghost"
-                      className="h-11 w-full justify-between rounded-xl px-3"
+                      className="h-11 w-full justify-between rounded-md px-3 text-muted-foreground hover:bg-muted/40 hover:text-foreground transition-all active:scale-[0.98]"
                       onClick={() =>
                         setTheme(resolvedTheme === "dark" ? "light" : "dark")
                       }
                     >
                       <span className="flex items-center gap-2.5">
                         {resolvedTheme === "dark" ? (
-                          <Sun className="h-4 w-4" />
+                          <Sun className="h-4 w-4 text-muted-foreground/75" />
                         ) : (
-                          <Moon className="h-4 w-4" />
+                          <Moon className="h-4 w-4 text-muted-foreground/75" />
                         )}
-                        {resolvedTheme === "dark" ? "Light mode" : "Dark mode"}
-                      </span>
-                      <span className="text-xs text-muted-foreground">
                         Theme
+                      </span>
+                      <span className="text-[10px] font-semibold uppercase tracking-wider text-muted-foreground/70 bg-muted px-2 py-0.5 rounded-md border border-border/30">
+                        {resolvedTheme === "dark" ? "Dark" : "Light"}
                       </span>
                     </Button>
 
                     {session && profileComplete !== false && (
                       <SheetClose asChild>
                         <Button
-                          variant={
-                            pathname === "/dashboard" ? "secondary" : "ghost"
-                          }
-                          className="h-11 w-full justify-between rounded-xl px-3"
+                          variant="ghost"
+                          className={cn(
+                            "h-11 w-full justify-between rounded-md px-3 transition-all active:scale-[0.98]",
+                            pathname === "/dashboard"
+                              ? "bg-secondary text-secondary-foreground font-semibold"
+                              : "text-muted-foreground hover:bg-muted/40 hover:text-foreground"
+                          )}
                           asChild
                         >
                           <Link href="/dashboard">
                             <span className="flex items-center gap-2.5">
-                              <LayoutDashboard className="h-4 w-4" />
+                              <LayoutDashboard className={cn("h-4 w-4 transition-transform", pathname === "/dashboard" ? "text-foreground" : "text-muted-foreground/75")} />
                               Dashboard
                             </span>
-                            <span className="text-xs text-muted-foreground">
-                              Templates
-                            </span>
+                            {pathname === "/dashboard" ? (
+                              <span className="size-1.5 rounded-full bg-foreground" />
+                            ) : (
+                              <span className="text-xs text-muted-foreground/50 font-normal">Templates</span>
+                            )}
                           </Link>
                         </Button>
                       </SheetClose>
@@ -382,20 +382,25 @@ export default function Navbar() {
                     {session && profileComplete !== false && (
                       <SheetClose asChild>
                         <Button
-                          variant={
-                            pathname === "/settings" ? "secondary" : "ghost"
-                          }
-                          className="h-11 w-full justify-between rounded-xl px-3"
+                          variant="ghost"
+                          className={cn(
+                            "h-11 w-full justify-between rounded-md px-3 transition-all active:scale-[0.98]",
+                            pathname === "/settings"
+                              ? "bg-secondary text-secondary-foreground font-semibold"
+                              : "text-muted-foreground hover:bg-muted/40 hover:text-foreground"
+                          )}
                           asChild
                         >
                           <Link href="/settings">
                             <span className="flex items-center gap-2.5">
-                              <Settings className="h-4 w-4" />
+                              <Settings className={cn("h-4 w-4 transition-transform", pathname === "/settings" ? "text-foreground" : "text-muted-foreground/75")} />
                               Settings
                             </span>
-                            <span className="text-xs text-muted-foreground">
-                              Account
-                            </span>
+                            {pathname === "/settings" ? (
+                              <span className="size-1.5 rounded-full bg-foreground" />
+                            ) : (
+                              <span className="text-xs text-muted-foreground/50 font-normal">Account</span>
+                            )}
                           </Link>
                         </Button>
                       </SheetClose>
@@ -404,34 +409,39 @@ export default function Navbar() {
                     {session && (session.user.role === "admin" || session.user.role === "superadmin") && (
                       <SheetClose asChild>
                         <Button
-                          variant={
-                            pathname.startsWith("/admin") ? "secondary" : "ghost"
-                          }
-                          className="h-11 w-full justify-between rounded-xl px-3"
+                          variant="ghost"
+                          className={cn(
+                            "h-11 w-full justify-between rounded-md px-3 transition-all active:scale-[0.98]",
+                            pathname.startsWith("/admin")
+                              ? "bg-secondary text-secondary-foreground font-semibold"
+                              : "text-muted-foreground hover:bg-muted/40 hover:text-foreground"
+                          )}
                           asChild
                         >
                           <Link href="/admin">
                             <span className="flex items-center gap-2.5">
-                              <Shield className="h-4 w-4" />
+                              <Shield className={cn("h-4 w-4 transition-transform", pathname.startsWith("/admin") ? "text-foreground" : "text-muted-foreground/75")} />
                               Admin Panel
                             </span>
-                            <span className="text-xs text-muted-foreground">
-                              Manage
-                            </span>
+                            {pathname.startsWith("/admin") ? (
+                              <span className="size-1.5 rounded-full bg-foreground" />
+                            ) : (
+                              <span className="text-xs text-muted-foreground/50 font-normal">Manage</span>
+                            )}
                           </Link>
                         </Button>
                       </SheetClose>
                     )}
                   </div>
 
-                  <div className="mt-auto border-t border-border/70 pt-4">
+                  <div className="mt-auto border-t border-border/40 pt-5">
                     {session ? (
                       <div className="px-1">
                         <SheetClose asChild>
                           <Button
                             variant="ghost"
                             onClick={handleSignOut}
-                            className="h-11 w-full justify-start gap-2 rounded-xl text-destructive hover:bg-destructive/10 hover:text-destructive"
+                            className="h-11 w-full justify-start gap-2.5 rounded-md text-destructive hover:bg-destructive/10 hover:text-destructive transition-all active:scale-[0.98] px-3 font-medium text-sm"
                           >
                             <LogOut className="h-4 w-4" />
                             Sign out
@@ -439,13 +449,13 @@ export default function Navbar() {
                         </SheetClose>
                       </div>
                     ) : (
-                      <div className="space-y-2.5 px-1">
-                        <p className="px-1 text-[11px] font-medium uppercase tracking-[0.14em] text-muted-foreground">
+                      <div className="space-y-3 px-1">
+                        <p className="px-2 text-[10px] font-semibold uppercase tracking-[0.2em] text-muted-foreground/60">
                           Account
                         </p>
                         <SheetClose asChild>
                           <Button
-                            className="h-11 w-full justify-start gap-2 rounded-xl"
+                            className="h-11 w-full justify-start gap-2.5 rounded-md transition-all active:scale-[0.98] font-medium text-sm shadow-sm cursor-pointer"
                             asChild
                           >
                             <Link href="/register">
@@ -457,12 +467,12 @@ export default function Navbar() {
                         <SheetClose asChild>
                           <Button
                             variant="outline"
-                            className="h-10 w-full justify-start gap-2 rounded-lg"
+                            className="h-11 w-full justify-start gap-2.5 rounded-md border-border/60 hover:bg-muted/40 hover:text-foreground transition-all active:scale-[0.98] font-medium text-sm cursor-pointer"
                             asChild
                           >
                             <Link href="/login">
-                              <LogIn className="h-4 w-4" />I already have an
-                              account
+                              <LogIn className="h-4 w-4 text-muted-foreground/75" />
+                              Log in
                             </Link>
                           </Button>
                         </SheetClose>
