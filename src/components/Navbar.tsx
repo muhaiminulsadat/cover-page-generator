@@ -6,7 +6,6 @@ import {usePathname, useRouter} from "next/navigation";
 import {useEffect, useState} from "react";
 import {authClient} from "@/lib/auth-client";
 import useSWR from "swr";
-import {motion, useScroll, useSpring} from "framer-motion";
 import {Button} from "@/components/ui/button";
 import {
   DropdownMenu,
@@ -66,13 +65,6 @@ export default function Navbar() {
   const [scrolled, setScrolled] = useState(false);
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
 
-  const {scrollYProgress} = useScroll();
-  const scaleX = useSpring(scrollYProgress, {
-    stiffness: 100,
-    damping: 30,
-    restDelta: 0.001,
-  });
-
   useEffect(() => {
     const onScroll = () => setScrolled(window.scrollY > 10);
     window.addEventListener("scroll", onScroll);
@@ -109,10 +101,6 @@ export default function Navbar() {
           : "bg-transparent border-b border-transparent"
       )}
     >
-      <motion.div
-        className="absolute bottom-0 left-0 right-0 h-[2px] bg-primary origin-left z-50"
-        style={{scaleX}}
-      />
       <nav className="mx-auto flex h-16 w-full max-w-7xl items-center justify-between px-4 sm:px-6 lg:px-8">
         <Link href="/" className="flex items-center gap-2.5 group select-none">
           <div className="size-7 rounded-lg bg-foreground text-background flex items-center justify-center transition-all duration-200 group-hover:scale-105 active:scale-95">
