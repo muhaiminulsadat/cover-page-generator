@@ -17,6 +17,9 @@ export const user = t.pgTable("user", {
   level: t.text("level"),
   term: t.text("term"),
   hscBatch: t.text("hsc_batch"),
+  banned: t.boolean("banned"),
+  banReason: t.text("ban_reason"),
+  banExpires: t.timestamp("ban_expires"),
   createdAt: t.timestamp("created_at").notNull(),
   updatedAt: t.timestamp("updated_at").notNull(),
 });
