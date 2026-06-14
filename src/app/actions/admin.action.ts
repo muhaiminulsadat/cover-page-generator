@@ -2,7 +2,6 @@
 
 import {adminActionClient} from "@/lib/safe-action";
 import {updateUserRoleSchema} from "@/lib/validations/admin";
-import {auth} from "@/lib/auth";
 
 export const updateUserRoleAction = adminActionClient
   .schema(updateUserRoleSchema)

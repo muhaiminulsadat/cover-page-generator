@@ -1,6 +1,6 @@
 "use client";
 
-import {useForm, useWatch, useFieldArray} from "react-hook-form";
+import {useForm, useWatch, Resolver} from "react-hook-form";
 import {zodResolver} from "@hookform/resolvers/zod";
 import {
   editTemplateSchema,
@@ -28,7 +28,7 @@ import {
   CardHeader,
   CardTitle,
 } from "@/components/ui/card";
-import {Building2, ChevronDown, Loader2, Plus, Trash2} from "lucide-react";
+import {Building2, ChevronDown, Loader2, Trash2} from "lucide-react";
 import {
   COVER_PAGE_DESIGNS,
   DEFAULT_COVER_PAGE_DESIGN,
@@ -39,6 +39,7 @@ import {
 } from "@/lib/constants/top-sheet-designs";
 import {DesignPickerDialog} from "./_components/DesignPickerDialog";
 import {PageSelection} from "./_components/PageSelection";
+import {ExperimentNamesInput} from "./_components/ExperimentNamesInput";
 
 export function EditTemplateForm({template}: {template: EditTemplateInput}) {
   const router = useRouter();
@@ -49,7 +50,7 @@ export function EditTemplateForm({template}: {template: EditTemplateInput}) {
   const isPending = isEditing || isDeleting;
 
   const form = useForm<EditTemplateInput>({
-    resolver: zodResolver(editTemplateSchema) as any,
+    resolver: zodResolver(editTemplateSchema) as Resolver<EditTemplateInput>,
     defaultValues: {
       id: template.id,
       designId: template.designId || DEFAULT_TOP_SHEET_DESIGN,
@@ -72,11 +73,6 @@ export function EditTemplateForm({template}: {template: EditTemplateInput}) {
       includeIndexPage: template.includeIndexPage ?? true,
       experimentNames: template.experimentNames || [],
     },
-  });
-
-  const {fields, append, remove} = useFieldArray({
-    control: form.control as any,
-    name: "experimentNames",
   });
 
   const selectedSectionTarget = useWatch({
@@ -165,7 +161,7 @@ export function EditTemplateForm({template}: {template: EditTemplateInput}) {
             />
           </div>
 
-          <PageSelection control={form.control as any} disabled={isPending} />
+          <PageSelection control={form.control} disabled={isPending} />
           {form.formState.errors.includeTopPage && (
             <p className="text-sm text-destructive font-medium">
               {form.formState.errors.includeTopPage.message}
@@ -429,57 +425,7 @@ export function EditTemplateForm({template}: {template: EditTemplateInput}) {
               </div>
             </div>
           </div>
- 
-          <div className="space-y-4">
-            <div className="flex items-center justify-between">
-              <h3 className="font-medium text-lg">Experiments (Index Page)</h3>
-              <Button
-                type="button"
-                variant="outline"
-                size="sm"
-                onClick={() => append("")}
-                className="gap-2"
-                disabled={isPending}
-              >
-                <Plus className="size-4" />
-                Add Experiment
-              </Button>
-            </div>
-            <p className="text-sm text-muted-foreground">
-              Add experiment names to pre-fill the index page. Leave empty for
-              manual handwriting (12 rows provided by default).
-            </p>
- 
-            <div className="space-y-3">
-              {fields.map((field, index) => (
-                <div key={field.id} className="flex items-center gap-2">
-                  <div className="flex-none flex items-center justify-center size-8 rounded-full bg-muted text-xs font-medium">
-                    {index + 1}
-                  </div>
-                  <Input
-                    {...form.register(`experimentNames.${index}` as const)}
-                    placeholder={`Experiment ${index + 1} name...`}
-                    disabled={isPending}
-                  />
-                  <Button
-                    type="button"
-                    variant="ghost"
-                    size="icon"
-                    onClick={() => remove(index)}
-                    className="text-destructive hover:text-destructive hover:bg-destructive/10"
-                    disabled={isPending}
-                  >
-                    <Trash2 className="size-4" />
-                  </Button>
-                </div>
-              ))}
-              {fields.length === 0 && (
-                <div className="text-center p-8 border-2 border-dashed rounded-lg text-muted-foreground text-sm">
-                  No experiments added yet.
-                </div>
-              )}
-            </div>
-          </div>
+          <ExperimentNamesInput form={form} name="experimentNames" disabled={isPending} />
 
           <div className="flex flex-col gap-3">
             <Button type="submit" className="w-full" disabled={isPending}>

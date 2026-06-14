@@ -1,7 +1,6 @@
 import {Skeleton} from "@/components/ui/skeleton";
 import {Button} from "@/components/ui/button";
 import {ArrowRight} from "lucide-react";
-import Link from "next/link";
 
 export default function DashboardLoading() {
   return (
@@ -24,18 +23,19 @@ export default function DashboardLoading() {
         {Array.from({length: 6}).map((_, i) => (
           <div
             key={i}
-            className="flex flex-col space-y-4 rounded-xl border border-border p-6 shadow-sm"
+            className="flex flex-col rounded-xl border border-border/80 bg-card p-6 shadow-xs gap-6"
           >
-            <div className="flex items-center space-x-4">
-              <Skeleton className="h-12 w-12 rounded-full" />
-              <div className="space-y-2">
-                <Skeleton className="h-4 w-[150px]" />
-                <Skeleton className="h-4 w-[100px]" />
-              </div>
+            <div className="flex items-start justify-between gap-4">
+              <Skeleton className="h-5 w-16 rounded-full" />
+              <Skeleton className="h-4 w-20 rounded" />
             </div>
-            <div className="space-y-2 pt-2">
-              <Skeleton className="h-4 w-full" />
-              <Skeleton className="h-4 w-4/5" />
+            <div className="space-y-3 flex-1">
+              <Skeleton className="h-6 w-3/4 rounded" />
+              <Skeleton className="h-4 w-1/2 rounded" />
+            </div>
+            <div className="flex items-center gap-2 pt-4 border-t border-border/60">
+              <Skeleton className="h-9 flex-1 rounded-md" />
+              <Skeleton className="h-9 w-9 rounded-md shrink-0" />
             </div>
           </div>
         ))}

@@ -95,7 +95,7 @@ export default function Navbar() {
   return (
     <header
       className={cn(
-        "fixed top-0 left-0 right-0 z-50 transition-all duration-300",
+        "fixed top-0 left-0 right-0 z-50 transition-[background-color,border-color,box-shadow] duration-300 ease-out",
         scrolled
           ? "bg-background/80 backdrop-blur-md border-b border-border shadow-xs"
           : "bg-transparent border-b border-transparent"
@@ -103,7 +103,7 @@ export default function Navbar() {
     >
       <nav className="mx-auto flex h-16 w-full max-w-7xl items-center justify-between px-4 sm:px-6 lg:px-8">
         <Link href="/" className="flex items-center gap-2.5 group select-none">
-          <div className="size-7 rounded-lg bg-foreground text-background flex items-center justify-center transition-all duration-200 group-hover:scale-105 active:scale-95">
+          <div className="size-7 rounded-lg bg-foreground text-background flex items-center justify-center transition-transform duration-200 ease-out group-hover:scale-105 active:scale-95">
             <Layers className="size-4" />
           </div>
           <span className="text-foreground font-bold text-sm tracking-widest uppercase font-mono bg-gradient-to-r from-foreground via-foreground/90 to-muted-foreground bg-clip-text text-transparent">
@@ -123,7 +123,7 @@ export default function Navbar() {
                   <Button
                     variant="ghost"
                     size="icon"
-                    className="rounded-full ring-2 ring-transparent transition-all hover:ring-border/80 data-[state=open]:ring-border"
+                    className="rounded-full ring-2 ring-transparent transition-[ring-color] duration-150 ease-out hover:ring-border/80 data-[state=open]:ring-border"
                   >
                     <Avatar className="size-8">
                       <AvatarImage
@@ -235,11 +235,11 @@ export default function Navbar() {
                 variant="ghost"
                 size="sm"
                 asChild
-                className="hidden md:flex active:scale-[0.98] transition-transform"
+                className="hidden md:flex"
               >
                 <Link href="/login">Log in</Link>
               </Button>
-              <Button size="sm" asChild className="hidden md:flex active:scale-[0.98] transition-transform">
+              <Button size="sm" asChild className="hidden md:flex">
                 <Link href="/register">Sign up</Link>
               </Button>
             </>
@@ -250,7 +250,7 @@ export default function Navbar() {
               <Button
                 variant="ghost"
                 size="icon"
-                className="ml-1 size-9 rounded-md border border-border/40 bg-background/50 backdrop-blur-xs text-muted-foreground shadow-2xs hover:bg-muted hover:text-foreground active:scale-95 transition-all md:hidden"
+                className="ml-1 size-9 rounded-md border border-border/40 bg-background/50 backdrop-blur-xs text-muted-foreground shadow-2xs hover:bg-muted hover:text-foreground active:scale-95 transition-[transform,background-color,color] duration-150 ease-out md:hidden"
               >
                 <Menu
                   className={cn(

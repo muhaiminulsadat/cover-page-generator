@@ -1,32 +1,32 @@
 "use client";
 
-import {Control, useController} from "react-hook-form";
+import {Control, FieldValues, useController, Path} from "react-hook-form";
 import {cn} from "@/lib/utils";
 import {Check, FileText, Layout, List} from "lucide-react";
 import {Label} from "@/components/ui/label";
 
-interface PageSelectionProps {
-  control: Control<any>;
+interface PageSelectionProps<TFieldValues extends FieldValues = FieldValues> {
+  control: Control<TFieldValues>;
   disabled?: boolean;
 }
 
-interface SelectionCardProps {
+interface SelectionCardProps<TFieldValues extends FieldValues = FieldValues> {
   title: string;
   description: string;
   icon: React.ElementType;
-  name: string;
-  control: Control<any>;
+  name: Path<TFieldValues>;
+  control: Control<TFieldValues>;
   disabled?: boolean;
 }
 
-function SelectionCard({
+function SelectionCard<TFieldValues extends FieldValues>({
   title,
   description,
   icon: Icon,
   name,
   control,
   disabled,
-}: SelectionCardProps) {
+}: SelectionCardProps<TFieldValues>) {
   const {
     field: {value, onChange},
   } = useController({
@@ -35,17 +35,18 @@ function SelectionCard({
   });
 
   return (
-    <div
+    <button
+      type="button"
       onClick={() => !disabled && onChange(!value)}
       className={cn(
-        "relative flex cursor-pointer flex-col gap-3 rounded-xl border-2 p-4 transition-all duration-200 hover:border-primary/50",
+        "relative flex cursor-pointer text-left flex-col gap-3 rounded-xl border-2 p-4 transition-all duration-200 hover:border-primary/50 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2",
         value
           ? "border-primary bg-primary/5 shadow-sm"
           : "border-muted bg-transparent opacity-70 grayscale-[0.5]",
         disabled && "pointer-events-none opacity-50",
       )}
     >
-      <div className="flex items-center justify-between">
+      <div className="flex items-center justify-between w-full">
         <div
           className={cn(
             "rounded-lg p-2 transition-colors",
@@ -64,11 +65,14 @@ function SelectionCard({
         <p className="font-semibold text-sm leading-none">{title}</p>
         <p className="text-xs text-muted-foreground leading-snug">{description}</p>
       </div>
-    </div>
+    </button>
   );
 }
 
-export function PageSelection({control, disabled}: PageSelectionProps) {
+export function PageSelection<TFieldValues extends FieldValues>({
+  control,
+  disabled,
+}: PageSelectionProps<TFieldValues>) {
   return (
     <div className="space-y-4">
       <div className="flex flex-col gap-1">
@@ -79,7 +83,7 @@ export function PageSelection({control, disabled}: PageSelectionProps) {
       </div>
       <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
         <SelectionCard
-          name="includeTopPage"
+          name={"includeTopPage" as Path<TFieldValues>}
           control={control}
           title="Top Page"
           description="Standard academic top sheet with student details."
@@ -87,7 +91,7 @@ export function PageSelection({control, disabled}: PageSelectionProps) {
           disabled={disabled}
         />
         <SelectionCard
-          name="includeCoverPage"
+          name={"includeCoverPage" as Path<TFieldValues>}
           control={control}
           title="Cover Page"
           description="Visual cover page with course info and artwork."
@@ -95,7 +99,7 @@ export function PageSelection({control, disabled}: PageSelectionProps) {
           disabled={disabled}
         />
         <SelectionCard
-          name="includeIndexPage"
+          name={"includeIndexPage" as Path<TFieldValues>}
           control={control}
           title="Index Page"
           description="Generated index table for experiment tracking."

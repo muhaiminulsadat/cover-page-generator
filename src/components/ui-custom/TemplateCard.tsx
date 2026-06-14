@@ -22,7 +22,7 @@ export function TemplateCard({template, userId, userRole}: TemplateCardProps) {
   const isOwner = template.createdBy === userId;
   const canEdit = isOwner || userRole === "superadmin";
   return (
-    <Card className="flex flex-col flex-1 h-full overflow-hidden hover:shadow-md transition-shadow">
+    <Card className="flex flex-col flex-1 h-full overflow-hidden hover-lift border-border/60 hover:border-primary/20 hover:shadow-md hover:shadow-primary/[0.01]">
       <CardHeader className="flex-1 pb-4">
         <div className="flex items-start justify-between gap-4 mb-2">
           <Badge variant="secondary" className="font-mono">

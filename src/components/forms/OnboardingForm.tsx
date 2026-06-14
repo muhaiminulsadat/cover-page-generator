@@ -4,7 +4,6 @@ import {useForm, useWatch} from "react-hook-form";
 import {zodResolver} from "@hookform/resolvers/zod";
 import {userProfileSchema, UserProfileInput} from "@/lib/validations/user";
 import {updateProfile} from "@/app/actions/user";
-import {useRouter} from "next/navigation";
 import {Building2, ChevronDown} from "lucide-react";
 import {useAction} from "next-safe-action/hooks";
 import {Button} from "@/components/ui/button";
@@ -32,7 +31,6 @@ import toast from "react-hot-toast";
 import { useState } from "react";
 
 export function OnboardingForm() {
-  const router = useRouter();
   const [isRedirecting, setIsRedirecting] = useState(false);
 
   const {executeAsync, isPending} = useAction(updateProfile);
@@ -64,7 +62,7 @@ export function OnboardingForm() {
     if (result?.data?.success) {
       toast.success("Details saved successfully");
       setIsRedirecting(true);
-      window.location.href = "/dashboard";
+      window.location.replace("/dashboard");
       return;
     }
 
@@ -103,24 +101,27 @@ export function OnboardingForm() {
 
             <div className="space-y-2">
               <Label htmlFor="university">University</Label>
-              <select
-                id="university"
-                {...form.register("university")}
-                className={selectClassName}
-              >
-                <option className="bg-background text-foreground" value="">
-                  Select your university
-                </option>
-                {UNIVERSITY_OPTIONS.map((option) => (
-                  <option
-                    className="bg-background text-foreground"
-                    key={option.value}
-                    value={option.value}
-                  >
-                    {option.label}
+              <div className="relative">
+                <select
+                  id="university"
+                  {...form.register("university")}
+                  className={selectClassName}
+                >
+                  <option className="bg-background text-foreground" value="">
+                    Select your university
                   </option>
-                ))}
-              </select>
+                  {UNIVERSITY_OPTIONS.map((option) => (
+                    <option
+                      className="bg-background text-foreground"
+                      key={option.value}
+                      value={option.value}
+                    >
+                      {option.label}
+                    </option>
+                  ))}
+                </select>
+                <ChevronDown className="pointer-events-none absolute right-3 top-1/2 -translate-y-1/2 size-4 text-muted-foreground" />
+              </div>
               {form.formState.errors.university && (
                 <p className="text-sm text-destructive">
                   {form.formState.errors.university.message}
@@ -152,6 +153,7 @@ export function OnboardingForm() {
                     </option>
                   ))}
                 </select>
+                <ChevronDown className="pointer-events-none absolute right-3 top-1/2 -translate-y-1/2 size-4 text-muted-foreground" />
               </div>
               {form.formState.errors.department && (
                 <p className="text-sm text-destructive">

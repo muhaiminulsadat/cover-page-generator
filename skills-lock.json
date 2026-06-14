@@ -7,11 +7,29 @@
       "skillPath": "skills/emil-design-eng/SKILL.md",
       "computedHash": "8bdf9e4e6de7a4969147bf4828a4ad2c5aacd9fba4b690b250a85e0467ca387d"
     },
+    "grill-with-docs": {
+      "source": "mattpocock/skills",
+      "sourceType": "github",
+      "skillPath": "skills/engineering/grill-with-docs/SKILL.md",
+      "computedHash": "eb0e91e84277283dc2b23ed544399e53afd6b5287e5b6929f25fe8aa608e164b"
+    },
     "landing-page-design": {
       "source": "qu-skills/skills",
       "sourceType": "github",
       "skillPath": "guides/design/landing-page-design/SKILL.md",
       "computedHash": "19ed3be1e7ee1620ecc3b5801ddcb936add37750f7cadb437afdd7394472f34b"
+    },
+    "nextjs-16-complete-guide": {
+      "source": "fernandofuc/nextjs-claude-setup",
+      "sourceType": "github",
+      "skillPath": ".claude/skills/nextjs-16-complete-guide/SKILL.md",
+      "computedHash": "a272b9e46ff9510aacf7d7ebb34fe6fffdf918140ee55a503e20bca5184061a3"
+    },
+    "thermo-nuclear-code-quality-review": {
+      "source": "cursor/plugins",
+      "sourceType": "github",
+      "skillPath": "cursor-team-kit/skills/thermo-nuclear-code-quality-review/SKILL.md",
+      "computedHash": "9052b01b46b1d8dbf94c45f9313ec1983443f9a460e83d49cdc7fe0f640ca476"
     }
   }
 }

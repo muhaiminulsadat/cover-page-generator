@@ -3,6 +3,8 @@ import {betterAuth} from "better-auth";
 import {drizzleAdapter} from "better-auth/adapters/drizzle";
 import {admin} from "better-auth/plugins";
 import {ac, adminAc, moderatorAc, studentAc, superadminAc} from "./permissions";
+import {sendResetPasswordEmail} from "@/lib/email";
+
 export const auth = betterAuth({
   database: drizzleAdapter(db, {
     provider: "pg",
@@ -44,6 +46,9 @@ export const auth = betterAuth({
   emailAndPassword: {
     enabled: true,
     minPasswordLength: 6,
+    sendResetPassword: async ({ user, url }) => {
+      await sendResetPasswordEmail(user.email, user.name, url);
+    },
   },
   plugins: [
     admin({

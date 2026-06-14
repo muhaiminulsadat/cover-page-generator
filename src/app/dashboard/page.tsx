@@ -14,6 +14,7 @@ import {ArrowRight, Layers} from "lucide-react";
 import {Button} from "@/components/ui/button";
 import {TemplateCard} from "@/components/ui-custom/TemplateCard";
 import {cacheLife, cacheTag} from "next/cache";
+import {ScrollReveal} from "@/components/home/HeroMotion";
 
 async function DashboardGrid({
   department,
@@ -50,18 +51,20 @@ async function DashboardGrid({
 
   if (templatesList.length === 0) {
     return (
-      <div className="text-center py-20 border-2 border-dashed rounded-lg bg-muted/50">
-        <Layers className="w-10 h-10 mx-auto text-muted-foreground mb-4" />
-        <h3 className="text-lg font-medium">
-          No templates found for your department
+      <div className="flex flex-col items-center justify-center text-center py-20 px-6 border border-border/80 bg-card/50 rounded-xl max-w-xl mx-auto shadow-xs">
+        <div className="flex size-14 items-center justify-center rounded-2xl bg-muted border border-border/80 text-muted-foreground mb-5 transition-transform duration-300 hover:scale-105">
+          <Layers className="w-6 h-6 text-muted-foreground" />
+        </div>
+        <h3 className="text-lg font-semibold tracking-tight text-foreground">
+          No templates found
         </h3>
-        <p className="text-muted-foreground max-w-sm mx-auto mt-2">
+        <p className="text-sm text-muted-foreground mt-2 max-w-sm leading-relaxed">
           {userRole !== "student" 
-            ? "Be the first to create a template for your class. Your classmates will be able to reuse it instantly."
-            : "Ask your class representative or a moderator to create a template for this class."}
+            ? "Be the first to create a cover page template for your department. Your classmates can reuse it instantly."
+            : "Ask your class representative or a moderator to create a template for this department."}
         </p>
         {userRole !== "student" && (
-          <Button asChild className="mt-6" variant="outline">
+          <Button asChild className="mt-6 font-semibold" variant="outline">
             <Link href="/templates/new">Create First Template</Link>
           </Button>
         )}
@@ -71,13 +74,14 @@ async function DashboardGrid({
 
   return (
     <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-      {templatesList.map((template) => (
-        <TemplateCard
-          key={template.id}
-          template={template as never}
-          userId={userId}
-          userRole={userRole}
-        />
+      {templatesList.map((template, index) => (
+        <ScrollReveal key={template.id} delay={index * 0.05}>
+          <TemplateCard
+            template={template as never}
+            userId={userId}
+            userRole={userRole}
+          />
+        </ScrollReveal>
       ))}
     </div>
   );
@@ -138,18 +142,19 @@ export default async function DashboardPage() {
             {Array.from({length: 6}).map((_, i) => (
               <div
                 key={i}
-                className="flex flex-col space-y-4 rounded-xl border border-border p-6 shadow-sm"
+                className="flex flex-col rounded-xl border border-border/80 bg-card p-6 shadow-xs gap-6"
               >
-                <div className="flex items-center space-x-4">
-                  <Skeleton className="h-12 w-12 rounded-full" />
-                  <div className="space-y-2">
-                    <Skeleton className="h-4 w-[150px]" />
-                    <Skeleton className="h-4 w-[100px]" />
-                  </div>
+                <div className="flex items-start justify-between gap-4">
+                  <Skeleton className="h-5 w-16 rounded-full" />
+                  <Skeleton className="h-4 w-20 rounded" />
                 </div>
-                <div className="space-y-2 pt-2">
-                  <Skeleton className="h-4 w-full" />
-                  <Skeleton className="h-4 w-4/5" />
+                <div className="space-y-3 flex-1">
+                  <Skeleton className="h-6 w-3/4 rounded" />
+                  <Skeleton className="h-4 w-1/2 rounded" />
+                </div>
+                <div className="flex items-center gap-2 pt-4 border-t border-border/60">
+                  <Skeleton className="h-9 flex-1 rounded-md" />
+                  <Skeleton className="h-9 w-9 rounded-md shrink-0" />
                 </div>
               </div>
             ))}

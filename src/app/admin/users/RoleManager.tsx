@@ -38,8 +38,8 @@ export function RoleManager({userId, currentRole, isSelf, isSuperadmin}: Props) 
   }
 
   const roles = isSuperadmin 
-    ? ["student", "moderator", "admin", "superadmin"]
-    : ["student", "moderator"];
+    ? (["student", "moderator", "admin", "superadmin"] as const)
+    : (["student", "moderator"] as const);
 
   return (
     <DropdownMenu>
@@ -55,7 +55,7 @@ export function RoleManager({userId, currentRole, isSelf, isSuperadmin}: Props) 
           <DropdownMenuItem
             key={role}
             disabled={role === currentRole}
-            onClick={() => execute({targetUserId: userId, newRole: role as any})}
+            onClick={() => execute({targetUserId: userId, newRole: role})}
             className="capitalize"
           >
             {role}
