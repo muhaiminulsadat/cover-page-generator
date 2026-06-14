@@ -12,6 +12,8 @@ import {Button} from "@/components/ui/button";
 import {Input} from "@/components/ui/input";
 import {Label} from "@/components/ui/label";
 import {forgotPasswordSchema} from "@/lib/validations/auth";
+import {checkEmailExists} from "@/app/actions/user";
+import toast from "react-hot-toast";
 
 export function ForgotPasswordForm() {
   const [email, setEmail] = useState("");
@@ -56,6 +58,13 @@ export function ForgotPasswordForm() {
     try {
       setLoading(true);
       setError("");
+
+      const existsResult = await checkEmailExists({email});
+      if (!existsResult?.data?.exists) {
+        toast.error("User does not exist with this email. Please create another account.");
+        setLoading(false);
+        return;
+      }
 
       await authClient.requestPasswordReset({
         email,

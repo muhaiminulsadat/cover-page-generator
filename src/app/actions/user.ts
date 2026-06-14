@@ -3,8 +3,9 @@
 import {db} from "@/db";
 import {user} from "@/db/schema";
 import {userProfileSchema, userSettingsSchema} from "@/lib/validations/user";
+import {forgotPasswordSchema} from "@/lib/validations/auth";
 import {eq} from "drizzle-orm";
-import {authActionClient} from "@/lib/safe-action";
+import {actionClient, authActionClient} from "@/lib/safe-action";
 import {revalidatePath} from "next/cache";
 
 export const updateProfile = authActionClient
@@ -63,5 +64,22 @@ export const updateProfileSettings = authActionClient
     } catch (error) {
       console.error("Error updating profile settings:", error);
       throw new Error("Failed to update profile settings");
+    }
+  });
+
+export const checkEmailExists = actionClient
+  .schema(forgotPasswordSchema)
+  .action(async ({parsedInput}) => {
+    try {
+      const existing = await db
+        .select({ id: user.id })
+        .from(user)
+        .where(eq(user.email, parsedInput.email.toLowerCase()))
+        .limit(1);
+
+      return { exists: existing.length > 0 };
+    } catch (error) {
+      console.error("Error checking email existence:", error);
+      return { exists: false };
     }
   });
