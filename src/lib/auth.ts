@@ -47,7 +47,12 @@ export const auth = betterAuth({
     enabled: true,
     minPasswordLength: 6,
     sendResetPassword: async ({ user, url }) => {
-      await sendResetPasswordEmail(user.email, user.name, url);
+      let resetUrl = url;
+      if (process.env.NEXT_PUBLIC_BASE_URL) {
+        const baseUrl = process.env.NEXT_PUBLIC_BASE_URL.replace(/\/$/, "");
+        resetUrl = url.replace(/https?:\/\/localhost:\d+/, baseUrl);
+      }
+      await sendResetPasswordEmail(user.email, user.name, resetUrl);
     },
   },
   plugins: [

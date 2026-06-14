@@ -78,7 +78,7 @@ export function getWelcomeTemplate(name: string): string {
     <table border="0" cellpadding="0" cellspacing="0" style="margin: 32px 0;">
       <tr>
         <td align="center" style="border-radius: 6px; background-color: #ffffff;">
-          <a href="${process.env.NEXT_PUBLIC_BASE_URL || 'http://localhost:3000'}/dashboard" target="_blank" style="display: inline-block; padding: 12px 24px; font-size: 14px; font-weight: 600; color: #09090b; text-decoration: none; border-radius: 6px;">
+          <a href="${process.env.NEXT_PUBLIC_BASE_URL || 'https://coverde.me'}/dashboard" target="_blank" style="display: inline-block; padding: 12px 24px; font-size: 14px; font-weight: 600; color: #09090b; text-decoration: none; border-radius: 6px;">
             Go to Dashboard
           </a>
         </td>

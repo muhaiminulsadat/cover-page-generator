@@ -75,7 +75,7 @@ export function ForgotPasswordForm() {
 
   if (success) {
     return (
-      <div className="flex flex-col gap-6 mt-8 w-full">
+      <div className="flex flex-col gap-6 mt-2 w-full">
         <div className="rounded-lg bg-emerald-500/10 border border-emerald-500/20 px-4 py-4 flex gap-3">
           <CheckCircle className="size-5 text-emerald-500 shrink-0 mt-0.5" />
           <div className="flex flex-col gap-1">
@@ -91,7 +91,8 @@ export function ForgotPasswordForm() {
         <Button
           onClick={handleSubmit}
           disabled={cooldown > 0 || loading}
-          className="font-semibold text-sm justify-center gap-2 w-full"
+          size="lg"
+          className="font-semibold text-sm justify-center gap-2 w-full cursor-pointer"
         >
           {loading ? (
             <Loader2 className="animate-spin size-4" />
@@ -106,7 +107,7 @@ export function ForgotPasswordForm() {
   }
 
   return (
-    <form className="flex flex-col gap-4 mt-8 w-full" onSubmit={handleSubmit}>
+    <form className="flex flex-col gap-4 mt-2 w-full" onSubmit={handleSubmit}>
       {error && (
         <div className="rounded-md bg-destructive/10 border border-destructive/20 px-3 py-2.5 text-sm text-destructive">
           {error}
@@ -114,13 +115,13 @@ export function ForgotPasswordForm() {
       )}
 
       <div className="flex flex-col gap-2">
-        <Label className="font-medium text-sm" htmlFor="email">
+        <Label className="font-medium text-sm text-foreground" htmlFor="email">
           Email address
         </Label>
         <div className="relative">
           <Mail className="top-1/2 -translate-y-1/2 size-4 text-muted-foreground absolute left-3" />
           <Input
-            className="pl-10"
+            className="pl-10 h-10 bg-background/50"
             id="email"
             name="email"
             type="email"
@@ -134,7 +135,8 @@ export function ForgotPasswordForm() {
 
       <Button
         type="submit"
-        className="font-semibold text-sm mt-4 justify-center gap-2 w-full"
+        size="lg"
+        className="font-semibold text-sm mt-4 justify-center gap-2 w-full cursor-pointer"
         disabled={loading || cooldown > 0}
       >
         {loading ? (
@@ -144,7 +146,7 @@ export function ForgotPasswordForm() {
         ) : (
           <>
             Send recovery link
-            <ArrowRight className="size-4" />
+            <ArrowRight className="size-4 transition-transform duration-200 group-hover/button:translate-x-0.5" />
           </>
         )}
       </Button>
