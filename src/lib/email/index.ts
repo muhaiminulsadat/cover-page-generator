@@ -21,7 +21,7 @@ export async function sendEmail({ to, subject, html }: SendEmailParams) {
   }
 
   await transporter.sendMail({
-    from: `"Cover Page Generator" <${fromEmail}>`,
+    from: `"CoverDe" <${fromEmail}>`,
     to,
     subject,
     html,
@@ -32,7 +32,7 @@ export async function sendResetPasswordEmail(to: string, name: string, url: stri
   const html = getResetPasswordTemplate(name, url);
   await sendEmail({
     to,
-    subject: "Reset your Cover Page Generator password",
+    subject: "Reset your CoverDe password",
     html,
   });
 }
@@ -41,7 +41,7 @@ export async function sendWelcomeEmail(to: string, name: string) {
   const html = getWelcomeTemplate(name);
   await sendEmail({
     to,
-    subject: "Welcome to Cover Page Generator",
+    subject: "Welcome to CoverDe",
     html,
   });
 }
