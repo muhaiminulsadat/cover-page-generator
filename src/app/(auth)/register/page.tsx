@@ -16,17 +16,14 @@ import {
 } from "lucide-react";
 import {authClient} from "@/lib/auth-client";
 import {Button} from "@/components/ui/button";
-import {Checkbox} from "@/components/ui/checkbox";
 import {Input} from "@/components/ui/input";
 import {Label} from "@/components/ui/label";
 import toast from "react-hot-toast";
-import {FunnyTermsDialog} from "@/components/FunnyTermsDialog";
 
 export default function RegisterPage() {
   const router = useRouter();
   const {data: session, isPending: sessionPending} = authClient.useSession();
   const [form, setForm] = useState({name: "", email: "", password: ""});
-  const [terms, setTerms] = useState(false);
   const [error, setError] = useState("");
   const [loading, setLoading] = useState(false);
   const [showPassword, setShowPassword] = useState(false);
@@ -44,11 +41,23 @@ export default function RegisterPage() {
   };
 
   const handleGoogleSignIn = async () => {
-    setGoogleLoading(true);
-    await authClient.signIn.social({
-      provider: "google",
-      callbackURL: "/onboarding",
-    });
+    try {
+      setError("");
+      setGoogleLoading(true);
+
+      const {error} = await authClient.signIn.social({
+        provider: "google",
+        callbackURL: "/dashboard",
+      });
+
+      if (error) {
+        setError(error.message ?? "Google sign in is currently unavailable.");
+      }
+    } catch {
+      setError("Google sign in is currently unavailable.");
+    } finally {
+      setGoogleLoading(false);
+    }
   };
 
   const handleSubmit = async (
@@ -63,11 +72,6 @@ export default function RegisterPage() {
 
     if (form.password.length < 6) {
       setError("Password must be at least 6 characters.");
-      return;
-    }
-
-    if (!terms) {
-      setError("You must agree to the Terms & Conditions (and the Coffee Tax).");
       return;
     }
 
@@ -231,37 +235,6 @@ export default function RegisterPage() {
                 )}
               </button>
             </div>
-          </div>
-
-          <div className="flex mt-2 items-start gap-3">
-            <Checkbox
-              className="mt-0.5"
-              id="terms"
-              checked={terms}
-              onCheckedChange={(checked) => {
-                setTerms(checked as boolean);
-                setError("");
-              }}
-              disabled={loading || googleLoading}
-            />
-            <Label
-              className="leading-relaxed text-muted-foreground text-xs"
-              htmlFor="terms"
-            >
-              I agree to the{" "}
-              <FunnyTermsDialog
-                trigger={
-                  <Button
-                    type="button"
-                    variant="link"
-                    className="p-0 h-auto font-medium text-foreground underline hover:text-primary text-xs"
-                  >
-                    Terms & Conditions
-                  </Button>
-                }
-              />
-              .
-            </Label>
           </div>
 
           <Button
