@@ -7,7 +7,6 @@ import {
   ArrowRight,
   Eye,
   EyeOff,
-  GraduationCap,
   Lock,
   Mail,
   ShieldCheck,
@@ -106,13 +105,7 @@ export default function RegisterPage() {
     <div className="min-h-[calc(100vh-4rem)] flex items-center justify-center">
       <main className="flex px-6 py-12 flex-col w-full max-w-md mx-auto relative z-10">
         <div className="flex flex-col gap-2">
-          <div className="rounded-full bg-secondary/60 border border-border flex px-3 py-1 items-center gap-2 w-fit">
-            <GraduationCap className="size-3.5 text-muted-foreground" />
-            <span className="font-medium text-muted-foreground text-xs leading-4">
-              For university students
-            </span>
-          </div>
-          <h1 className="leading-tight font-bold text-3xl tracking-tight mt-4">
+          <h1 className="leading-tight font-bold text-3xl tracking-tight">
             Create your account
           </h1>
           <p className="leading-relaxed text-muted-foreground text-sm">

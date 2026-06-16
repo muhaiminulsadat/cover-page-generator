@@ -7,7 +7,6 @@ import {
   ArrowRight,
   Eye,
   EyeOff,
-  GraduationCap,
   Lock,
   Mail,
   ShieldCheck,
@@ -107,12 +106,6 @@ export default function LoginPage() {
     <div className="min-h-[calc(100vh-4rem)] flex items-center justify-center">
       <main className="flex px-6 py-12 flex-col w-full max-w-md mx-auto relative z-10">
         <div className="flex flex-col gap-4">
-          <div className="inline-flex rounded-full bg-secondary/60 border border-border px-3 py-1 self-start items-center gap-2">
-            <GraduationCap className="size-3.5 text-muted-foreground" />
-            <span className="font-medium text-muted-foreground text-xs leading-4">
-              For university students
-            </span>
-          </div>
           <div className="flex flex-col gap-2">
             <h1 className="font-bold text-3xl tracking-tight mt-2">
               Welcome back

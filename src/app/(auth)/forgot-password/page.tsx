@@ -2,7 +2,7 @@ import { Suspense } from "react";
 import { redirect } from "next/navigation";
 import { headers } from "next/headers";
 import Link from "next/link";
-import { ArrowLeft, GraduationCap, ShieldCheck } from "lucide-react";
+import { ArrowLeft, ShieldCheck } from "lucide-react";
 import { auth } from "@/lib/auth";
 import { ForgotPasswordForm } from "./_components/ForgotPasswordForm";
 import { Skeleton } from "@/components/ui/skeleton";
@@ -19,14 +19,8 @@ async function ForgotPasswordHeader() {
   "use cache";
   return (
     <CardHeader className="gap-4 p-0">
-      <div className="inline-flex rounded-full bg-secondary/60 border border-border px-3 py-1 self-start items-center gap-2">
-        <GraduationCap className="size-3.5 text-muted-foreground" />
-        <span className="font-medium text-muted-foreground text-xs leading-4">
-          For university students
-        </span>
-      </div>
       <div className="flex flex-col gap-2">
-        <CardTitle className="font-heading font-bold text-3xl tracking-tight mt-2 text-foreground">
+        <CardTitle className="font-heading font-bold text-3xl tracking-tight text-foreground">
           Forgot password?
         </CardTitle>
         <CardDescription className="leading-relaxed text-muted-foreground text-sm">
