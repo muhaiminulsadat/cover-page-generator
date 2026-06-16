@@ -50,10 +50,11 @@ function FormSkeleton() {
 }
 
 async function ForgotPasswordFormWrapper() {
+  const headersList = await headers();
   let session = null;
   try {
     session = await auth.api.getSession({
-      headers: await headers(),
+      headers: headersList,
     });
   } catch (error) {
     console.error("Session check failed:", error);
