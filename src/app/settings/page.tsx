@@ -21,6 +21,7 @@ import {
 import {cn} from "@/lib/utils";
 import {auth} from "@/lib/auth";
 import {ProfileSettingsForm} from "@/components/forms/ProfileSettingsForm";
+import {SettingsActions} from "@/components/SettingsActions";
 import {Card, CardContent, CardHeader, CardTitle} from "@/components/ui/card";
 import {Button} from "@/components/ui/button";
 import {Avatar, AvatarFallback, AvatarImage} from "@/components/ui/avatar";
@@ -254,49 +255,7 @@ async function SettingsPageContent() {
 
           <Card className="mx-4 border-0 shadow-sm sm:mx-0">
             <CardContent className="py-0">
-              <div className="flex items-center justify-between py-3.5">
-                <div className="flex items-center gap-3">
-                  <div className="flex size-9 items-center justify-center rounded-lg bg-muted">
-                    <ShieldCheck className="size-4 text-muted-foreground" />
-                  </div>
-                  <div>
-                    <p className="text-sm font-medium">Privacy</p>
-                    <p className="text-xs text-muted-foreground">
-                      Your data is encrypted and secure
-                    </p>
-                  </div>
-                </div>
-                <Lock className="size-4 text-muted-foreground/50" />
-              </div>
-
-              <Separator />
-
-              <div className="flex items-center justify-between py-3.5">
-                <div className="flex items-center gap-3">
-                  <div className="flex size-9 items-center justify-center rounded-lg bg-destructive/10">
-                    <LogOut className="size-4 text-destructive" />
-                  </div>
-                  <div>
-                    <p className="text-sm font-medium">Sign out</p>
-                    <p className="text-xs text-muted-foreground">
-                      End your current session
-                    </p>
-                  </div>
-                </div>
-                <form
-                  action={async () => {
-                    "use server";
-                  }}
-                >
-                  <Button
-                    size="sm"
-                    variant="ghost"
-                    className="h-8 text-xs text-destructive hover:bg-destructive/10 hover:text-destructive"
-                  >
-                    Log out
-                  </Button>
-                </form>
-              </div>
+              <SettingsActions />
             </CardContent>
           </Card>
         </div>
