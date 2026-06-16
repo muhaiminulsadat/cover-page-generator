@@ -1,8 +1,7 @@
 import Link from "next/link";
 import {FileText, Download, LayoutTemplate, Zap} from "lucide-react";
 import {cn} from "@/lib/utils";
-import {FadeIn} from "@/components/home/FadeIn";
-import {FadeUp, ScrollReveal} from "@/components/home/HeroMotion";
+
 
 interface LandingPageProps {
   heroCTA: React.ReactNode;
@@ -175,8 +174,7 @@ export async function LandingPage({heroCTA, footerCTA}: LandingPageProps) {
 
           <div className="relative px-6 container mx-auto">
             <div className="grid grid-cols-1 lg:grid-cols-[1.1fr_0.9fr] gap-12 lg:gap-16 items-center max-w-6xl mx-auto">
-              <FadeUp
-                delay={0}
+              <div
                 className="flex flex-col gap-6 items-center text-center lg:items-start lg:text-left mx-auto lg:mx-0 max-w-xl"
               >
                 <span className="inline-flex items-center gap-1.5 rounded-full border border-border bg-muted/60 px-3 py-1.5 text-[11px] font-semibold text-muted-foreground tracking-wide">
@@ -206,14 +204,13 @@ export async function LandingPage({heroCTA, footerCTA}: LandingPageProps) {
                 <p className="text-xs text-muted-foreground">
                   A4 Print-ready PDF · Built for university standards
                 </p>
-              </FadeUp>
+              </div>
 
-              <FadeIn
-                delay={0.2}
+              <div
                 className="w-full max-w-[300px] sm:max-w-[340px] mx-auto lg:ml-auto lg:mr-0"
               >
                 <DocumentPreview />
-              </FadeIn>
+              </div>
             </div>
           </div>
         </section>
@@ -254,7 +251,7 @@ export async function LandingPage({heroCTA, footerCTA}: LandingPageProps) {
 
         <section className="px-6 container mx-auto py-16 md:py-20">
           <div className="max-w-5xl mx-auto">
-            <ScrollReveal className="text-center mb-14">
+            <div className="text-center mb-14">
               <h2 className="text-2xl sm:text-3xl md:text-4xl font-bold tracking-tight font-heading">
                 Three steps to done.
               </h2>
@@ -262,13 +259,12 @@ export async function LandingPage({heroCTA, footerCTA}: LandingPageProps) {
                 No MS Word layout shifts. Simple form fields. Single click
                 compile.
               </p>
-            </ScrollReveal>
+            </div>
 
             <div className="relative grid grid-cols-1 md:grid-cols-3 gap-6 lg:gap-8">
               {steps.map((step, i) => (
-                <ScrollReveal
+                <div
                   key={step.n}
-                  delay={i * 0.08}
                   className="group relative bg-card hover:bg-muted/5 border border-border hover:border-primary/20 rounded-lg p-6 flex flex-col justify-between h-full transition-all duration-300 hover:-translate-y-1 hover:shadow-md hover:shadow-primary/[0.01] cursor-default"
                 >
                   <div className="flex flex-col gap-4">
@@ -290,7 +286,7 @@ export async function LandingPage({heroCTA, footerCTA}: LandingPageProps) {
                       </p>
                     </div>
                   </div>
-                </ScrollReveal>
+                </div>
               ))}
             </div>
           </div>
@@ -299,8 +295,7 @@ export async function LandingPage({heroCTA, footerCTA}: LandingPageProps) {
         <section className="px-6 container mx-auto pb-16 md:pb-20">
           <div className="max-w-5xl mx-auto">
             <div className="grid grid-cols-1 md:grid-cols-3 gap-5">
-              <ScrollReveal
-                delay={0}
+              <div
                 className="md:col-span-2 rounded-lg border border-border hover:border-primary/20 p-6 sm:p-8 flex flex-col justify-between bg-muted/5 hover:bg-muted/10 transition-all duration-300 hover:-translate-y-1 hover:shadow-md hover:shadow-primary/[0.01] cursor-default"
               >
                 <div className="flex flex-col gap-4">
@@ -341,10 +336,9 @@ export async function LandingPage({heroCTA, footerCTA}: LandingPageProps) {
                     </span>
                   ))}
                 </div>
-              </ScrollReveal>
+              </div>
 
-              <ScrollReveal
-                delay={0.08}
+              <div
                 className="md:col-span-1 rounded-lg border border-border hover:border-primary/20 p-6 sm:p-8 flex flex-col justify-between bg-muted/5 hover:bg-muted/10 transition-all duration-300 hover:-translate-y-1 hover:shadow-md hover:shadow-primary/[0.01] cursor-default"
               >
                 <div className="flex flex-col gap-4">
@@ -371,10 +365,9 @@ export async function LandingPage({heroCTA, footerCTA}: LandingPageProps) {
                     80%
                   </span>
                 </div>
-              </ScrollReveal>
+              </div>
 
-              <ScrollReveal
-                delay={0.16}
+              <div
                 className="md:col-span-1 rounded-lg border border-border hover:border-primary/20 p-6 sm:p-8 flex flex-col justify-between bg-muted/5 hover:bg-muted/10 transition-all duration-300 hover:-translate-y-1 hover:shadow-md hover:shadow-primary/[0.01] cursor-default"
               >
                 <div className="flex flex-col gap-4">
@@ -402,10 +395,9 @@ export async function LandingPage({heroCTA, footerCTA}: LandingPageProps) {
                     </span>
                   ))}
                 </div>
-              </ScrollReveal>
+              </div>
 
-              <ScrollReveal
-                delay={0.24}
+              <div
                 className="md:col-span-2 rounded-lg border border-border hover:border-primary/20 p-6 sm:p-8 flex flex-col justify-between bg-muted/5 hover:bg-muted/10 transition-all duration-300 hover:-translate-y-1 hover:shadow-md hover:shadow-primary/[0.01] cursor-default"
               >
                 <div className="flex flex-col gap-4">
@@ -431,14 +423,14 @@ export async function LandingPage({heroCTA, footerCTA}: LandingPageProps) {
                     No credit card required
                   </span>
                 </div>
-              </ScrollReveal>
+              </div>
             </div>
           </div>
         </section>
 
         <section className="w-full border-t border-b border-border/40 bg-gradient-to-b from-muted/50 to-muted/20 dark:from-muted/20 dark:to-muted/5 py-16 md:py-20 relative overflow-hidden">
           <div className="absolute inset-0 bg-[radial-gradient(var(--border)_1px,transparent_1px)] bg-[size:32px_32px] opacity-[0.25] pointer-events-none" />
-          <ScrollReveal className="max-w-4xl mx-auto px-6 text-center relative flex flex-col items-center gap-6">
+          <div className="max-w-4xl mx-auto px-6 text-center relative flex flex-col items-center gap-6">
             <div className="absolute inset-0 -z-10 flex items-center justify-center opacity-[0.05] dark:opacity-[0.09] pointer-events-none select-none">
               <span className="font-serif text-[18rem] font-bold leading-none select-none translate-y-[-2rem] text-primary">
                 “
@@ -462,11 +454,11 @@ export async function LandingPage({heroCTA, footerCTA}: LandingPageProps) {
                 </p>
               </div>
             </div>
-          </ScrollReveal>
+          </div>
         </section>
 
         <section className="px-6 container mx-auto pt-16 md:pt-20 pb-16 md:pb-20">
-          <ScrollReveal>
+          <div className="w-full">
             <div className="relative rounded-lg border border-border bg-muted/10 overflow-hidden w-full max-w-4xl mx-auto">
               <div className="absolute inset-0 bg-[radial-gradient(var(--border)_1px,transparent_1px)] bg-[size:24px_24px] opacity-40 pointer-events-none" />
               <div className="pointer-events-none absolute inset-x-0 top-0 h-px bg-gradient-to-r from-transparent via-border to-transparent" />
@@ -483,7 +475,7 @@ export async function LandingPage({heroCTA, footerCTA}: LandingPageProps) {
                 {footerCTA}
               </div>
             </div>
-          </ScrollReveal>
+          </div>
         </section>
       </main>
 
