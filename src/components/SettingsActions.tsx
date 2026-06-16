@@ -39,38 +39,38 @@ export function SettingsActions() {
 
   return (
     <>
-      <div className="flex items-center justify-between py-3.5">
-        <div className="flex items-center gap-3">
-          <div className="flex size-9 items-center justify-center rounded-lg bg-muted">
+      <div className="flex items-center justify-between py-3.5 gap-4">
+        <div className="flex items-center gap-3 min-w-0">
+          <div className="flex size-9 shrink-0 items-center justify-center rounded-lg bg-muted">
             <ShieldCheck className="size-4 text-muted-foreground" />
           </div>
-          <div>
+          <div className="min-w-0">
             <p className="text-sm font-medium">Privacy</p>
-            <p className="text-xs text-muted-foreground">
+            <p className="text-xs text-muted-foreground truncate">
               Your data is encrypted and secure
             </p>
           </div>
         </div>
-        <Lock className="size-4 text-muted-foreground/50" />
+        <Lock className="size-4 text-muted-foreground/50 shrink-0" />
       </div>
 
       <Separator />
 
-      <div className="flex items-center justify-between py-3.5">
-        <div className="flex items-center gap-3">
-          <div className="flex size-9 items-center justify-center rounded-lg bg-muted">
+      <div className="flex items-center justify-between py-3.5 gap-4">
+        <div className="flex items-center gap-3 min-w-0">
+          <div className="flex size-9 shrink-0 items-center justify-center rounded-lg bg-muted">
             <KeyRound className="size-4 text-muted-foreground" />
           </div>
-          <div>
+          <div className="min-w-0">
             <p className="text-sm font-medium">Password</p>
-            <p className="text-xs text-muted-foreground">
+            <p className="text-xs text-muted-foreground truncate">
               Change or update your password
             </p>
           </div>
         </div>
         <Dialog open={changePasswordOpen} onOpenChange={setChangePasswordOpen}>
           <DialogTrigger asChild>
-            <Button size="sm" variant="outline" className="h-8 text-xs cursor-pointer">
+            <Button size="sm" variant="outline" className="h-8 text-xs cursor-pointer shrink-0">
               Change password
             </Button>
           </DialogTrigger>
@@ -82,14 +82,14 @@ export function SettingsActions() {
 
       <Separator />
 
-      <div className="flex items-center justify-between py-3.5">
-        <div className="flex items-center gap-3">
-          <div className="flex size-9 items-center justify-center rounded-lg bg-destructive/10">
+      <div className="flex items-center justify-between py-3.5 gap-4">
+        <div className="flex items-center gap-3 min-w-0">
+          <div className="flex size-9 shrink-0 items-center justify-center rounded-lg bg-destructive/10">
             <LogOut className="size-4 text-destructive" />
           </div>
-          <div>
+          <div className="min-w-0">
             <p className="text-sm font-medium">Sign out</p>
-            <p className="text-xs text-muted-foreground">
+            <p className="text-xs text-muted-foreground truncate">
               End your current session
             </p>
           </div>
@@ -97,7 +97,7 @@ export function SettingsActions() {
         <Button
           size="sm"
           variant="ghost"
-          className="h-8 text-xs text-destructive hover:bg-destructive/10 hover:text-destructive cursor-pointer"
+          className="h-8 text-xs text-destructive hover:bg-destructive/10 hover:text-destructive cursor-pointer shrink-0"
           onClick={handleSignOut}
           disabled={logoutPending}
         >

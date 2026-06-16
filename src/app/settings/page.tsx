@@ -79,9 +79,9 @@ async function SettingsPageContent() {
 
   return (
     <div className="min-h-[calc(100vh-4rem)] bg-muted/30 pb-12 dark:bg-background">
-      <div className="mx-auto w-full max-w-xl sm:px-6">
+      <div className="mx-auto w-full max-w-xl px-4 sm:px-6">
         <div className="flex flex-col gap-5">
-          <Card className="overflow-hidden rounded-none border-0 shadow-sm sm:mt-10 sm:rounded-xl">
+          <Card className="overflow-hidden border-0 shadow-sm mt-4 sm:mt-10 rounded-xl">
             <div className="h-28 bg-gradient-to-r from-muted via-muted/80 to-muted sm:h-32" />
 
             <div className="relative px-5 pb-6 sm:px-6">
@@ -156,7 +156,7 @@ async function SettingsPageContent() {
             </div>
           </Card>
 
-          <Card className="mx-4 border-0 shadow-sm sm:mx-0">
+          <Card className="border-0 shadow-sm rounded-xl">
             <CardHeader className="flex flex-row items-center justify-between pb-3">
               <div className="flex items-center gap-2">
                 <div className="flex size-7 items-center justify-center rounded-md bg-muted">
@@ -253,7 +253,7 @@ async function SettingsPageContent() {
             </CardContent>
           </Card>
 
-          <Card className="mx-4 border-0 shadow-sm sm:mx-0">
+          <Card className="border-0 shadow-sm rounded-xl">
             <CardContent className="py-0">
               <SettingsActions />
             </CardContent>
@@ -293,10 +293,10 @@ function DetailRow({icon, label, value}: DetailRowProps) {
         {icon}
       </div>
       <div className="flex min-w-0 flex-1 items-center justify-between gap-2">
-        <span className="text-sm text-muted-foreground">{label}</span>
+        <span className="text-sm text-muted-foreground shrink-0">{label}</span>
         <span
           className={cn(
-            "truncate text-sm font-medium",
+            "truncate text-sm font-medium text-right ml-auto min-w-0",
             isEmpty && "italic text-muted-foreground/50",
           )}
         >
@@ -310,9 +310,9 @@ function DetailRow({icon, label, value}: DetailRowProps) {
 function SettingsPageSkeleton() {
   return (
     <div className="min-h-[calc(100vh-4rem)] bg-muted/30 pb-12 dark:bg-background">
-      <div className="mx-auto w-full max-w-xl sm:px-6">
+      <div className="mx-auto w-full max-w-xl px-4 sm:px-6">
         <div className="flex flex-col gap-5">
-          <Card className="overflow-hidden rounded-none border-0 shadow-sm sm:mt-10 sm:rounded-xl">
+          <Card className="overflow-hidden border-0 shadow-sm mt-4 sm:mt-10 rounded-xl">
             <div className="h-28 animate-pulse bg-muted sm:h-32" />
 
             <div className="relative px-5 pb-6 sm:px-6">
@@ -345,7 +345,7 @@ function SettingsPageSkeleton() {
             </div>
           </Card>
 
-          <Card className="mx-4 border-0 shadow-sm sm:mx-0">
+          <Card className="border-0 shadow-sm rounded-xl">
             <CardHeader className="flex flex-row items-center justify-between pb-3">
               <div className="flex items-center gap-2">
                 <Skeleton className="size-7 rounded-md" />
@@ -391,7 +391,7 @@ function SettingsPageSkeleton() {
             </CardContent>
           </Card>
 
-          <Card className="mx-4 border-0 shadow-sm sm:mx-0">
+          <Card className="border-0 shadow-sm rounded-xl">
             <CardContent className="py-0">
               <div className="flex items-center justify-between py-3.5">
                 <div className="flex items-center gap-3">
