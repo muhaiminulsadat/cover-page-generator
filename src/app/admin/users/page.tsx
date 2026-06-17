@@ -128,7 +128,7 @@ async function UsersTable({
       {/* Mobile Card View (md:hidden) */}
       <div className="md:hidden space-y-3">
         {users.map((u) => (
-          <div key={u.id} className="rounded-xl border bg-card/60 backdrop-blur-md p-4 border-border/50 shadow-xs flex flex-col gap-3 animate-fade-in-up">
+          <div key={u.id} className="rounded-xl border bg-card/90 md:bg-card/60 md:backdrop-blur-md p-4 border-border/50 shadow-xs flex flex-col gap-3 animate-fade-in-up">
             <div className="flex items-center gap-3">
               <Avatar className="h-9 w-9 border border-border/60">
                 <AvatarImage src={u.image || ""} />

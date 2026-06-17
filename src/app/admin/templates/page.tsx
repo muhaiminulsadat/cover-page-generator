@@ -84,7 +84,7 @@ async function AdminTemplatesTable({
       {/* Mobile Card View (md:hidden) */}
       <div className="md:hidden space-y-3">
         {templates.map((row) => (
-          <div key={row.template.id} className="rounded-xl border bg-card/60 backdrop-blur-md p-4 border-border/50 shadow-xs flex flex-col gap-3 animate-fade-in-up">
+          <div key={row.template.id} className="rounded-xl border bg-card/90 md:bg-card/60 md:backdrop-blur-md p-4 border-border/50 shadow-xs flex flex-col gap-3 animate-fade-in-up">
             <div className="flex flex-col">
               <span className="font-semibold text-sm text-foreground">
                 {row.template.courseNumber} - {row.template.courseTitle}
