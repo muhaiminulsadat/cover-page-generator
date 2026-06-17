@@ -122,7 +122,7 @@ async function SettingsPageContent() {
                 {departmentLabel !== "Not set" && (
                   <Badge variant="secondary" className="gap-1 py-1">
                     <BookOpen className="size-3" />
-                    {departmentLabel}
+                    {departmentLabel.toUpperCase()}
                   </Badge>
                 )}
                 {currentUser.studentId && (
@@ -136,17 +136,15 @@ async function SettingsPageContent() {
               <Separator className="mt-5" />
 
               <div className="mt-4 grid grid-cols-2 gap-2.5 sm:grid-cols-4">
-                <StatCell
-                  label="Level"
-                  value={currentUser.level || "—"}
-                />
-                <StatCell
-                  label="Term"
-                  value={currentUser.term || "—"}
-                />
+                <StatCell label="Level" value={currentUser.level || "—"} />
+                <StatCell label="Term" value={currentUser.term || "—"} />
                 <StatCell
                   label="Section"
-                  value={sectionLabel !== "Not set" ? sectionLabel : "—"}
+                  value={
+                    sectionLabel !== "Not set"
+                      ? sectionLabel.toUpperCase()
+                      : "—"
+                  }
                 />
                 <StatCell
                   label="Subsection"
@@ -209,7 +207,7 @@ async function SettingsPageContent() {
                 <DetailRow
                   icon={<BookOpen className="size-4" />}
                   label="Department"
-                  value={departmentLabel}
+                  value={departmentLabel.toUpperCase()}
                 />
                 <DetailRow
                   icon={<Hash className="size-4" />}
@@ -233,7 +231,7 @@ async function SettingsPageContent() {
                   <DetailRow
                     icon={<Users className="size-4" />}
                     label="Section"
-                    value={sectionLabel}
+                    value={sectionLabel.toUpperCase()}
                   />
                   <DetailRow
                     icon={<Group className="size-4" />}
