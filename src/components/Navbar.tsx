@@ -205,7 +205,7 @@ export default function Navbar() {
                               "bg-accent text-accent-foreground",
                           )}
                         >
-                          <Link href="/admin">
+                          <Link href="/admin/users">
                             <Shield className="size-4 text-muted-foreground" />
                             Admin Panel
                           </Link>
@@ -418,7 +418,7 @@ export default function Navbar() {
                           )}
                           asChild
                         >
-                          <Link href="/admin">
+                          <Link href="/admin/users">
                             <span className="flex items-center gap-2.5">
                               <Shield className={cn("h-4 w-4 transition-transform", pathname.startsWith("/admin") ? "text-foreground" : "text-muted-foreground/75")} />
                               Admin Panel
