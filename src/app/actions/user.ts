@@ -7,11 +7,38 @@ import {forgotPasswordSchema} from "@/lib/validations/auth";
 import {eq} from "drizzle-orm";
 import {actionClient, authActionClient} from "@/lib/safe-action";
 import {revalidatePath} from "next/cache";
+import {sendWelcomeEmail} from "@/lib/email";
 
 export const updateProfile = authActionClient
   .schema(userProfileSchema)
   .action(async ({parsedInput, ctx}) => {
     try {
+      const existingUser = await db
+        .select({
+          studentId: user.studentId,
+          university: user.university,
+          department: user.department,
+          section: user.section,
+          subsection: user.subsection,
+          level: user.level,
+          term: user.term,
+          hscBatch: user.hscBatch,
+        })
+        .from(user)
+        .where(eq(user.id, ctx.user.id))
+        .limit(1)
+        .then((res) => res[0]);
+
+      const isFirstTimeOnboarding =
+        !existingUser?.studentId ||
+        !existingUser?.university ||
+        !existingUser?.department ||
+        !existingUser?.section ||
+        !existingUser?.subsection ||
+        !existingUser?.level ||
+        !existingUser?.term ||
+        !existingUser?.hscBatch;
+
       await db
         .update(user)
         .set({
@@ -29,6 +56,14 @@ export const updateProfile = authActionClient
 
       revalidatePath("/");
       revalidatePath("/dashboard");
+
+      if (isFirstTimeOnboarding) {
+        try {
+          await sendWelcomeEmail(ctx.user.email, ctx.user.name);
+        } catch (error) {
+          console.error("Failed to send welcome email during onboarding:", error);
+        }
+      }
 
       return {success: true, data: parsedInput};
     } catch (error) {

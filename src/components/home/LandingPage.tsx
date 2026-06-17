@@ -2,7 +2,6 @@ import Link from "next/link";
 import {FileText, Download, LayoutTemplate, Zap} from "lucide-react";
 import {cn} from "@/lib/utils";
 
-
 interface LandingPageProps {
   heroCTA: React.ReactNode;
   footerCTA: React.ReactNode;
@@ -174,15 +173,13 @@ export async function LandingPage({heroCTA, footerCTA}: LandingPageProps) {
 
           <div className="relative px-6 container mx-auto">
             <div className="grid grid-cols-1 lg:grid-cols-[1.1fr_0.9fr] gap-12 lg:gap-16 items-center max-w-6xl mx-auto">
-              <div
-                className="flex flex-col gap-6 items-center text-center lg:items-start lg:text-left mx-auto lg:mx-0 max-w-xl"
-              >
+              <div className="flex flex-col gap-6 items-center text-center lg:items-start lg:text-left mx-auto lg:mx-0 max-w-xl">
                 <span className="inline-flex items-center gap-1.5 rounded-full border border-border bg-muted/60 px-3 py-1.5 text-[11px] font-semibold text-muted-foreground tracking-wide">
                   <span className="relative flex size-1.5">
                     <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-emerald-400 opacity-75"></span>
                     <span className="relative inline-flex size-1.5 rounded-full bg-emerald-500"></span>
                   </span>
-                  BUET Lab Report Companion
+                  Built for lazy students
                 </span>
 
                 <h1 className="text-[2.2rem] sm:text-5xl lg:text-[3.25rem] font-bold tracking-tight leading-[1.08] font-heading">
@@ -206,9 +203,7 @@ export async function LandingPage({heroCTA, footerCTA}: LandingPageProps) {
                 </p>
               </div>
 
-              <div
-                className="w-full max-w-[300px] sm:max-w-[340px] mx-auto lg:ml-auto lg:mr-0"
-              >
+              <div className="w-full max-w-[300px] sm:max-w-[340px] mx-auto lg:ml-auto lg:mr-0">
                 <DocumentPreview />
               </div>
             </div>
@@ -228,24 +223,26 @@ export async function LandingPage({heroCTA, footerCTA}: LandingPageProps) {
               "ChE · Chemical",
               "WRE · Water Resources",
               "NAME · Naval Architecture",
-            ].concat([
-              "CE · Civil Engineering",
-              "CSE · Computer Science",
-              "EEE · Electrical & Electronic",
-              "ME · Mechanical",
-              "IPE · Industrial & Production",
-              "ChE · Chemical",
-              "WRE · Water Resources",
-              "NAME · Naval Architecture",
-            ]).map((dept, idx) => (
-              <span
-                key={idx}
-                className="px-3.5 py-2 rounded-xl bg-card border border-border/70 text-[10px] font-mono font-semibold text-muted-foreground tracking-wide flex items-center gap-2 shadow-2xs hover:border-primary/20 hover:text-foreground transition-colors duration-200"
-              >
-                <span className="size-1.5 rounded-full bg-primary/30 animate-pulse" />
-                {dept}
-              </span>
-            ))}
+            ]
+              .concat([
+                "CE · Civil Engineering",
+                "CSE · Computer Science",
+                "EEE · Electrical & Electronic",
+                "ME · Mechanical",
+                "IPE · Industrial & Production",
+                "ChE · Chemical",
+                "WRE · Water Resources",
+                "NAME · Naval Architecture",
+              ])
+              .map((dept, idx) => (
+                <span
+                  key={idx}
+                  className="px-3.5 py-2 rounded-xl bg-card border border-border/70 text-[10px] font-mono font-semibold text-muted-foreground tracking-wide flex items-center gap-2 shadow-2xs hover:border-primary/20 hover:text-foreground transition-colors duration-200"
+                >
+                  <span className="size-1.5 rounded-full bg-primary/30 animate-pulse" />
+                  {dept}
+                </span>
+              ))}
           </div>
         </div>
 
@@ -295,9 +292,7 @@ export async function LandingPage({heroCTA, footerCTA}: LandingPageProps) {
         <section className="px-6 container mx-auto pb-16 md:pb-20">
           <div className="max-w-5xl mx-auto">
             <div className="grid grid-cols-1 md:grid-cols-3 gap-5">
-              <div
-                className="md:col-span-2 rounded-lg border border-border hover:border-primary/20 p-6 sm:p-8 flex flex-col justify-between bg-muted/5 hover:bg-muted/10 transition-all duration-300 hover:-translate-y-1 hover:shadow-md hover:shadow-primary/[0.01] cursor-default"
-              >
+              <div className="md:col-span-2 rounded-lg border border-border hover:border-primary/20 p-6 sm:p-8 flex flex-col justify-between bg-muted/5 hover:bg-muted/10 transition-all duration-300 hover:-translate-y-1 hover:shadow-md hover:shadow-primary/[0.01] cursor-default">
                 <div className="flex flex-col gap-4">
                   <div className="size-10 rounded-xl bg-muted border border-border flex items-center justify-center text-foreground">
                     <LayoutTemplate className="size-4" />
@@ -338,9 +333,7 @@ export async function LandingPage({heroCTA, footerCTA}: LandingPageProps) {
                 </div>
               </div>
 
-              <div
-                className="md:col-span-1 rounded-lg border border-border hover:border-primary/20 p-6 sm:p-8 flex flex-col justify-between bg-muted/5 hover:bg-muted/10 transition-all duration-300 hover:-translate-y-1 hover:shadow-md hover:shadow-primary/[0.01] cursor-default"
-              >
+              <div className="md:col-span-1 rounded-lg border border-border hover:border-primary/20 p-6 sm:p-8 flex flex-col justify-between bg-muted/5 hover:bg-muted/10 transition-all duration-300 hover:-translate-y-1 hover:shadow-md hover:shadow-primary/[0.01] cursor-default">
                 <div className="flex flex-col gap-4">
                   <div className="size-10 rounded-xl bg-muted border border-border flex items-center justify-center text-foreground">
                     <Zap className="size-4" />
@@ -367,9 +360,7 @@ export async function LandingPage({heroCTA, footerCTA}: LandingPageProps) {
                 </div>
               </div>
 
-              <div
-                className="md:col-span-1 rounded-lg border border-border hover:border-primary/20 p-6 sm:p-8 flex flex-col justify-between bg-muted/5 hover:bg-muted/10 transition-all duration-300 hover:-translate-y-1 hover:shadow-md hover:shadow-primary/[0.01] cursor-default"
-              >
+              <div className="md:col-span-1 rounded-lg border border-border hover:border-primary/20 p-6 sm:p-8 flex flex-col justify-between bg-muted/5 hover:bg-muted/10 transition-all duration-300 hover:-translate-y-1 hover:shadow-md hover:shadow-primary/[0.01] cursor-default">
                 <div className="flex flex-col gap-4">
                   <div className="size-10 rounded-xl bg-muted border border-border flex items-center justify-center text-foreground">
                     <FileText className="size-4" />
@@ -397,9 +388,7 @@ export async function LandingPage({heroCTA, footerCTA}: LandingPageProps) {
                 </div>
               </div>
 
-              <div
-                className="md:col-span-2 rounded-lg border border-border hover:border-primary/20 p-6 sm:p-8 flex flex-col justify-between bg-muted/5 hover:bg-muted/10 transition-all duration-300 hover:-translate-y-1 hover:shadow-md hover:shadow-primary/[0.01] cursor-default"
-              >
+              <div className="md:col-span-2 rounded-lg border border-border hover:border-primary/20 p-6 sm:p-8 flex flex-col justify-between bg-muted/5 hover:bg-muted/10 transition-all duration-300 hover:-translate-y-1 hover:shadow-md hover:shadow-primary/[0.01] cursor-default">
                 <div className="flex flex-col gap-4">
                   <div className="size-10 rounded-xl bg-muted border border-border flex items-center justify-center text-foreground">
                     <Download className="size-4" />
@@ -438,7 +427,10 @@ export async function LandingPage({heroCTA, footerCTA}: LandingPageProps) {
             </div>
 
             <blockquote className="text-xl sm:text-2xl font-medium tracking-tight italic text-foreground/95 max-w-3xl leading-relaxed relative z-10">
-              &ldquo;I copied the entire lab report from my friend, but my cover page looked so premium that the teacher accused &lsquo;him&rsquo; of copying from &lsquo;me&rsquo;. He got a warning letter, and I got a 10/10. Best friendship break-up ever.&rdquo;
+              &ldquo;I copied the entire lab report from my friend, but my cover
+              page looked so premium that the teacher accused &lsquo;him&rsquo;
+              of copying from &lsquo;me&rsquo;. He got a warning letter, and I
+              got a 10/10. Best friendship break-up ever.&rdquo;
             </blockquote>
 
             <div className="flex items-center gap-3 mt-2 relative z-10">
@@ -510,7 +502,7 @@ export async function LandingPage({heroCTA, footerCTA}: LandingPageProps) {
           </div>
 
           <span className="text-muted-foreground text-[10px] text-center tracking-wider uppercase font-mono">
-            &copy; 2026 CoverDe &middot; Built for students.
+            &copy; 2026 CoverDe &middot; Built for lazy students.
           </span>
         </div>
       </footer>
