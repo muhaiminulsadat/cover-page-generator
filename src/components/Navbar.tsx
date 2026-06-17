@@ -63,7 +63,6 @@ export default function Navbar() {
 
   const {resolvedTheme, setTheme} = useTheme();
   const [scrolled, setScrolled] = useState(false);
-  const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
 
   useEffect(() => {
     const onScroll = () => setScrolled(window.scrollY > 10);
@@ -245,18 +244,15 @@ export default function Navbar() {
             </>
           )}
 
-          <Sheet open={mobileMenuOpen} onOpenChange={setMobileMenuOpen}>
+          <Sheet>
             <SheetTrigger asChild>
               <Button
                 variant="ghost"
                 size="icon"
-                className="ml-1 size-9 rounded-md border border-border/40 bg-background/50 backdrop-blur-xs text-muted-foreground shadow-2xs hover:bg-muted hover:text-foreground active:scale-95 transition-[transform,background-color,color] duration-150 ease-out md:hidden"
+                className="ml-1 size-9 rounded-md border border-border/40 bg-background/50 backdrop-blur-xs text-muted-foreground shadow-2xs hover:bg-muted hover:text-foreground active:scale-95 transition-[transform,background-color,color] duration-150 ease-out md:hidden group"
               >
                 <Menu
-                  className={cn(
-                    "h-4 w-4 transition-transform duration-200",
-                    mobileMenuOpen && "rotate-90",
-                  )}
+                  className="h-4 w-4 transition-transform duration-200 group-data-[state=open]:rotate-90"
                 />
                 <span className="sr-only">Open menu</span>
               </Button>
