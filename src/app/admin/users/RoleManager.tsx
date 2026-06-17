@@ -31,8 +31,8 @@ export function RoleManager({userId, currentRole, isSelf, isSuperadmin}: Props) 
 
   if (isSelf || currentRole === "superadmin") {
     return (
-      <Button variant="outline" size="sm" disabled>
-        {currentRole} {isSelf && <span className="ml-2 text-xs">(You)</span>}
+      <Button variant="outline" size="sm" disabled className="capitalize h-8.5 rounded-lg border-border/60 bg-muted/30">
+        {currentRole} {isSelf && <span className="ml-1.5 text-[10px] text-muted-foreground font-normal">(You)</span>}
       </Button>
     );
   }
@@ -44,19 +44,27 @@ export function RoleManager({userId, currentRole, isSelf, isSuperadmin}: Props) 
   return (
     <DropdownMenu>
       <DropdownMenuTrigger asChild>
-        <Button variant="outline" size="sm" disabled={isExecuting}>
-          {isExecuting && <Loader2 className="mr-2 h-4 w-4 animate-spin" />}
-          <span className="capitalize">{currentRole}</span>
-          <ChevronDown className="ml-2 h-4 w-4" />
+        <Button 
+          variant="outline" 
+          size="sm" 
+          disabled={isExecuting}
+          className="capitalize h-8.5 rounded-lg transition-all duration-150 ease-out active:scale-[0.97] border-border/60 cursor-pointer hover:bg-muted/60"
+        >
+          {isExecuting ? (
+            <Loader2 className="mr-1.5 h-3.5 w-3.5 animate-spin" />
+          ) : (
+            <span className="capitalize">{currentRole}</span>
+          )}
+          <ChevronDown className="ml-1.5 h-3.5 w-3.5 opacity-60" />
         </Button>
       </DropdownMenuTrigger>
-      <DropdownMenuContent align="end">
+      <DropdownMenuContent align="end" className="w-36">
         {roles.map((role) => (
           <DropdownMenuItem
             key={role}
             disabled={role === currentRole}
             onClick={() => execute({targetUserId: userId, newRole: role})}
-            className="capitalize"
+            className="capitalize cursor-pointer"
           >
             {role}
           </DropdownMenuItem>
@@ -65,3 +73,4 @@ export function RoleManager({userId, currentRole, isSelf, isSuperadmin}: Props) 
     </DropdownMenu>
   );
 }
+

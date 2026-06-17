@@ -1,9 +1,8 @@
 import {Suspense} from "react";
+import {cn, getAvatarBgColor} from "@/lib/utils";
 import {getPaginatedUsers} from "@/lib/queries/admin";
 import {auth} from "@/lib/auth";
 import {headers} from "next/headers";
-import {Loader2, Search} from "lucide-react";
-import {Input} from "@/components/ui/input";
 import {
   Table,
   TableBody,
@@ -17,78 +16,99 @@ import {RoleManager} from "./RoleManager";
 import {Pagination} from "./Pagination";
 import {format} from "date-fns";
 import {Badge} from "@/components/ui/badge";
+import {UsersSearch} from "./UsersSearch";
+import {UsersTableSkeleton} from "./UsersTableSkeleton";
+
+interface PageProps {
+  searchParams: Promise<{page?: string; search?: string}>;
+}
 
 function getRoleBadge(role: string) {
   switch (role) {
     case "superadmin":
-      return <Badge className="bg-purple-600 hover:bg-purple-700">Superadmin</Badge>;
+      return (
+        <Badge variant="outline" className="bg-purple-500/10 text-purple-600 dark:text-purple-400 border-purple-500/20 font-medium">
+          Superadmin
+        </Badge>
+      );
     case "admin":
-      return <Badge className="bg-blue-600 hover:bg-blue-700">Admin</Badge>;
+      return (
+        <Badge variant="outline" className="bg-blue-500/10 text-blue-600 dark:text-blue-400 border-blue-500/20 font-medium">
+          Admin
+        </Badge>
+      );
     case "moderator":
-      return <Badge className="bg-amber-600 hover:bg-amber-700">Moderator</Badge>;
+      return (
+        <Badge variant="outline" className="bg-amber-500/10 text-amber-600 dark:text-amber-400 border-amber-500/20 font-medium">
+          Moderator
+        </Badge>
+      );
     default:
-      return <Badge variant="secondary" className="capitalize">{role}</Badge>;
+      return (
+        <Badge variant="outline" className="bg-zinc-500/10 text-zinc-600 dark:text-zinc-400 border-zinc-500/20 font-medium capitalize">
+          {role}
+        </Badge>
+      );
   }
 }
 
-export default async function AdminUsersPage({
-  searchParams,
-}: {
-  searchParams: Promise<{page?: string; search?: string}>;
-}) {
+export default async function AdminUsersPage({searchParams}: PageProps) {
   const params = await searchParams;
   const page = Number(params.page) || 1;
   const search = params.search || "";
 
-  const session = await auth.api.getSession({
-    headers: await headers(),
-  });
-  const currentUserId = session?.user?.id || "";
-  const isSuperadmin = session?.user?.role === "superadmin";
-  
   return (
     <div className="space-y-6">
-      <div>
-        <h1 className="text-2xl font-bold tracking-tight">Users</h1>
-        <p className="text-muted-foreground">
-          Manage user roles and permissions.
-        </p>
-      </div>
-
-      <div className="flex items-center space-x-2">
-        <div className="relative flex-1 max-w-sm">
-          <Search className="absolute left-2.5 top-2.5 h-4 w-4 text-muted-foreground" />
-          <form action="/admin/users" method="GET">
-            <Input
-              type="search"
-              name="search"
-              placeholder="Search users..."
-              className="pl-8"
-              defaultValue={search}
-            />
-          </form>
+      <div className="flex flex-col md:flex-row md:items-center justify-between gap-4">
+        <div>
+          <h1 className="text-3xl font-bold tracking-tight text-foreground font-heading">Users</h1>
+          <p className="text-muted-foreground text-sm">
+            Manage user roles and platform access permissions.
+          </p>
         </div>
+        <UsersSearch />
       </div>
 
-      <Suspense fallback={<div className="flex justify-center p-8"><Loader2 className="animate-spin" /></div>}>
-        <UsersTable 
-          page={page} 
-          search={search} 
-          currentUserId={currentUserId}
-          isSuperadmin={isSuperadmin}
+      <Suspense fallback={<UsersTableSkeleton />}>
+        <UsersTableWrapper 
+          page={page}
+          search={search}
         />
       </Suspense>
     </div>
   );
 }
 
+async function UsersTableWrapper({
+  page,
+  search,
+}: {
+  page: number;
+  search: string;
+}) {
+  const session = await auth.api.getSession({
+    headers: await headers(),
+  });
+  const currentUserId = session?.user?.id || "";
+  const isSuperadmin = session?.user?.role === "superadmin";
+
+  return (
+    <UsersTable
+      page={page}
+      search={search}
+      currentUserId={currentUserId}
+      isSuperadmin={isSuperadmin}
+    />
+  );
+}
+
 async function UsersTable({
-  page, 
+  page,
   search,
   currentUserId,
-  isSuperadmin
+  isSuperadmin,
 }: {
-  page: number; 
+  page: number;
   search: string;
   currentUserId: string;
   isSuperadmin: boolean;
@@ -104,10 +124,10 @@ async function UsersTable({
 
   return (
     <div className="space-y-4">
-      <div className="rounded-md border bg-card">
+      <div className="rounded-xl border bg-card/60 backdrop-blur-md overflow-hidden border-border/50 shadow-xs">
         <Table>
           <TableHeader>
-            <TableRow>
+            <TableRow className="hover:bg-transparent">
               <TableHead>User</TableHead>
               <TableHead>Role</TableHead>
               <TableHead>Joined</TableHead>
@@ -116,16 +136,18 @@ async function UsersTable({
           </TableHeader>
           <TableBody>
             {users.map((u) => (
-              <TableRow key={u.id}>
+              <TableRow key={u.id} className="border-border/40 hover:bg-muted/30 transition-colors">
                 <TableCell>
                   <div className="flex items-center gap-3">
-                    <Avatar className="h-8 w-8">
+                    <Avatar className="h-9 w-9 border border-border/60">
                       <AvatarImage src={u.image || ""} />
-                      <AvatarFallback>{u.name.substring(0, 2).toUpperCase()}</AvatarFallback>
+                      <AvatarFallback className={cn("font-semibold border text-xs", getAvatarBgColor(u.name))}>
+                        {u.name.substring(0, 2).toUpperCase()}
+                      </AvatarFallback>
                     </Avatar>
-                    <div className="flex flex-col">
-                      <span className="font-medium text-sm">{u.name}</span>
-                      <span className="text-xs text-muted-foreground">{u.email}</span>
+                    <div className="flex flex-col min-w-0">
+                      <span className="font-semibold text-sm text-foreground truncate">{u.name}</span>
+                      <span className="text-xs text-muted-foreground truncate">{u.email}</span>
                     </div>
                   </div>
                 </TableCell>
@@ -148,9 +170,12 @@ async function UsersTable({
               </TableRow>
             ))}
             {users.length === 0 && (
-              <TableRow>
-                <TableCell colSpan={4} className="h-24 text-center">
-                  No users found.
+              <TableRow className="hover:bg-transparent">
+                <TableCell colSpan={4} className="h-32 text-center text-muted-foreground">
+                  <div className="flex flex-col items-center justify-center space-y-1">
+                    <p className="font-medium">No users found</p>
+                    <p className="text-xs">Try refining your search terms.</p>
+                  </div>
                 </TableCell>
               </TableRow>
             )}

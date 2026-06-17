@@ -7,46 +7,57 @@ import {ChartConfig, ChartContainer, ChartTooltip, ChartTooltipContent} from "@/
 const chartConfig = {
   student: {
     label: "Student",
-    color: "var(--chart-1)",
+    color: "hsl(var(--chart-1))",
   },
   moderator: {
     label: "Moderator",
-    color: "var(--chart-2)",
+    color: "hsl(var(--chart-2))",
   },
   admin: {
     label: "Admin",
-    color: "var(--chart-3)",
+    color: "hsl(var(--chart-3))",
   },
   superadmin: {
     label: "Superadmin",
-    color: "var(--chart-4)",
+    color: "hsl(var(--chart-4))",
   },
 } satisfies ChartConfig;
 
-export function RoleDistributionChart({data}: {data: {role: string; count: number}[]}) {
-  const chartData = data.map(item => ({
+interface Props {
+  data: {role: string; count: number}[];
+}
+
+export function RoleDistributionChart({data}: Props) {
+  const chartData = data.map((item) => ({
     role: item.role,
     count: item.count,
-    fill: chartConfig[item.role as keyof typeof chartConfig]?.color || "var(--chart-5)",
+    fill: chartConfig[item.role as keyof typeof chartConfig]?.color || "hsl(var(--chart-5))",
   }));
 
   return (
-    <Card className="flex flex-col h-full">
+    <Card className="flex flex-col h-full border-border/50 bg-card/60 backdrop-blur-md transition-all duration-200 hover:shadow-md hover:border-border/80">
       <CardHeader className="items-center pb-0">
-        <CardTitle>Role Distribution</CardTitle>
-        <CardDescription>Current users by role</CardDescription>
+        <CardTitle className="font-heading font-semibold text-base text-foreground">
+          Role Distribution
+        </CardTitle>
+        <CardDescription className="text-xs text-muted-foreground">
+          Current platform users by role
+        </CardDescription>
       </CardHeader>
-      <CardContent className="flex-1 pb-0">
-        <ChartContainer config={chartConfig} className="mx-auto aspect-square max-h-[300px]">
+      <CardContent className="flex-1 pb-4 flex flex-col justify-center min-h-[300px]">
+        <ChartContainer config={chartConfig} className="mx-auto aspect-square w-full max-h-[260px]">
           <PieChart>
             <ChartTooltip content={<ChartTooltipContent hideLabel />} />
             <Pie
               data={chartData}
               dataKey="count"
               nameKey="role"
-              innerRadius={60}
+              innerRadius={65}
+              outerRadius={85}
+              strokeWidth={2}
+              stroke="hsl(var(--card))"
             />
-            <Legend />
+            <Legend verticalAlign="bottom" height={36} />
           </PieChart>
         </ChartContainer>
       </CardContent>
