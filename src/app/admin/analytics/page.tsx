@@ -15,7 +15,7 @@ import {DeviceBrowserSection} from "./_components/DeviceBrowserSection";
 import {PopularTemplatesSection} from "./_components/PopularTemplatesSection";
 import {RecentDownloadsSection} from "./_components/RecentDownloadsSection";
 
-export default async function AnalyticsPage() {
+export default function AnalyticsPage() {
   return (
     <div className="space-y-6">
       <div>
@@ -26,7 +26,7 @@ export default async function AnalyticsPage() {
       </div>
 
       <Suspense fallback={<AnalyticsPageSkeleton />}>
-        <AnalyticsContentWrapper />
+        <AnalyticsPageContent />
       </Suspense>
     </div>
   );
@@ -34,7 +34,7 @@ export default async function AnalyticsPage() {
 
 function AnalyticsPageSkeleton() {
   return (
-    <div className="space-y-6">
+    <div className="space-y-6 animate-pulse">
       <SummarySkeleton />
       <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
         <BarChartSkeleton />
@@ -52,13 +52,21 @@ function AnalyticsPageSkeleton() {
   );
 }
 
-async function AnalyticsContentWrapper() {
+async function AnalyticsPageContent() {
   const session = await auth.api.getSession({
     headers: await headers(),
   });
 
-  if (session?.user?.role !== "superadmin") {
-    redirect("/admin");
+  if (!session?.user) {
+    redirect("/login");
+  }
+
+  if (session.user.role !== "admin" && session.user.role !== "superadmin") {
+    redirect("/dashboard");
+  }
+
+  if (session.user.role !== "superadmin") {
+    redirect("/admin/users");
   }
 
   return (

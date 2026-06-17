@@ -4,13 +4,12 @@ import Link from "next/link";
 import {usePathname} from "next/navigation";
 import {cn} from "@/lib/utils";
 import {Users, Layers, Activity} from "lucide-react";
+import {authClient} from "@/lib/auth-client";
 
-interface Props {
-  isSuperadmin: boolean;
-}
-
-export function SidebarNav({isSuperadmin}: Props) {
+export function SidebarNav() {
   const pathname = usePathname();
+  const {data: session} = authClient.useSession();
+  const isSuperadmin = session?.user?.role === "superadmin";
 
   // Helper to determine if link is active
   const isActive = (href: string) => {

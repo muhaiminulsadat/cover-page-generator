@@ -1,27 +1,10 @@
-import {auth} from "@/lib/auth";
-import {headers} from "next/headers";
-import {redirect} from "next/navigation";
 import {SidebarNav} from "./_components/SidebarNav";
 
 interface Props {
   children: React.ReactNode;
 }
 
-export default async function AdminLayout({children}: Props) {
-  const session = await auth.api.getSession({
-    headers: await headers(),
-  });
-
-  if (!session?.user) {
-    redirect("/login");
-  }
-
-  if (session.user.role !== "admin" && session.user.role !== "superadmin") {
-    redirect("/dashboard");
-  }
-
-  const isSuperadmin = session.user.role === "superadmin";
-
+export default function AdminLayout({children}: Props) {
   return (
     <div className="flex min-h-[calc(100vh-4rem)] flex-col md:flex-row w-full max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 gap-8 py-6">
       <aside className="w-full md:w-64 shrink-0">
@@ -31,7 +14,7 @@ export default async function AdminLayout({children}: Props) {
               Admin Portal
             </h2>
           </div>
-          <SidebarNav isSuperadmin={isSuperadmin} />
+          <SidebarNav />
         </div>
       </aside>
       <main className="flex-1 min-w-0 bg-background/40">

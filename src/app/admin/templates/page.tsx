@@ -25,10 +25,7 @@ interface PageProps {
   searchParams: Promise<{page?: string}>;
 }
 
-export default async function AdminTemplatesPage({searchParams}: PageProps) {
-  const params = await searchParams;
-  const page = Number(params.page) || 1;
-
+export default function AdminTemplatesPage({searchParams}: PageProps) {
   return (
     <div className="space-y-6">
       <div>
@@ -39,20 +36,31 @@ export default async function AdminTemplatesPage({searchParams}: PageProps) {
       </div>
 
       <Suspense fallback={<TemplatesTableSkeleton />}>
-        <AdminTemplatesTableWrapper page={page} />
+        <TemplatesPageContent searchParams={searchParams} />
       </Suspense>
     </div>
   );
 }
 
-async function AdminTemplatesTableWrapper({page}: {page: number}) {
+async function TemplatesPageContent({searchParams}: PageProps) {
   const session = await auth.api.getSession({
     headers: await headers(),
   });
 
-  if (session?.user?.role !== "superadmin") {
-    redirect("/admin");
+  if (!session?.user) {
+    redirect("/login");
   }
+
+  if (session.user.role !== "admin" && session.user.role !== "superadmin") {
+    redirect("/dashboard");
+  }
+
+  if (session.user.role !== "superadmin") {
+    redirect("/admin/users");
+  }
+
+  const params = await searchParams;
+  const page = Number(params.page) || 1;
 
   return <AdminTemplatesTable page={page} />;
 }
@@ -73,7 +81,68 @@ async function AdminTemplatesTable({
 
   return (
     <div className="space-y-4">
-      <div className="rounded-xl border bg-card/60 backdrop-blur-md overflow-hidden border-border/50 shadow-xs">
+      {/* Mobile Card View (md:hidden) */}
+      <div className="md:hidden space-y-3">
+        {templates.map((row) => (
+          <div key={row.template.id} className="rounded-xl border bg-card/60 backdrop-blur-md p-4 border-border/50 shadow-xs flex flex-col gap-3 animate-fade-in-up">
+            <div className="flex flex-col">
+              <span className="font-semibold text-sm text-foreground">
+                {row.template.courseNumber} - {row.template.courseTitle}
+              </span>
+              <div className="flex gap-1.5 mt-1.5">
+                <Badge variant="secondary" className="text-[10px] py-0.5 px-2 bg-muted/60 text-muted-foreground">
+                  {row.template.sessionTerm}
+                </Badge>
+                {row.template.departmentTarget && (
+                  <Badge variant="outline" className="text-[10px] py-0.5 px-2 bg-primary/5 text-primary/80 border-primary/10">
+                    {row.template.departmentTarget}
+                  </Badge>
+                )}
+              </div>
+            </div>
+            
+            <div className="flex items-center justify-between border-t border-border/40 pt-2.5">
+              {row.creator ? (
+                <div className="flex items-center gap-2">
+                  <Avatar className="h-6 w-6 border border-border/60">
+                    <AvatarImage src={row.creator.image || ""} />
+                    <AvatarFallback className={cn("font-semibold border text-[10px]", getAvatarBgColor(row.creator.name))}>
+                      {row.creator.name.substring(0, 2).toUpperCase()}
+                    </AvatarFallback>
+                  </Avatar>
+                  <div className="flex flex-col min-w-0">
+                    <span className="text-xs font-semibold text-foreground truncate">{row.creator.name}</span>
+                    <span className="text-[10px] text-muted-foreground capitalize truncate">{row.creator.role}</span>
+                  </div>
+                </div>
+              ) : (
+                <span className="text-muted-foreground text-xs font-medium">Unknown</span>
+              )}
+              
+              <div className="flex items-center gap-2">
+                <Button 
+                  variant="outline" 
+                  size="sm" 
+                  asChild 
+                  className="h-8.5 rounded-lg border-border/60 transition-all duration-150 active:scale-[0.97] cursor-pointer"
+                >
+                  <Link href={`/templates/${row.template.id}`}>View</Link>
+                </Button>
+                <DeleteTemplateDialog templateId={row.template.id} courseNumber={row.template.courseNumber} />
+              </div>
+            </div>
+          </div>
+        ))}
+        {templates.length === 0 && (
+          <div className="rounded-xl border bg-card/60 backdrop-blur-md p-8 text-center text-muted-foreground border-border/50 shadow-xs">
+            <p className="font-medium">No templates found</p>
+            <p className="text-xs mt-1">User created templates will appear here.</p>
+          </div>
+        )}
+      </div>
+
+      {/* Desktop Table View (hidden md:block) */}
+      <div className="hidden md:block rounded-xl border bg-card/60 backdrop-blur-md overflow-hidden border-border/50 shadow-xs">
         <Table>
           <TableHeader>
             <TableRow className="hover:bg-transparent">

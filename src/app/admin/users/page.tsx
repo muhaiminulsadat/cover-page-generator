@@ -3,6 +3,7 @@ import {cn, getAvatarBgColor} from "@/lib/utils";
 import {getPaginatedUsers} from "@/lib/queries/admin";
 import {auth} from "@/lib/auth";
 import {headers} from "next/headers";
+import {redirect} from "next/navigation";
 import {
   Table,
   TableBody,
@@ -52,11 +53,7 @@ function getRoleBadge(role: string) {
   }
 }
 
-export default async function AdminUsersPage({searchParams}: PageProps) {
-  const params = await searchParams;
-  const page = Number(params.page) || 1;
-  const search = params.search || "";
-
+export default function AdminUsersPage({searchParams}: PageProps) {
   return (
     <div className="space-y-6">
       <div className="flex flex-col md:flex-row md:items-center justify-between gap-4">
@@ -70,30 +67,34 @@ export default async function AdminUsersPage({searchParams}: PageProps) {
       </div>
 
       <Suspense fallback={<UsersTableSkeleton />}>
-        <UsersTableWrapper 
-          page={page}
-          search={search}
-        />
+        <UsersPageContent searchParams={searchParams} />
       </Suspense>
     </div>
   );
 }
 
-async function UsersTableWrapper({
-  page,
-  search,
-}: {
-  page: number;
-  search: string;
-}) {
+async function UsersPageContent({searchParams}: PageProps) {
+  const params = await searchParams;
+  const page = Number(params.page) || 1;
+  const search = params.search || "";
+
   const session = await auth.api.getSession({
     headers: await headers(),
   });
+
+  if (!session?.user) {
+    redirect("/login");
+  }
+
+  if (session.user.role !== "admin" && session.user.role !== "superadmin") {
+    redirect("/dashboard");
+  }
+
   const currentUserId = session?.user?.id || "";
   const isSuperadmin = session?.user?.role === "superadmin";
 
   return (
-    <UsersTable
+    <UsersTable 
       page={page}
       search={search}
       currentUserId={currentUserId}
@@ -124,7 +125,51 @@ async function UsersTable({
 
   return (
     <div className="space-y-4">
-      <div className="rounded-xl border bg-card/60 backdrop-blur-md overflow-hidden border-border/50 shadow-xs">
+      {/* Mobile Card View (md:hidden) */}
+      <div className="md:hidden space-y-3">
+        {users.map((u) => (
+          <div key={u.id} className="rounded-xl border bg-card/60 backdrop-blur-md p-4 border-border/50 shadow-xs flex flex-col gap-3 animate-fade-in-up">
+            <div className="flex items-center gap-3">
+              <Avatar className="h-9 w-9 border border-border/60">
+                <AvatarImage src={u.image || ""} />
+                <AvatarFallback className={cn("font-semibold border text-xs", getAvatarBgColor(u.name))}>
+                  {u.name.substring(0, 2).toUpperCase()}
+                </AvatarFallback>
+              </Avatar>
+              <div className="flex flex-col min-w-0">
+                <span className="font-semibold text-sm text-foreground truncate">{u.name}</span>
+                <span className="text-xs text-muted-foreground truncate">{u.email}</span>
+              </div>
+            </div>
+            <div className="flex items-center justify-between border-t border-border/40 pt-2.5">
+              <div className="flex flex-col gap-0.5">
+                <span className="text-[10px] text-muted-foreground uppercase tracking-wider">Joined</span>
+                <span className="text-xs text-foreground font-medium">
+                  {format(new Date(u.createdAt), "MMM d, yyyy")}
+                </span>
+              </div>
+              <div className="flex flex-col gap-0.5 items-end">
+                <span className="text-[10px] text-muted-foreground uppercase tracking-wider mb-0.5">Role</span>
+                <RoleManager 
+                  userId={u.id} 
+                  currentRole={u.role} 
+                  isSelf={u.id === currentUserId}
+                  isSuperadmin={isSuperadmin}
+                />
+              </div>
+            </div>
+          </div>
+        ))}
+        {users.length === 0 && (
+          <div className="rounded-xl border bg-card/60 backdrop-blur-md p-8 text-center text-muted-foreground border-border/50 shadow-xs">
+            <p className="font-medium">No users found</p>
+            <p className="text-xs mt-1">Try refining your search terms.</p>
+          </div>
+        )}
+      </div>
+
+      {/* Desktop Table View (hidden md:block) */}
+      <div className="hidden md:block rounded-xl border bg-card/60 backdrop-blur-md overflow-hidden border-border/50 shadow-xs">
         <Table>
           <TableHeader>
             <TableRow className="hover:bg-transparent">
