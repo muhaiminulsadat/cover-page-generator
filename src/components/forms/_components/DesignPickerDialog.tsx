@@ -57,29 +57,29 @@ export function DesignPickerDialog({
 
   return (
     <div className="space-y-3">
-      <Card className="border">
-        <CardContent className="p-4">
-          <div className="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
-            <div className="flex items-center gap-3 min-w-0">
-              <div className="relative h-16 w-28 shrink-0 overflow-hidden rounded border border-border bg-muted">
+      <Card className="border border-border/80 py-0 gap-0 shadow-xs hover:border-primary/40 hover:shadow-sm transition-all duration-200 rounded-xl">
+        <CardContent className="p-4 sm:p-5">
+          <div className="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
+            <div className="flex items-center gap-4 min-w-0">
+              <div className="relative h-16 w-28 shrink-0 overflow-hidden rounded-lg border border-border/60 bg-muted">
                 <Image
                   src={selectedDesign.previewImage}
                   alt={`${selectedDesign.label} preview`}
                   fill
                   sizes="112px"
-                  className="object-cover"
+                  className="object-cover transition-transform duration-300 hover:scale-105"
                 />
               </div>
               <div className="min-w-0">
-                <p className="text-xs text-muted-foreground">Selected design</p>
-                <p className="text-sm font-medium truncate">
+                <p className="text-[10px] font-mono uppercase tracking-wider text-muted-foreground/80">Selected design</p>
+                <p className="text-sm font-semibold truncate text-foreground font-heading">
                   {selectedDesign.label}
                 </p>
               </div>
             </div>
             <Dialog open={open} onOpenChange={setOpen}>
               <DialogTrigger asChild>
-                <Button type="button" variant="outline" disabled={disabled}>
+                <Button type="button" variant="outline" size="sm" disabled={disabled} className="font-semibold shadow-xs hover:border-primary/50 transition-colors">
                   {buttonText}
                 </Button>
               </DialogTrigger>

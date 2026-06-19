@@ -116,6 +116,11 @@ export async function insertTemplate(data: typeof templates.$inferInsert) {
 }
 
 export async function getTemplateById(id: string) {
+  "use cache: remote";
+  const {cacheLife, cacheTag} = await import("next/cache");
+  cacheLife("minutes");
+  cacheTag(`template-${id}`);
+
   try {
     const columns = selectTemplateColumns();
     const rows = await db

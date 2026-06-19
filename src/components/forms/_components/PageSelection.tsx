@@ -39,10 +39,10 @@ function SelectionCard<TFieldValues extends FieldValues>({
       type="button"
       onClick={() => !disabled && onChange(!value)}
       className={cn(
-        "relative flex cursor-pointer text-left flex-col gap-3 rounded-xl border-2 p-4 transition-all duration-200 hover:border-primary/50 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2",
+        "relative flex cursor-pointer text-left flex-col gap-3 rounded-xl border-2 p-4 transition-all duration-150 active:scale-[0.98] ease-out hover:border-primary/50 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2",
         value
-          ? "border-primary bg-primary/5 shadow-sm"
-          : "border-muted bg-transparent opacity-70 grayscale-[0.5]",
+          ? "border-primary bg-primary/5 shadow-sm scale-[1.01]"
+          : "border-muted bg-transparent opacity-70 grayscale-[0.5] hover:opacity-100 hover:grayscale-0",
         disabled && "pointer-events-none opacity-50",
       )}
     >

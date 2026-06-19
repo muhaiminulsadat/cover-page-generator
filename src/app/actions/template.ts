@@ -75,6 +75,7 @@ export const editTemplateAction = authActionClient
       revalidatePath("/templates");
 
       const {updateTag, refresh} = await import("next/cache");
+      updateTag(`template-${id}`);
       if (updatedTemplate.departmentTarget && updatedTemplate.levelTarget) {
         updateTag(`templates-${updatedTemplate.departmentTarget}-${updatedTemplate.levelTarget}`);
       } else {
@@ -112,6 +113,7 @@ export const deleteTemplateAction = authActionClient
       revalidatePath(`/templates/${id}`);
 
       const {updateTag, refresh} = await import("next/cache");
+      updateTag(`template-${id}`);
       if (deletedTemplate.departmentTarget && deletedTemplate.levelTarget) {
         updateTag(`templates-${deletedTemplate.departmentTarget}-${deletedTemplate.levelTarget}`);
       } else {

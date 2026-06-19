@@ -45,19 +45,16 @@ export function DesignCardSelector({
             onKeyDown={(e) => handleKeyDown(e, index)}
             disabled={disabled}
             className={cn(
-              "relative text-left",
-              "focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2",
-              "transition-colors duration-200",
+              "relative text-left w-full transition-all active:scale-[0.98] duration-150 ease-out focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2",
               disabled && "cursor-not-allowed opacity-50",
-              !disabled && "hover:shadow-sm",
             )}
           >
             <Card
               className={cn(
-                "cursor-pointer border-2 transition-colors duration-200",
+                "cursor-pointer border-2 py-0 gap-0 transition-all duration-200 rounded-xl",
                 value === design.value
-                  ? "border-primary bg-primary/5 shadow-sm"
-                  : "border-border hover:border-muted-foreground/50",
+                  ? "border-primary bg-primary/5 shadow-md scale-[1.01]"
+                  : "border-border hover:border-primary/45 hover:shadow-xs",
               )}
             >
               <CardContent className="p-4 sm:p-5">

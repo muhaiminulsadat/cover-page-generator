@@ -126,13 +126,15 @@ export function EditTemplateForm({template}: {template: EditTemplateInput}) {
   }
 
   return (
-    <Card className="w-full max-w-2xl mx-auto">
-      <CardHeader>
-        <CardTitle>Edit Top Sheet Template</CardTitle>
-        <CardDescription>Update your template settings.</CardDescription>
+    <Card className="w-full max-w-2xl mx-auto border border-border/85 shadow-md md:shadow-lg bg-card/70 backdrop-blur-md rounded-2xl py-0 gap-0">
+      <CardHeader className="space-y-1.5 p-6 sm:p-8 pb-5 border-b border-border/50">
+        <CardTitle className="text-xl sm:text-2xl font-bold tracking-tight text-foreground font-heading">Edit Top Sheet Template</CardTitle>
+        <CardDescription className="text-xs sm:text-sm text-muted-foreground">
+          Update custom academic lab cover page and top sheet template settings.
+        </CardDescription>
       </CardHeader>
-      <CardContent>
-        <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-6">
+      <CardContent className="p-6 sm:p-8 pt-6">
+        <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-8">
           <div className="space-y-2">
             <Label htmlFor="designId">Top Sheet Design</Label>
             <DesignPickerDialog
@@ -168,9 +170,12 @@ export function EditTemplateForm({template}: {template: EditTemplateInput}) {
             </p>
           )}
 
-          <div className="space-y-4">
-            <h3 className="font-medium text-lg">Course Details</h3>
-            <div className="grid grid-cols-2 gap-4">
+          <div className="space-y-6 pt-6 border-t border-border/40">
+            <div className="space-y-1">
+              <h3 className="text-sm font-mono uppercase tracking-wider text-primary font-semibold">Course Details</h3>
+              <p className="text-xs text-muted-foreground">Specify the course code, title, and session term.</p>
+            </div>
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
               <div className="space-y-2">
                 <Label htmlFor="courseNumber">
                   Course Number (e.g. CE 332)
@@ -205,11 +210,12 @@ export function EditTemplateForm({template}: {template: EditTemplateInput}) {
             </div>
           </div>
 
-          <div className="space-y-4">
-            <h3 className="font-medium text-lg">
-              Target Audience (Optional metadata for discoverability)
-            </h3>
-            <div className="grid grid-cols-2 gap-4">
+          <div className="space-y-6 pt-6 border-t border-border/40">
+            <div className="space-y-1">
+              <h3 className="text-sm font-mono uppercase tracking-wider text-primary font-semibold">Target Audience</h3>
+              <p className="text-xs text-muted-foreground">Optional metadata for class searchability and discoverability.</p>
+            </div>
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
               <div className="space-y-2">
                 <Label htmlFor="departmentTarget">Department</Label>
                 <div className="relative">
@@ -381,47 +387,52 @@ export function EditTemplateForm({template}: {template: EditTemplateInput}) {
             </div>
           </div>
 
-          <div className="space-y-4">
-            <h3 className="font-medium text-lg">Course Teachers</h3>
-            <div className="grid grid-cols-2 gap-4 border p-4 rounded-md">
-              <div className="space-y-2">
-                <Label htmlFor="teacher1Name">Teacher 1 Name</Label>
-                <Input id="teacher1Name" {...form.register("teacher1Name")} />
-                {form.formState.errors.teacher1Name && (
-                  <p className="text-sm text-destructive">
-                    {form.formState.errors.teacher1Name.message}
-                  </p>
-                )}
-              </div>
-              <div className="space-y-2">
-                <Label htmlFor="teacher1Designation">
-                  Teacher 1 Designation
-                </Label>
-                <Input
-                  id="teacher1Designation"
-                  {...form.register("teacher1Designation")}
-                />
-                {form.formState.errors.teacher1Designation && (
-                  <p className="text-sm text-destructive">
-                    {form.formState.errors.teacher1Designation.message}
-                  </p>
-                )}
-              </div>
+          <div className="space-y-6 pt-6 border-t border-border/40">
+            <div className="space-y-1">
+              <h3 className="text-sm font-mono uppercase tracking-wider text-primary font-semibold">Course Instructors</h3>
+              <p className="text-xs text-muted-foreground">Add details of the course evaluators.</p>
             </div>
-
-            <div className="grid grid-cols-2 gap-4 border p-4 rounded-md">
-              <div className="space-y-2">
-                <Label htmlFor="teacher2Name">Teacher 2 Name (Optional)</Label>
-                <Input id="teacher2Name" {...form.register("teacher2Name")} />
+            <div className="space-y-4">
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 border border-border/60 bg-muted/15 p-4 rounded-xl shadow-xs transition-colors hover:border-border/80">
+                <div className="space-y-2">
+                  <Label htmlFor="teacher1Name">Teacher 1 Name</Label>
+                  <Input id="teacher1Name" {...form.register("teacher1Name")} />
+                  {form.formState.errors.teacher1Name && (
+                    <p className="text-sm text-destructive">
+                      {form.formState.errors.teacher1Name.message}
+                    </p>
+                  )}
+                </div>
+                <div className="space-y-2">
+                  <Label htmlFor="teacher1Designation">
+                    Teacher 1 Designation
+                  </Label>
+                  <Input
+                    id="teacher1Designation"
+                    {...form.register("teacher1Designation")}
+                  />
+                  {form.formState.errors.teacher1Designation && (
+                    <p className="text-sm text-destructive">
+                      {form.formState.errors.teacher1Designation.message}
+                    </p>
+                  )}
+                </div>
               </div>
-              <div className="space-y-2">
-                <Label htmlFor="teacher2Designation">
-                  Teacher 2 Designation (Optional)
-                </Label>
-                <Input
-                  id="teacher2Designation"
-                  {...form.register("teacher2Designation")}
-                />
+
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 border border-border/60 bg-muted/15 p-4 rounded-xl shadow-xs transition-colors hover:border-border/80">
+                <div className="space-y-2">
+                  <Label htmlFor="teacher2Name">Teacher 2 Name (Optional)</Label>
+                  <Input id="teacher2Name" {...form.register("teacher2Name")} />
+                </div>
+                <div className="space-y-2">
+                  <Label htmlFor="teacher2Designation">
+                    Teacher 2 Designation (Optional)
+                  </Label>
+                  <Input
+                    id="teacher2Designation"
+                    {...form.register("teacher2Designation")}
+                  />
+                </div>
               </div>
             </div>
           </div>
