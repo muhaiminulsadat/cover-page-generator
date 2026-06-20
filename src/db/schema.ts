@@ -93,6 +93,7 @@ export const templates = t.pgTable("templates", {
   includeTopPage: t.boolean("include_top_page").notNull().default(true),
   includeCoverPage: t.boolean("include_cover_page").notNull().default(true),
   includeIndexPage: t.boolean("include_index_page").notNull().default(true),
+  dividedIntoGroups: t.boolean("divided_into_groups").notNull().default(false),
   experimentNames: t.text("experiment_names").array().notNull().default(sql`'{}'::text[]`),
   createdAt: t.timestamp("created_at").notNull().defaultNow(),
   updatedAt: t.timestamp("updated_at").notNull().defaultNow(),

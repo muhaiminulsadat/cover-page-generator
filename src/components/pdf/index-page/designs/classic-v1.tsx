@@ -131,7 +131,6 @@ export function renderClassicV1IndexPage(ctx: IndexPageRenderContext) {
   const {template, user} = ctx;
   const studentId = user.studentId?.trim() || "-";
   const section = user.section?.trim() || "-";
-  const groupNo = "";
 
   const experimentNames = template.experimentNames || [];
   const totalRows = Math.max(12, experimentNames.length);
@@ -145,11 +144,19 @@ export function renderClassicV1IndexPage(ctx: IndexPageRenderContext) {
       <View style={styles.headerWrap}>
         <Text style={styles.courseNumber}>{template.courseNumber}</Text>
         <Text style={styles.courseTitle}>{template.courseTitle}</Text>
-        <Text style={styles.studentId}>Student ID: {studentId}</Text>
-        <View style={styles.infoRow}>
-          <Text style={styles.infoText}>Section: {section.toUpperCase()}</Text>
-          <Text style={styles.infoText}>Group: {groupNo}</Text>
-        </View>
+        {template.dividedIntoGroups ? (
+          <>
+            <Text style={styles.studentId}>Student ID: {studentId}</Text>
+            <View style={styles.infoRow}>
+              <Text style={styles.infoText}>Section: {section.toUpperCase()}</Text>
+              <Text style={styles.infoText}>Group: </Text>
+            </View>
+          </>
+        ) : (
+          <Text style={styles.studentId}>
+            Student ID: {studentId}    |    Section: {section.toUpperCase()}
+          </Text>
+        )}
       </View>
 
       <View style={styles.table}>

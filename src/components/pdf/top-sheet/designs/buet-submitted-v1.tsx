@@ -28,8 +28,8 @@ const styles = StyleSheet.create({
   page: {
     flexDirection: "column",
     backgroundColor: "#FFFFFF",
-    paddingTop: 65,
-    paddingBottom: 65,
+    paddingTop: 60,
+    paddingBottom: 60,
     paddingLeft: 60,
     paddingRight: 60,
     fontFamily: "Times-Roman",
@@ -39,9 +39,9 @@ const styles = StyleSheet.create({
     width: "100%",
   },
   logo: {
-    width: 110,
-    height: 110,
-    marginBottom: 22,
+    width: 105,
+    height: 105,
+    marginBottom: 18,
   },
   universityName: {
     fontSize: 20,
@@ -55,13 +55,13 @@ const styles = StyleSheet.create({
     width: "100%",
   },
   courseNumber: {
-    fontSize: 18,
+    fontSize: 19,
     fontFamily: "Times-Bold",
     textAlign: "center",
     marginBottom: 6,
   },
   courseTitle: {
-    fontSize: 21,
+    fontSize: 23,
     fontFamily: "Times-Bold",
     textAlign: "center",
     lineHeight: 1.3,
@@ -76,7 +76,7 @@ const styles = StyleSheet.create({
     width: "100%",
   },
   blockTitleText: {
-    fontSize: 14,
+    fontSize: 16,
     fontFamily: "Times-Bold",
     borderBottomWidth: 1,
     borderBottomColor: "#000000",
@@ -84,31 +84,15 @@ const styles = StyleSheet.create({
     letterSpacing: 0.75,
   },
   studentBox: {
-    width: 330,
-    alignSelf: "center",
-    gap: 8,
+    width: "100%",
+    alignItems: "center",
+    gap: 6,
   },
-  studentRow: {
-    flexDirection: "row",
-    alignItems: "flex-start",
-  },
-  studentLabel: {
-    width: 110,
-    fontSize: 14,
-    fontFamily: "Times-Bold",
-  },
-  studentValue: {
-    flex: 1,
-    fontSize: 14,
+  studentLine: {
+    fontSize: 15,
     fontFamily: "Times-Roman",
-    lineHeight: 1.25,
-  },
-  studentValuePlaceholder: {
-    flex: 1,
-    borderBottomWidth: 0.5,
-    borderBottomColor: "#000000",
-    borderBottomStyle: "solid",
-    height: 14,
+    textAlign: "center",
+    lineHeight: 1.3,
   },
   submittedToSection: {
     width: "100%",
@@ -125,17 +109,17 @@ const styles = StyleSheet.create({
     gap: 4,
   },
   teacherName: {
-    fontSize: 14,
+    fontSize: 15,
     fontFamily: "Times-Bold",
     lineHeight: 1.25,
   },
   teacherDesignation: {
-    fontSize: 13,
+    fontSize: 13.5,
     fontFamily: "Times-Roman",
     lineHeight: 1.3,
   },
   teacherDept: {
-    fontSize: 13,
+    fontSize: 13.5,
     fontFamily: "Times-Roman",
     lineHeight: 1.3,
   },
@@ -151,31 +135,31 @@ const styles = StyleSheet.create({
     gap: 4,
   },
   singleTeacherName: {
-    fontSize: 14,
+    fontSize: 15,
     fontFamily: "Times-Bold",
     lineHeight: 1.25,
     textAlign: "center",
   },
   singleTeacherDesignation: {
-    fontSize: 13,
+    fontSize: 13.5,
     fontFamily: "Times-Roman",
     lineHeight: 1.3,
     textAlign: "center",
   },
   singleTeacherDept: {
-    fontSize: 13,
+    fontSize: 13.5,
     fontFamily: "Times-Roman",
     lineHeight: 1.3,
     textAlign: "center",
   },
   spacerTop: {
-    flex: 1.2,
+    flex: 1.4,
   },
   spacerMiddle: {
-    flex: 1,
+    flex: 1.0,
   },
   spacerBottom: {
-    flex: 1.4,
+    flex: 1.5,
   },
 });
 
@@ -184,9 +168,7 @@ export function renderBuetSubmittedV1TopSheet(ctx: TopSheetRenderContext) {
 
   const departmentLabel = getDepartmentLabel(user.department);
   const departmentLine =
-    departmentLabel && departmentLabel !== "-"
-      ? departmentLabel
-      : "";
+    departmentLabel && departmentLabel !== "-" ? departmentLabel : "";
 
   const normalizedDept = user.department
     ? normalizeDepartmentCode(user.department)
@@ -195,27 +177,27 @@ export function renderBuetSubmittedV1TopSheet(ctx: TopSheetRenderContext) {
     DEPT_ACRONYM[normalizedDept as keyof typeof DEPT_ACRONYM] || "CE";
   const teacherDeptLine = `Department of ${deptAcronym}, BUET`;
 
-  const levelText = user.level ? `Level-${user.level}` : "";
-  const termText = user.term ? `Term-${user.term}` : "";
+  const levelText = user.level ? `Level - ${user.level}` : "";
+  const termText = user.term ? `Term - ${user.term}` : "";
   const levelTermValue =
     user.level && user.term
-      ? `${levelText}, ${termText}`
+      ? `${levelText} / ${termText}`
       : levelText || termText || "";
 
   const hasDeptInfo1 = template.teacher1Designation
-    ? (template.teacher1Designation.toLowerCase().includes("department") ||
-       template.teacher1Designation.toLowerCase().includes("dept") ||
-       template.teacher1Designation.toLowerCase().includes("ce") ||
-       template.teacher1Designation.toLowerCase().includes("civil"))
+    ? template.teacher1Designation.toLowerCase().includes("department") ||
+      template.teacher1Designation.toLowerCase().includes("dept") ||
+      template.teacher1Designation.toLowerCase().includes("ce") ||
+      template.teacher1Designation.toLowerCase().includes("civil")
     : false;
 
   const showTeacherDept1 = Boolean(template.teacher1Name) && !hasDeptInfo1;
 
   const hasDeptInfo2 = template.teacher2Designation
-    ? (template.teacher2Designation.toLowerCase().includes("department") ||
-       template.teacher2Designation.toLowerCase().includes("dept") ||
-       template.teacher2Designation.toLowerCase().includes("ce") ||
-       template.teacher2Designation.toLowerCase().includes("civil"))
+    ? template.teacher2Designation.toLowerCase().includes("department") ||
+      template.teacher2Designation.toLowerCase().includes("dept") ||
+      template.teacher2Designation.toLowerCase().includes("ce") ||
+      template.teacher2Designation.toLowerCase().includes("civil")
     : false;
 
   const showTeacherDept2 = Boolean(template.teacher2Name) && !hasDeptInfo2;
@@ -241,46 +223,18 @@ export function renderBuetSubmittedV1TopSheet(ctx: TopSheetRenderContext) {
           <Text style={styles.blockTitleText}>SUBMITTED BY:</Text>
         </View>
         <View style={styles.studentBox}>
-          <View style={styles.studentRow}>
-            <Text style={styles.studentLabel}>Name:</Text>
-            {user.name ? (
-              <Text style={styles.studentValue}>{user.name}</Text>
-            ) : (
-              <View style={styles.studentValuePlaceholder} />
-            )}
-          </View>
-          <View style={styles.studentRow}>
-            <Text style={styles.studentLabel}>Student ID:</Text>
-            {user.studentId ? (
-              <Text style={styles.studentValue}>{user.studentId}</Text>
-            ) : (
-              <View style={styles.studentValuePlaceholder} />
-            )}
-          </View>
-          <View style={styles.studentRow}>
-            <Text style={styles.studentLabel}>Level / Term:</Text>
-            {levelTermValue ? (
-              <Text style={styles.studentValue}>{levelTermValue}</Text>
-            ) : (
-              <View style={styles.studentValuePlaceholder} />
-            )}
-          </View>
-          <View style={styles.studentRow}>
-            <Text style={styles.studentLabel}>Section:</Text>
-            {user.section ? (
-              <Text style={styles.studentValue}>{user.section.toUpperCase()}</Text>
-            ) : (
-              <View style={styles.studentValuePlaceholder} />
-            )}
-          </View>
-          <View style={styles.studentRow}>
-            <Text style={styles.studentLabel}>Department:</Text>
-            {departmentLine ? (
-              <Text style={styles.studentValue}>{departmentLine}</Text>
-            ) : (
-              <View style={styles.studentValuePlaceholder} />
-            )}
-          </View>
+          <Text style={styles.studentLine}>Name: {user.name || ""}</Text>
+          <Text style={styles.studentLine}>
+            Student ID: {user.studentId || ""}
+          </Text>
+          <Text style={styles.studentLine}>
+            Section: {user.section?.toUpperCase() || ""}
+          </Text>
+          {template.dividedIntoGroups && (
+            <Text style={styles.studentLine}>Group No: </Text>
+          )}
+          <Text style={styles.studentLine}>{levelTermValue}</Text>
+          <Text style={styles.studentLine}>{departmentLine}</Text>
         </View>
       </View>
 

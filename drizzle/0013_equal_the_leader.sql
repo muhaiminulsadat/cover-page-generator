@@ -1,0 +1,1 @@
+ALTER TABLE "templates" ADD COLUMN "divided_into_groups" boolean DEFAULT false NOT NULL;

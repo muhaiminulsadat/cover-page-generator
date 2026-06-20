@@ -24,6 +24,7 @@ interface TemplateQueryRow {
   includeTopPage: boolean;
   includeCoverPage: boolean;
   includeIndexPage: boolean;
+  dividedIntoGroups: boolean;
   experimentNames: string[];
   createdAt: Date;
   updatedAt: Date;
@@ -50,6 +51,7 @@ interface TemplateSelectRow {
   includeTopPage: boolean;
   includeCoverPage: boolean;
   includeIndexPage: boolean;
+  dividedIntoGroups?: boolean;
   experimentNames?: string[];
   createdAt: Date;
   updatedAt: Date;
@@ -75,6 +77,7 @@ const templateColumnsWithoutCover = {
   includeTopPage: templates.includeTopPage,
   includeCoverPage: templates.includeCoverPage,
   includeIndexPage: templates.includeIndexPage,
+  dividedIntoGroups: templates.dividedIntoGroups,
   experimentNames: templates.experimentNames,
   createdAt: templates.createdAt,
   updatedAt: templates.updatedAt,
@@ -89,6 +92,7 @@ function hydrateTemplateRow(row: TemplateSelectRow): TemplateQueryRow {
   return {
     ...row,
     coverDesignId: row.coverDesignId || DEFAULT_COVER_PAGE_DESIGN,
+    dividedIntoGroups: row.dividedIntoGroups ?? false,
     experimentNames: row.experimentNames || [],
   };
 }

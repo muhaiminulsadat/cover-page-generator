@@ -1,7 +1,8 @@
 "use client";
 
-import {useForm, useWatch, Resolver} from "react-hook-form";
+import {useForm, useWatch, Resolver, Controller} from "react-hook-form";
 import {zodResolver} from "@hookform/resolvers/zod";
+import {Checkbox} from "@/components/ui/checkbox";
 import {
   editTemplateSchema,
   EditTemplateInput,
@@ -71,6 +72,7 @@ export function EditTemplateForm({template}: {template: EditTemplateInput}) {
       includeTopPage: template.includeTopPage ?? true,
       includeCoverPage: template.includeCoverPage ?? true,
       includeIndexPage: template.includeIndexPage ?? true,
+      dividedIntoGroups: template.dividedIntoGroups ?? false,
       experimentNames: template.experimentNames || [],
     },
   });
@@ -169,6 +171,39 @@ export function EditTemplateForm({template}: {template: EditTemplateInput}) {
               {form.formState.errors.includeTopPage.message}
             </p>
           )}
+
+          <div className="space-y-6 pt-6 border-t border-border/40">
+            <div className="space-y-1">
+              <h3 className="text-sm font-mono uppercase tracking-wider text-primary font-semibold">Lab Settings</h3>
+              <p className="text-xs text-muted-foreground">Configure specific settings for this lab course.</p>
+            </div>
+            
+            <Controller
+              control={form.control}
+              name="dividedIntoGroups"
+              render={({field}) => (
+                <div className="flex items-start space-x-3 space-y-0 rounded-xl border border-border/60 bg-muted/15 p-4 transition-colors hover:border-border/80">
+                  <Checkbox
+                    id="dividedIntoGroups"
+                    checked={field.value}
+                    onCheckedChange={field.onChange}
+                    disabled={isPending}
+                  />
+                  <div className="space-y-1 leading-none">
+                    <Label
+                      htmlFor="dividedIntoGroups"
+                      className="text-sm font-semibold cursor-pointer select-none"
+                    >
+                      Lab is divided into different groups
+                    </Label>
+                    <p className="text-xs text-muted-foreground">
+                      Enable this if students are split into groups (e.g. Group 1, Group 2). This will add the "Group No" field to the generated Top Page and Index Page.
+                    </p>
+                  </div>
+                </div>
+              )}
+            />
+          </div>
 
           <div className="space-y-6 pt-6 border-t border-border/40">
             <div className="space-y-1">

@@ -11,3 +11,8 @@ _Avoid_: Signup completion, registration completion
 **Onboarding Guard**:
 The client-side component that intercepts routing and redirects incomplete profiles to the onboarding page.
 _Avoid_: Profile lock, registration guard
+
+**Group Division**:
+A template configuration setting indicating whether the lab course is split into student groups. When enabled (`dividedIntoGroups: true`), generated Top Sheets and Index Pages render the student's group number.
+_Avoid_: Split lab, has groups, group layout
+

@@ -13,6 +13,7 @@ export interface TopSheetTemplateData {
   includeCoverPage?: boolean;
   includeIndexPage?: boolean;
   experimentNames?: string[];
+  dividedIntoGroups?: boolean;
 }
 
 export interface TopSheetUserData {

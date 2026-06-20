@@ -203,10 +203,12 @@ export function renderClassicV1TopSheet(ctx: TopSheetRenderContext) {
             <Text style={styles.value}>{section}</Text>
           </View>
 
-          <View style={styles.studentLine}>
-            <Text style={styles.label}>Group No: </Text>
-            <Text style={styles.value}></Text>
-          </View>
+          {template.dividedIntoGroups && (
+            <View style={styles.studentLine}>
+              <Text style={styles.label}>Group No: </Text>
+              <Text style={styles.value}></Text>
+            </View>
+          )}
 
           <View style={styles.studentLine}>
             <Text style={styles.label}>

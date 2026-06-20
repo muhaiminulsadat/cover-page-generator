@@ -59,6 +59,7 @@ async function EditTemplate({id}: {id: string}) {
           hscBatchTarget: template.hscBatchTarget ?? undefined,
           teacher2Name: template.teacher2Name ?? undefined,
           teacher2Designation: template.teacher2Designation ?? undefined,
+          dividedIntoGroups: template.dividedIntoGroups ?? false,
         }}
       />
     );
