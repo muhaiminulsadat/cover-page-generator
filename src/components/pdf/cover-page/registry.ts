@@ -2,6 +2,7 @@ import {ReactElement} from "react";
 import {DEFAULT_COVER_PAGE_DESIGN} from "@/lib/constants/cover-designs";
 import {CoverPageRenderContext} from "@/components/pdf/core/types";
 import {renderCoverClassicV1} from "./designs/cover-classic-v1";
+import {renderCoverBanasree} from "./designs/cover-banasree";
 
 interface CoverPageRendererRegistry {
   [designId: string]: (ctx: CoverPageRenderContext) => ReactElement;
@@ -9,6 +10,7 @@ interface CoverPageRendererRegistry {
 
 const coverPageRendererRegistry: CoverPageRendererRegistry = {
   "cover-classic-v1": renderCoverClassicV1,
+  "cover-banasree": renderCoverBanasree,
 };
 
 export function resolveCoverPageDesignId(designId?: string | null): string {

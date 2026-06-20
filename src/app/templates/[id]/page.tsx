@@ -22,16 +22,19 @@ interface PageProps {
   params: Promise<{id: string}>;
 }
 
-export default function TemplatePreviewPage(props: PageProps) {
+export default async function TemplatePreviewPage({
+  params,
+}: PageProps) {
+  const {id} = await params;
+
   return (
     <Suspense fallback={<PreviewSkeleton />}>
-      <TemplatePreview params={props.params} />
+      <TemplatePreview id={id} />
     </Suspense>
   );
 }
 
-async function TemplatePreview({params}: {params: Promise<{id: string}>}) {
-  const {id} = await params;
+async function TemplatePreview({id}: {id: string}) {
   const session = await auth.api.getSession({
     headers: await headers(),
   });

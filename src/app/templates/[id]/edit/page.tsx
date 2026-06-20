@@ -7,22 +7,23 @@ import {TemplateFormSkeleton} from "@/components/forms/TemplateFormSkeleton";
 import {Suspense} from "react";
 import {DEFAULT_COVER_PAGE_DESIGN} from "@/lib/constants/cover-designs";
 
-export default function EditTemplatePage({
+export default async function EditTemplatePage({
   params,
 }: {
   params: Promise<{id: string}>;
 }) {
+  const {id} = await params;
+
   return (
     <div className="flex h-full min-h-screen w-full items-center justify-center p-4 bg-muted/20 py-10">
       <Suspense fallback={<TemplateFormSkeleton isEdit />}>
-        <EditTemplate params={params} />
+        <EditTemplate id={id} />
       </Suspense>
     </div>
   );
 }
 
-async function EditTemplate({params}: {params: Promise<{id: string}>}) {
-  const {id} = await params;
+async function EditTemplate({id}: {id: string}) {
   try {
     const session = await auth.api.getSession({
       headers: await headers(),

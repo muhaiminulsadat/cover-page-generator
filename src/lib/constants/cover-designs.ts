@@ -10,6 +10,11 @@ export const COVER_PAGE_DESIGNS: readonly CoverPageDesign[] = [
     label: "Classic Cover Page",
     previewImage: "/cover-page-previews/cover-classic-v1.svg",
   },
+  {
+    value: "cover-banasree",
+    label: "Banasree",
+    previewImage: "/cover-page-previews/cover-banasree.svg",
+  },
 ];
 
 export const COVER_PAGE_DESIGN_VALUES = COVER_PAGE_DESIGNS.map(
