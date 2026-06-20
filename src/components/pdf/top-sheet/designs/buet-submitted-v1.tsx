@@ -6,99 +6,176 @@ import {
   Image as PDFImage,
 } from "@react-pdf/renderer";
 import {TopSheetRenderContext} from "@/components/pdf/core/types";
-import {getDepartmentLabel} from "@/lib/constants/departments";
+import {
+  getDepartmentLabel,
+  normalizeDepartmentCode,
+} from "@/lib/constants/departments";
+
+const DEPT_ACRONYM: Record<string, string> = {
+  ce: "CE",
+  cse: "CSE",
+  eee: "EEE",
+  me: "ME",
+  ipe: "IPE",
+  arch: "Arch",
+  urp: "URP",
+  wre: "WRE",
+  che: "ChE",
+  bme: "BME",
+};
 
 const styles = StyleSheet.create({
   page: {
     flexDirection: "column",
     backgroundColor: "#FFFFFF",
-    paddingTop: 25,
-    paddingBottom: 35,
-    paddingLeft: 44,
-    paddingRight: 44,
+    paddingTop: 65,
+    paddingBottom: 65,
+    paddingLeft: 60,
+    paddingRight: 60,
     fontFamily: "Times-Roman",
   },
-  pageContent: {
-    flex: 1,
-    justifyContent: "space-evenly",
-  },
-  topGroup: {
-    flex: 1,
+  topContainer: {
     alignItems: "center",
-    justifyContent: "space-evenly",
-  },
-  headerSection: {
-    alignItems: "center",
-    marginBottom: 0,
+    width: "100%",
   },
   logo: {
-    width: 128,
-    height: 128,
-    marginBottom: 18,
+    width: 110,
+    height: 110,
+    marginBottom: 22,
   },
   universityName: {
-    fontSize: 22,
+    fontSize: 20,
     fontFamily: "Times-Bold",
     textAlign: "center",
+    lineHeight: 1.25,
+    width: "100%",
   },
-  courseSection: {
+  courseContainer: {
     alignItems: "center",
-    marginBottom: 0,
+    width: "100%",
   },
   courseNumber: {
     fontSize: 18,
     fontFamily: "Times-Bold",
-    marginBottom: 6,
     textAlign: "center",
+    marginBottom: 6,
   },
   courseTitle: {
-    fontSize: 18,
+    fontSize: 21,
     fontFamily: "Times-Bold",
     textAlign: "center",
+    lineHeight: 1.3,
   },
   submittedBySection: {
-    alignItems: "center",
-    marginBottom: 0,
-  },
-  blockTitle: {
-    fontSize: 18,
-    fontFamily: "Times-Bold",
-    textAlign: "center",
-    marginBottom: 18,
-  },
-  studentLines: {
     width: "100%",
     alignItems: "center",
-    gap: 7,
   },
-  studentLine: {
+  blockTitleContainer: {
+    alignItems: "center",
+    marginBottom: 16,
+    width: "100%",
+  },
+  blockTitleText: {
+    fontSize: 14,
+    fontFamily: "Times-Bold",
+    borderBottomWidth: 1,
+    borderBottomColor: "#000000",
+    paddingBottom: 2,
+    letterSpacing: 0.75,
+  },
+  studentBox: {
+    width: 330,
+    alignSelf: "center",
+    gap: 8,
+  },
+  studentRow: {
+    flexDirection: "row",
+    alignItems: "flex-start",
+  },
+  studentLabel: {
+    width: 110,
+    fontSize: 14,
+    fontFamily: "Times-Bold",
+  },
+  studentValue: {
+    flex: 1,
+    fontSize: 14,
+    fontFamily: "Times-Roman",
+    lineHeight: 1.25,
+  },
+  studentValuePlaceholder: {
+    flex: 1,
+    borderBottomWidth: 0.5,
+    borderBottomColor: "#000000",
+    borderBottomStyle: "solid",
+    height: 14,
+  },
+  submittedToSection: {
+    width: "100%",
+  },
+  teachersRow: {
+    width: "100%",
+    flexDirection: "row",
+    justifyContent: "space-between",
+    gap: 40,
+  },
+  teacherCol: {
+    flex: 1,
+    flexDirection: "column",
+    gap: 4,
+  },
+  teacherName: {
+    fontSize: 14,
+    fontFamily: "Times-Bold",
+    lineHeight: 1.25,
+  },
+  teacherDesignation: {
+    fontSize: 13,
+    fontFamily: "Times-Roman",
+    lineHeight: 1.3,
+  },
+  teacherDept: {
+    fontSize: 13,
+    fontFamily: "Times-Roman",
+    lineHeight: 1.3,
+  },
+  singleTeacherRow: {
     width: "100%",
     flexDirection: "row",
     justifyContent: "center",
   },
-  studentText: {
-    fontSize: 16,
-    fontFamily: "Times-Roman",
+  singleTeacherCol: {
+    width: 260,
+    flexDirection: "column",
+    alignItems: "center",
+    gap: 4,
+  },
+  singleTeacherName: {
+    fontSize: 14,
+    fontFamily: "Times-Bold",
+    lineHeight: 1.25,
     textAlign: "center",
   },
-  submittedToSection: {
-    width: "100%",
-    marginTop: 10,
-  },
-  teachersRow: {
-    marginTop: 14,
-    width: "100%",
-    flexDirection: "row",
-    justifyContent: "space-between",
-    gap: 56,
-  },
-  teacherCol: {
-    flex: 1,
-    gap: 5,
-  },
-  teacherText: {
-    fontSize: 14,
+  singleTeacherDesignation: {
+    fontSize: 13,
     fontFamily: "Times-Roman",
+    lineHeight: 1.3,
+    textAlign: "center",
+  },
+  singleTeacherDept: {
+    fontSize: 13,
+    fontFamily: "Times-Roman",
+    lineHeight: 1.3,
+    textAlign: "center",
+  },
+  spacerTop: {
+    flex: 1.2,
+  },
+  spacerMiddle: {
+    flex: 1,
+  },
+  spacerBottom: {
+    flex: 1.4,
   },
 });
 
@@ -108,72 +185,147 @@ export function renderBuetSubmittedV1TopSheet(ctx: TopSheetRenderContext) {
   const departmentLabel = getDepartmentLabel(user.department);
   const departmentLine =
     departmentLabel && departmentLabel !== "-"
-      ? `Department of ${departmentLabel}`
-      : "Department of Civil Engineering";
+      ? departmentLabel
+      : "";
+
+  const normalizedDept = user.department
+    ? normalizeDepartmentCode(user.department)
+    : "ce";
+  const deptAcronym =
+    DEPT_ACRONYM[normalizedDept as keyof typeof DEPT_ACRONYM] || "CE";
+  const teacherDeptLine = `Department of ${deptAcronym}, BUET`;
+
+  const levelText = user.level ? `Level-${user.level}` : "";
+  const termText = user.term ? `Term-${user.term}` : "";
+  const levelTermValue =
+    user.level && user.term
+      ? `${levelText}, ${termText}`
+      : levelText || termText || "";
+
+  const hasDeptInfo1 = template.teacher1Designation
+    ? (template.teacher1Designation.toLowerCase().includes("department") ||
+       template.teacher1Designation.toLowerCase().includes("dept") ||
+       template.teacher1Designation.toLowerCase().includes("ce") ||
+       template.teacher1Designation.toLowerCase().includes("civil"))
+    : false;
+
+  const showTeacherDept1 = Boolean(template.teacher1Name) && !hasDeptInfo1;
+
+  const hasDeptInfo2 = template.teacher2Designation
+    ? (template.teacher2Designation.toLowerCase().includes("department") ||
+       template.teacher2Designation.toLowerCase().includes("dept") ||
+       template.teacher2Designation.toLowerCase().includes("ce") ||
+       template.teacher2Designation.toLowerCase().includes("civil"))
+    : false;
+
+  const showTeacherDept2 = Boolean(template.teacher2Name) && !hasDeptInfo2;
 
   return (
     <Page size="A4" style={styles.page}>
-      <View style={styles.pageContent}>
-        <View style={styles.topGroup}>
-          <View style={styles.headerSection}>
-            <PDFImage src="/buet-logo.jpg" style={styles.logo} />
-            <Text style={styles.universityName}>{universityLabel}</Text>
-          </View>
+      <View style={styles.topContainer}>
+        <PDFImage src="/buet-logo.jpg" style={styles.logo} />
+        <Text style={styles.universityName}>{universityLabel}</Text>
+      </View>
 
-          <View style={styles.courseSection}>
-            <Text style={styles.courseNumber}>{template.courseNumber}</Text>
-            <Text style={styles.courseTitle}>{template.courseTitle}</Text>
-          </View>
+      <View style={styles.spacerTop} />
 
-          <View style={styles.submittedBySection}>
-            <Text style={styles.blockTitle}>SUBMITTED BY:</Text>
-            <View style={styles.studentLines}>
-              <View style={styles.studentLine}>
-                <Text style={styles.studentText}>Name: {user.name}</Text>
-              </View>
-              <View style={styles.studentLine}>
-                <Text style={styles.studentText}>
-                  Student ID: {user.studentId}
-                </Text>
-              </View>
-              <View style={styles.studentLine}>
-                <Text style={styles.studentText}>Section: {user.section}</Text>
-              </View>
-              <View style={styles.studentLine}>
-                <Text style={styles.studentText}>
-                  Level - {user.level} / Term - {user.term}
-                </Text>
-              </View>
-              <View style={styles.studentLine}>
-                <Text style={styles.studentText}>{departmentLine}</Text>
-              </View>
-            </View>
-          </View>
+      <View style={styles.courseContainer}>
+        <Text style={styles.courseNumber}>{template.courseNumber}</Text>
+        <Text style={styles.courseTitle}>{template.courseTitle}</Text>
+      </View>
+
+      <View style={styles.spacerMiddle} />
+
+      <View style={styles.submittedBySection}>
+        <View style={styles.blockTitleContainer}>
+          <Text style={styles.blockTitleText}>SUBMITTED BY:</Text>
         </View>
-
-        <View style={styles.submittedToSection}>
-          <Text style={styles.blockTitle}>SUBMITTED TO:</Text>
-          <View style={styles.teachersRow}>
-            <View style={styles.teacherCol}>
-              <Text style={styles.teacherText}>{template.teacher1Name}</Text>
-              <Text style={styles.teacherText}>
-                {template.teacher1Designation}
-              </Text>
-              <Text style={styles.teacherText}>Department of CE, BUET</Text>
-            </View>
-            {template.teacher2Name ? (
-              <View style={styles.teacherCol}>
-                <Text style={styles.teacherText}>{template.teacher2Name}</Text>
-                <Text style={styles.teacherText}>
-                  {template.teacher2Designation}
-                </Text>
-                <Text style={styles.teacherText}>Department of CE, BUET</Text>
-              </View>
+        <View style={styles.studentBox}>
+          <View style={styles.studentRow}>
+            <Text style={styles.studentLabel}>Name:</Text>
+            {user.name ? (
+              <Text style={styles.studentValue}>{user.name}</Text>
             ) : (
-              <View style={styles.teacherCol} />
+              <View style={styles.studentValuePlaceholder} />
+            )}
+          </View>
+          <View style={styles.studentRow}>
+            <Text style={styles.studentLabel}>Student ID:</Text>
+            {user.studentId ? (
+              <Text style={styles.studentValue}>{user.studentId}</Text>
+            ) : (
+              <View style={styles.studentValuePlaceholder} />
+            )}
+          </View>
+          <View style={styles.studentRow}>
+            <Text style={styles.studentLabel}>Level / Term:</Text>
+            {levelTermValue ? (
+              <Text style={styles.studentValue}>{levelTermValue}</Text>
+            ) : (
+              <View style={styles.studentValuePlaceholder} />
+            )}
+          </View>
+          <View style={styles.studentRow}>
+            <Text style={styles.studentLabel}>Section:</Text>
+            {user.section ? (
+              <Text style={styles.studentValue}>{user.section.toUpperCase()}</Text>
+            ) : (
+              <View style={styles.studentValuePlaceholder} />
+            )}
+          </View>
+          <View style={styles.studentRow}>
+            <Text style={styles.studentLabel}>Department:</Text>
+            {departmentLine ? (
+              <Text style={styles.studentValue}>{departmentLine}</Text>
+            ) : (
+              <View style={styles.studentValuePlaceholder} />
             )}
           </View>
         </View>
+      </View>
+
+      <View style={styles.spacerBottom} />
+
+      <View style={styles.submittedToSection}>
+        <View style={styles.blockTitleContainer}>
+          <Text style={styles.blockTitleText}>SUBMITTED TO:</Text>
+        </View>
+        {template.teacher2Name ? (
+          <View style={styles.teachersRow}>
+            <View style={styles.teacherCol}>
+              <Text style={styles.teacherName}>{template.teacher1Name}</Text>
+              <Text style={styles.teacherDesignation}>
+                {template.teacher1Designation}
+              </Text>
+              {showTeacherDept1 && (
+                <Text style={styles.teacherDept}>{teacherDeptLine}</Text>
+              )}
+            </View>
+            <View style={styles.teacherCol}>
+              <Text style={styles.teacherName}>{template.teacher2Name}</Text>
+              <Text style={styles.teacherDesignation}>
+                {template.teacher2Designation}
+              </Text>
+              {showTeacherDept2 && (
+                <Text style={styles.teacherDept}>{teacherDeptLine}</Text>
+              )}
+            </View>
+          </View>
+        ) : (
+          <View style={styles.singleTeacherRow}>
+            <View style={styles.singleTeacherCol}>
+              <Text style={styles.singleTeacherName}>
+                {template.teacher1Name}
+              </Text>
+              <Text style={styles.singleTeacherDesignation}>
+                {template.teacher1Designation}
+              </Text>
+              {showTeacherDept1 && (
+                <Text style={styles.singleTeacherDept}>{teacherDeptLine}</Text>
+              )}
+            </View>
+          </View>
+        )}
       </View>
     </Page>
   );

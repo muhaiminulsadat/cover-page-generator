@@ -7,12 +7,12 @@ interface TopSheetDesign {
 export const TOP_SHEET_DESIGNS: readonly TopSheetDesign[] = [
   {
     value: "classic-v1",
-    label: "Classic Top Sheet",
+    label: "Shurma",
     previewImage: "/top-sheet-previews/classic-v1.svg",
   },
   {
     value: "buet-submitted-v1",
-    label: "BUET Submitted Style",
+    label: "Kopotakkho",
     previewImage: "/top-sheet-previews/buet-submitted-v1.svg",
   },
 ];

@@ -7,7 +7,7 @@ interface CoverPageDesign {
 export const COVER_PAGE_DESIGNS: readonly CoverPageDesign[] = [
   {
     value: "cover-classic-v1",
-    label: "Classic Cover Page",
+    label: "Bonolota",
     previewImage: "/cover-page-previews/cover-classic-v1.svg",
   },
   {

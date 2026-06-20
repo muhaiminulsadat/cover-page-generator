@@ -1,4 +1,6 @@
-import {Document} from "@react-pdf/renderer";
+import {Document, Font} from "@react-pdf/renderer";
+
+Font.registerHyphenationCallback((word) => [word]);
 import {createCoverPageRenderContext} from "@/components/pdf/core/context";
 import {
   TopSheetTemplateData,

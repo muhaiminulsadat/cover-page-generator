@@ -6,6 +6,7 @@ import {
   Image as PDFImage,
 } from "@react-pdf/renderer";
 import {TopSheetRenderContext} from "@/components/pdf/core/types";
+import {getDepartmentLabel} from "@/lib/constants/departments";
 
 const styles = StyleSheet.create({
   page: {
@@ -55,7 +56,7 @@ const styles = StyleSheet.create({
   sectionHeaderContainer: {
     alignItems: "center",
     width: "100%",
-    marginBottom: 20,
+    marginBottom: 16,
   },
   sectionHeader: {
     fontSize: 16,
@@ -64,31 +65,29 @@ const styles = StyleSheet.create({
   },
   halfContainer: {
     width: "100%",
+    alignItems: "center",
   },
   teachersContainer: {
+    alignItems: "center",
     width: "100%",
-    paddingLeft: 40,
+    gap: 16,
   },
   teacherBlock: {
-    flexDirection: "row",
-    marginBottom: 20,
-  },
-  teacherNumber: {
-    width: 25,
-    fontSize: 14,
-    fontFamily: "Times-Bold",
+    alignItems: "center",
   },
   teacherDetails: {
-    flex: 1,
+    alignItems: "center",
   },
   teacherName: {
     fontSize: 14,
     fontFamily: "Times-Bold",
-    marginBottom: 6,
+    marginBottom: 4,
+    textAlign: "center",
   },
   teacherDesignation: {
     fontSize: 14,
     fontFamily: "Times-Roman",
+    textAlign: "center",
   },
   studentContainer: {
     alignItems: "center",
@@ -117,6 +116,16 @@ export function renderClassicV1TopSheet(ctx: TopSheetRenderContext) {
   const level = user.level || "-";
   const term = user.term || "-";
 
+  const departmentLabel = getDepartmentLabel(user.department);
+  const departmentLine =
+    departmentLabel && departmentLabel !== "-"
+      ? departmentLabel
+      : "Civil Engineering";
+
+  const formattedDept = departmentLine.toLowerCase().startsWith("department of")
+    ? departmentLine
+    : `Department of ${departmentLine}`;
+
   return (
     <Page size="A4" style={styles.page}>
       <View style={styles.headerSection}>
@@ -125,9 +134,7 @@ export function renderClassicV1TopSheet(ctx: TopSheetRenderContext) {
         </View>
 
         <Text style={styles.universityName}>{universityLabel}</Text>
-        <Text style={styles.departmentName}>
-          Department of Civil Engineering
-        </Text>
+        <Text style={styles.departmentName}>{formattedDept}</Text>
       </View>
 
       <View style={styles.courseDetailsContainer}>
@@ -147,12 +154,13 @@ export function renderClassicV1TopSheet(ctx: TopSheetRenderContext) {
 
       <View style={styles.halfContainer}>
         <View style={styles.sectionHeaderContainer}>
-          <Text style={styles.sectionHeader}>Course Teachers:</Text>
+          <Text style={styles.sectionHeader}>
+            {template.teacher2Name ? "Course Teachers:" : "Course Teacher:"}
+          </Text>
         </View>
 
         <View style={styles.teachersContainer}>
           <View style={styles.teacherBlock}>
-            <Text style={styles.teacherNumber}>1.</Text>
             <View style={styles.teacherDetails}>
               <Text style={styles.teacherName}>{template.teacher1Name}</Text>
               <Text style={styles.teacherDesignation}>
@@ -163,7 +171,6 @@ export function renderClassicV1TopSheet(ctx: TopSheetRenderContext) {
 
           {template.teacher2Name && (
             <View style={styles.teacherBlock}>
-              <Text style={styles.teacherNumber}>2.</Text>
               <View style={styles.teacherDetails}>
                 <Text style={styles.teacherName}>{template.teacher2Name}</Text>
                 <Text style={styles.teacherDesignation}>
