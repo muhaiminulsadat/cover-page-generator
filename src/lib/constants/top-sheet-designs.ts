@@ -2,18 +2,21 @@ interface TopSheetDesign {
   value: string;
   label: string;
   previewImage: string;
+  aspectRatio?: "a4" | "video";
 }
 
 export const TOP_SHEET_DESIGNS: readonly TopSheetDesign[] = [
   {
     value: "classic-v1",
     label: "Shurma",
-    previewImage: "/top-sheet-previews/classic-v1.svg",
+    previewImage: "https://ik.imagekit.io/muhaiminulsadat/CoverDe/Templates%20Preview/Shurma.png?updatedAt=1781972180965",
+    aspectRatio: "a4",
   },
   {
     value: "buet-submitted-v1",
     label: "Kopotakkho",
     previewImage: "/top-sheet-previews/buet-submitted-v1.svg",
+    aspectRatio: "video",
   },
 ];
 

@@ -197,7 +197,7 @@ export function EditTemplateForm({template}: {template: EditTemplateInput}) {
                       Lab is divided into different groups
                     </Label>
                     <p className="text-xs text-muted-foreground">
-                      Enable this if students are split into groups (e.g. Group 1, Group 2). This will add the "Group No" field to the generated Top Page and Index Page.
+                      Enable this if students are split into groups (e.g. Group 1, Group 2). This will add the &quot;Group No&quot; field to the generated Top Page and Index Page.
                     </p>
                   </div>
                 </div>

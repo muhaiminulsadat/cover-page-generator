@@ -4,6 +4,7 @@ import {useState} from "react";
 import Image from "next/image";
 import {Button} from "@/components/ui/button";
 import {Card, CardContent} from "@/components/ui/card";
+import {cn} from "@/lib/utils";
 import {
   Dialog,
   DialogContent,
@@ -18,6 +19,7 @@ interface DesignOption {
   value: string;
   label: string;
   previewImage: string;
+  aspectRatio?: "a4" | "video";
 }
 
 interface DesignPickerDialogProps {
@@ -50,6 +52,8 @@ export function DesignPickerDialog({
     designs.find((design) => design.value === defaultDesign) ||
     designs[0];
 
+  const isA4 = selectedDesign.aspectRatio === "a4";
+
   function handleSelect(nextValue: string) {
     onValueChange(nextValue);
     setOpen(false);
@@ -61,13 +65,17 @@ export function DesignPickerDialog({
         <CardContent className="p-4 sm:p-5">
           <div className="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
             <div className="flex items-center gap-4 min-w-0">
-              <div className="relative h-16 w-28 shrink-0 overflow-hidden rounded-lg border border-border/60 bg-muted">
+              <div className={cn(
+                "relative h-16 shrink-0 overflow-hidden rounded-lg border border-border/60 bg-muted transition-[width] duration-300",
+                isA4 ? "w-[45px]" : "w-28"
+              )}>
                 <Image
                   src={selectedDesign.previewImage}
                   alt={`${selectedDesign.label} preview`}
                   fill
-                  sizes="112px"
+                  sizes={isA4 ? "45px" : "112px"}
                   className="object-cover transition-transform duration-300 hover:scale-105"
+                  priority
                 />
               </div>
               <div className="min-w-0">

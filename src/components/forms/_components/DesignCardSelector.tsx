@@ -7,6 +7,7 @@ interface DesignOption {
   value: string;
   label: string;
   previewImage: string;
+  aspectRatio?: "a4" | "video";
 }
 
 interface DesignCardSelectorProps {
@@ -51,26 +52,32 @@ export function DesignCardSelector({
           >
             <Card
               className={cn(
-                "cursor-pointer border-2 py-0 gap-0 transition-all duration-200 rounded-xl",
+                "cursor-pointer border-2 py-0 gap-0 transition-all duration-200 rounded-xl h-full",
                 value === design.value
                   ? "border-primary bg-primary/5 shadow-md scale-[1.01]"
                   : "border-border hover:border-primary/45 hover:shadow-xs",
               )}
             >
-              <CardContent className="p-4 sm:p-5">
-                <div className="flex items-start justify-between gap-3">
-                  <div className="flex-1 min-w-0">
+              <CardContent className="p-4 sm:p-5 h-full flex flex-col justify-between">
+                <div className="flex items-start justify-between gap-3 h-full">
+                  <div className="flex-1 min-w-0 flex flex-col justify-between h-full">
                     <h3 className="font-medium text-sm leading-snug">
                       {design.label}
                     </h3>
-                    <div className="mt-3 aspect-video w-full overflow-hidden rounded border border-border bg-muted">
+                    <div className={cn(
+                      "mt-3 w-full overflow-hidden rounded border border-border bg-muted relative transition-all duration-300",
+                      design.aspectRatio === "a4" ? "aspect-[210/297]" : "aspect-video"
+                    )}>
                       <div className="relative h-full w-full">
                         <Image
                           src={design.previewImage}
                           alt={`${design.label} preview`}
                           fill
                           sizes="(max-width: 640px) 100vw, 50vw"
-                          className="object-cover"
+                          className={cn(
+                            "object-cover transition-transform duration-300 hover:scale-[1.02]",
+                            design.aspectRatio === "a4" ? "object-top" : "object-center"
+                          )}
                         />
                       </div>
                     </div>
