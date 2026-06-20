@@ -59,7 +59,7 @@ export function ExperimentNamesInput<TFieldValues extends FieldValues>({
           size="sm"
           onClick={handleAppend}
           className="gap-2"
-          disabled={disabled}
+          disabled={disabled || values.length >= 20}
         >
           <Plus className="size-4" />
           Add Experiment

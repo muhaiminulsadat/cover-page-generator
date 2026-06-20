@@ -96,7 +96,11 @@ export const createTemplateSchema = z.object({
   includeCoverPage: z.boolean().default(true),
   includeIndexPage: z.boolean().default(true),
   dividedIntoGroups: z.boolean().default(false),
-  experimentNames: z.array(z.string()).optional().default([]),
+  experimentNames: z
+    .array(z.string())
+    .max(20, "Maximum of 20 experiments allowed")
+    .optional()
+    .default([]),
 }).refine(
   (data) => data.includeTopPage || data.includeCoverPage || data.includeIndexPage,
   {
