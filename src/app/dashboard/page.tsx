@@ -59,7 +59,7 @@ async function DashboardGrid({
           No templates found
         </h3>
         <p className="text-sm text-muted-foreground mt-2 max-w-sm leading-relaxed">
-          {userRole !== "student" 
+          {userRole !== "student"
             ? "Be the first to create a cover page template for your department. Your classmates can reuse it instantly."
             : "Ask your class representative or a moderator to create a template for this department."}
         </p>

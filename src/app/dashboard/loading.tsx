@@ -11,10 +11,14 @@ export default function DashboardLoading() {
             Available Templates
           </h1>
           <div className="mt-2 text-muted-foreground flex items-center gap-1.5">
-            Showing top sheet templates for <Skeleton className="h-4 w-28 sm:w-36 rounded" />
+            Showing top sheet templates for{" "}
+            <Skeleton className="h-4 w-28 sm:w-36 rounded" />
           </div>
         </div>
-        <Button disabled className="w-full sm:w-auto opacity-50 cursor-not-allowed">
+        <Button
+          disabled
+          className="w-full sm:w-auto opacity-50 cursor-not-allowed"
+        >
           Create Template <ArrowRight className="ml-2 w-4 h-4" />
         </Button>
       </div>

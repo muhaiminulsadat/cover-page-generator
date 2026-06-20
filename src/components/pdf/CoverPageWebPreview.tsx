@@ -1,7 +1,7 @@
 "use client";
 
 import {useRef} from "react";
-import {PDFViewer, PDFDownloadLink} from "@react-pdf/renderer";
+import {PDFViewer, BlobProvider} from "@react-pdf/renderer";
 import CoverPageDocument, {
   TemplateData,
   UserData,
@@ -23,6 +23,34 @@ export function CoverPageWebPreview({template, user}: Props) {
   const confettiRef = useRef<ConfettiRef>(null);
   const { execute: executeLogDownload } = useAction(logDownloadAction);
 
+  const handleDownloadClick = (url: string | null) => {
+    if (url && template.id) {
+      executeLogDownload({ templateId: template.id });
+    }
+    
+    const bursts = [
+      {x: 0.2, y: 0.35},
+      {x: 0.8, y: 0.35},
+      {x: 0.5, y: 0.2},
+      {x: 0.5, y: 0.55},
+    ];
+
+    bursts.forEach((origin, index) => {
+      window.setTimeout(() => {
+        void confettiRef.current?.fire({
+          particleCount: 160,
+          spread: 140,
+          startVelocity: 48,
+          gravity: 0.9,
+          decay: 0.92,
+          ticks: 220,
+          scalar: 1.1,
+          origin,
+        });
+      }, index * 120);
+    });
+  };
+
   if (!mounted)
     return (
       <div className="h-150 w-full bg-muted animate-pulse rounded-lg flex items-center justify-center">
@@ -43,55 +71,61 @@ export function CoverPageWebPreview({template, user}: Props) {
           can always download it!
         </p>
 
-        <PDFDownloadLink
-          document={<CoverPageDocument template={template} user={user} />}
-          fileName={`${template.courseNumber}_${studentIdForFile}_Template.pdf`}
-          className="no-underline w-full sm:w-auto"
-        >
-          {({loading, url, error}) => (
-            <Button
-              disabled={loading || !url || Boolean(error)}
-              className="w-full sm:w-auto"
-              onClick={() => {
-                if (!loading && url && !error) {
-                  // Fire the download logging action in the background
-                  if (template.id) {
-                    executeLogDownload({ templateId: template.id });
-                  }
-                  
-                  const bursts = [
-                    {x: 0.2, y: 0.35},
-                    {x: 0.8, y: 0.35},
-                    {x: 0.5, y: 0.2},
-                    {x: 0.5, y: 0.55},
-                  ];
+        <BlobProvider document={<CoverPageDocument template={template} user={user} />}>
+          {({loading, url, error}) => {
+            if (loading || !url || error) {
+              return (
+                <Button
+                  disabled
+                  className="w-full sm:w-auto"
+                >
+                  <Download className="mr-2 h-4 w-4" />
+                  {error ? "PDF unavailable" : "Preparing PDF..."}
+                </Button>
+              );
+            }
 
-                  bursts.forEach((origin, index) => {
-                    window.setTimeout(() => {
-                      void confettiRef.current?.fire({
-                        particleCount: 160,
-                        spread: 140,
-                        startVelocity: 48,
-                        gravity: 0.9,
-                        decay: 0.92,
-                        ticks: 220,
-                        scalar: 1.1,
-                        origin,
-                      });
-                    }, index * 120);
-                  });
-                }
-              }}
-            >
-              <Download className="mr-2 h-4 w-4" />
-              {error
-                ? "PDF unavailable"
-                : loading || !url
-                  ? "Preparing PDF..."
-                  : "Download Template PDF"}
-            </Button>
-          )}
-        </PDFDownloadLink>
+            const fileName = `${template.courseNumber}_${studentIdForFile}_Template.pdf`;
+            const isIOS = typeof window !== "undefined" && 
+              (/iPad|iPhone|iPod/.test(navigator.userAgent) || 
+               (navigator.platform === "MacIntel" && navigator.maxTouchPoints > 1));
+
+            if (isIOS) {
+              return (
+                <Button
+                  asChild
+                  className="w-full sm:w-auto"
+                  onClick={() => handleDownloadClick(url)}
+                >
+                  <a
+                    href={url}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                  >
+                    <Download className="mr-2 h-4 w-4" />
+                    Download Template PDF
+                  </a>
+                </Button>
+              );
+            }
+
+            return (
+              <Button
+                asChild
+                className="w-full sm:w-auto"
+                onClick={() => handleDownloadClick(url)}
+              >
+                <a
+                  href={url}
+                  download={fileName}
+                >
+                  <Download className="mr-2 h-4 w-4" />
+                  Download Template PDF
+                </a>
+              </Button>
+            );
+          }}
+        </BlobProvider>
       </div>
 
       <div className="h-125 md:h-200 w-full rounded-xl overflow-hidden shadow-lg border border-border">
