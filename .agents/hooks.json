@@ -1,0 +1,12 @@
+{
+  "workflow-reminder": {
+    "enabled": true,
+    "PreInvocation": [
+      {
+        "type": "command",
+        "command": "node ../scripts/hook-pre-invocation.mjs",
+        "timeout": 10
+      }
+    ]
+  }
+}
